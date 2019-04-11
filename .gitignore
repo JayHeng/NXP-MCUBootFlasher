@@ -12,6 +12,7 @@
 *.fbp.bak
 
 /.idea
+/tools
 
 # Python bytecode
 *.pyc
