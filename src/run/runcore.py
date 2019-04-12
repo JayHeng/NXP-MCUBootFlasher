@@ -168,6 +168,10 @@ class flashRun(uicore.flashUi):
         status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_CurrentVersion)
         return (status == boot.status.kStatus_Success)
 
+    def flashSignedBootableImage( self ):
+        status, results, cmdStr = self.blhost.receiveSbFile(self.sbAppPath)
+        return (status == boot.status.kStatus_Success) or (status == boot.status.kStatus_AbortDataPhase)
+
     def resetMcuDevice( self ):
         status, results, cmdStr = self.blhost.reset()
         return (status == boot.status.kStatus_Success)

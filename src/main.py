@@ -70,7 +70,7 @@ class flashMain(runcore.flashRun):
         while connectSteps:
             if not self.updatePortSetupValue(retryToDetectUsb, True):
                 self._connectFailureHandler()
-                return
+                return False
             if self.connectStage == uidef.kConnectStage_Rom:
                 self.connectToDevice(self.connectStage)
                 if self._retryToPingBootloader(kBootloaderType_Rom):
@@ -83,11 +83,11 @@ class flashMain(runcore.flashRun):
                     else:
                         self.updateConnectStatus('red')
                         self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][0])
-                        return
+                        return False
                 else:
                     self.updateConnectStatus('red')
                     self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][0])
-                    return
+                    return False
             elif self.connectStage == uidef.kConnectStage_Flashloader:
                 self.connectToDevice(self.connectStage)
                 if self._retryToPingBootloader(kBootloaderType_Flashloader):
@@ -96,20 +96,40 @@ class flashMain(runcore.flashRun):
                 else:
                     self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][0])
                     self._connectFailureHandler()
-                    return
+                    return False
             elif self.connectStage == uidef.kConnectStage_Ready:
-                return
+                if connectSteps == 1:
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][0])
+                    return True
+                else:
+                    if self._retryToPingBootloader(kBootloaderType_Flashloader):
+                        self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][0])
+                        return True
+                    else:
+                        self.connectStage = uidef.kConnectStage_Rom
+                        connectSteps += 1
             else:
                 pass
             connectSteps -= 1
 
     def callbackAllInOneAction( self, event ):
         self._startGaugeTimer()
-        self._connectStateMachine()
+        if self._connectStateMachine():
+            if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
+                if self.flashSignedBootableImage():
+                    self.updateConnectStatus('blue')
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][0])
+                else:
+                    self.updateConnectStatus('red')
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_failToDownload'][0])
+            else:
+                self.updateConnectStatus('red')
+                self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][0])
         self._stopGaugeTimer()
 
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
+        self.updateConnectStatus('black')
 
     def _deinitToolToExit( self ):
         if self.periodicCommonTaskTimer != None:

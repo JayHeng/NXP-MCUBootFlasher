@@ -42,6 +42,7 @@ class flashUi(flashWin.flashWin):
         self._initPortSetupValue()
         self.periodicCommonTaskTimer = None
         self.periodicCommonTask()
+        self.sbAppPath = None
 
     def _initStatusBar( self ):
         self.m_statusBar.SetFieldsCount(2)
@@ -164,5 +165,5 @@ class flashUi(flashWin.flashWin):
 
     def getUserAppFilePath( self ):
         appPath = self.m_filePicker_appPath.GetPath()
-        return appPath.encode('utf-8').encode("gbk")
+        self.sbAppPath = appPath.encode('utf-8').encode("gbk")
 

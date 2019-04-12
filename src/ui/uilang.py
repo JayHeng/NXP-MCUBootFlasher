@@ -25,5 +25,9 @@ kMsgLanguageContentDict = {
         'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!'],
         'connectError_doubleCheckBmod':       ['Put MCU in SDP mode (BMOD[1:0] pins = 2\'b01), Reset board and try again!'],
         'connectError_failToPingFl':          ['Failed to ping Flashloader, Reset board and try again!'],
+        'connectInfo_readyForDownload':       ['Connected, Ready for downloading!'],
 
+        'downloadError_notValidImage':        ['Please select one application image file (.sb )!'],
+        'downloadError_failToDownload':       ['Failded to download application image file (.sb )!'],
+        'downloadInfo_success':               ['Application image file (.sb ) has been downloaded successfully!'],
 }
