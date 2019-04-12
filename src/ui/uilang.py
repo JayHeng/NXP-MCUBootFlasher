@@ -22,8 +22,8 @@ kMsgLanguageContentDict = {
         'revisionHistory_title':              ['Revision History'],
         'revisionHistory_v1_0_0':             [kRevision_1_0_0_en],
 
-        'connectError_failToJumpToFl':        ['MCU has entered ROM SDP mode but failed to jump to Flashloader, Please reset board and try again!'],
-        'connectError_doubleCheckBmod':       ['Make sure that you have put MCU in SDP (Serial Downloader Programming) mode (BMOD[1:0] pins = 2\'b01)!'],
-        'connectError_failToPingFl':          ['Failed to ping Flashloader, Please reset board and consider updating flashloader.srec file under /src/targets/ then try again!'],
+        'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!'],
+        'connectError_doubleCheckBmod':       ['Put MCU in SDP mode (BMOD[1:0] pins = 2\'b01), Reset board and try again!'],
+        'connectError_failToPingFl':          ['Failed to ping Flashloader, Reset board and try again!'],
 
 }

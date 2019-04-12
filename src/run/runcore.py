@@ -140,14 +140,11 @@ class flashRun(uicore.flashUi):
         if secConfig != None:
             self.mcuDeviceHabStatus = ((secConfig & rundef.kRegisterMask_SecConfig) >> rundef.kRegisterShift_SecConfig)
             if self.mcuDeviceHabStatus == rundef.kHabStatus_FAB:
-                #self.printDeviceStatus('HAB status = FAB')
-                pass
+                self.setHabStatus(u"FAB")
             elif self.mcuDeviceHabStatus == rundef.kHabStatus_Open:
-                #self.printDeviceStatus('HAB status = Open')
-                pass
+                self.setHabStatus(u"Open")
             elif self.mcuDeviceHabStatus == rundef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == rundef.kHabStatus_Closed1:
-                #self.printDeviceStatus('HAB status = Closed')
-                pass
+                self.setHabStatus(u"Closed")
             else:
                 pass
 

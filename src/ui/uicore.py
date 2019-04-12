@@ -31,19 +31,30 @@ class flashUi(flashWin.flashWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
+        self._initStatusBar()
         self.updateConnectStatus()
-
         self.mcuDevice = None
         self.setTargetSetupValue()
-
         self.usbhidVid = None
         self.usbhidPid = None
         self.isUsbhidConnected = False
         self.usbhidToConnect = [None] * 2
         self._initPortSetupValue()
-
         self.periodicCommonTaskTimer = None
         self.periodicCommonTask()
+
+    def _initStatusBar( self ):
+        self.m_statusBar.SetFieldsCount(2)
+        self.m_statusBar.SetStatusWidths([150, 350])
+        self.setHabStatus(u"N/A")
+        self.setInfoStatus('N/A')
+
+    def setHabStatus( self, habStatus ):
+        self.m_statusBar.SetStatusText(u"【HAB Status: " + habStatus + "】", 0)
+
+    def setInfoStatus( self, infoStatus ):
+        infoStatus = 'Info: ' + infoStatus
+        self.m_statusBar.SetStatusText(infoStatus.encode('utf-8'), 1)
 
     def setTargetSetupValue( self ):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
@@ -108,7 +119,7 @@ class flashUi(flashWin.flashWin):
             if not self.isUsbhidConnected:
                 status = False
                 if showError:
-                    self.popupMsgBox('Cannnot find USB-HID device (vid=%s, pid=%s), Please connect USB cable to your board first!' %(self.usbhidToConnect[0], self.usbhidToConnect[1]))
+                    self.setInfoStatus('Cannnot find USB-HID device (vid=%s, pid=%s), Please connect USB cable to your board first!' %(self.usbhidToConnect[0], self.usbhidToConnect[1]))
         return status
 
     def updateConnectStatus( self, color='black' ):
@@ -124,10 +135,6 @@ class flashUi(flashWin.flashWin):
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0xff, 0x80, 0x80 ) )
         else:
             pass
-
-    def popupMsgBox( self, msgStr ):
-        messageText = (msgStr.encode('utf-8'))
-        wx.MessageBox(messageText, "Error", wx.OK | wx.ICON_INFORMATION)
 
     def increaseGauge( self, evt ):
         global s_isGaugeWorking

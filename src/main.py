@@ -82,11 +82,11 @@ class flashMain(runcore.flashRun):
                         self.setPortSetupValue(self.connectStage, usbIdList, True, True)
                     else:
                         self.updateConnectStatus('red')
-                        self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][0])
+                        self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][0])
                         return
                 else:
                     self.updateConnectStatus('red')
-                    self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][0])
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][0])
                     return
             elif self.connectStage == uidef.kConnectStage_Flashloader:
                 self.connectToDevice(self.connectStage)
@@ -94,7 +94,7 @@ class flashMain(runcore.flashRun):
                     self.updateConnectStatus('green')
                     self.connectStage = uidef.kConnectStage_Ready
                 else:
-                    self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][0])
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][0])
                     self._connectFailureHandler()
                     return
             elif self.connectStage == uidef.kConnectStage_Ready:
