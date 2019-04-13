@@ -137,6 +137,9 @@ class flashMain(runcore.flashRun):
         global g_main_win
         g_main_win.Show(False)
 
+    def callbackExit( self, event ):
+        self._deinitToolToExit()
+
     def callbackClose( self, event ):
         self._deinitToolToExit()
 
