@@ -35,8 +35,7 @@ class flashMain(runcore.flashRun):
 
     def _stopGaugeTimer( self ):
         self.deinitGauge()
-        curTime = time.time()
-        self.setCostTime(curTime - self.lastTime)
+        self.updateCostTime()
 
     def callbackSetMcuDevice( self, event ):
         self.setTargetSetupValue()

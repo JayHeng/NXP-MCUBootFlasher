@@ -148,6 +148,7 @@ class flashUi(flashWin.flashWin):
             if s_curGauge < (s_maxGauge - 10):
                 self.m_gauge_action.SetValue(s_curGauge)
                 s_curGauge += 1
+            self.updateCostTime()
 
     def initGauge( self ):
         global s_isGaugeWorking
@@ -197,3 +198,6 @@ class flashUi(flashWin.flashWin):
                 millisecValueStr = str(millisecValue)
         self.m_staticText_costTime.SetLabel(' ' + minValueStr + ':' + secValueStr + '.' + millisecValueStr)
 
+    def updateCostTime( self ):
+        curTime = time.time()
+        self.setCostTime(curTime - self.lastTime)
