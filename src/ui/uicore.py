@@ -8,7 +8,6 @@ import os
 import time
 import math
 import pywinusb.hid
-import threading
 import uidef
 sys.path.append(os.path.abspath(".."))
 from win import flashWin
@@ -41,8 +40,6 @@ class flashUi(flashWin.flashWin):
         self.isUsbhidConnected = False
         self.usbhidToConnect = [None] * 2
         self._initPortSetupValue()
-        self.periodicCommonTaskTimer = None
-        self.periodicCommonTask()
         self.sbAppPath = None
 
     def _initStatusBar( self ):
@@ -65,10 +62,10 @@ class flashUi(flashWin.flashWin):
         usbIdList = self.getUsbid()
         self.setPortSetupValue(uidef.kConnectStage_Rom, usbIdList)
 
-    def periodicCommonTask( self ):
-        self._retryToDetectUsbhidDevice(False)
-        self.periodicCommonTaskTimer = threading.Timer(1, self.periodicCommonTask)
-        self.periodicCommonTaskTimer.start()
+    def task_doDetectUsbhid( self ):
+        while True:
+            self._retryToDetectUsbhidDevice(False)
+            time.sleep(1)
 
     def _retryToDetectUsbhidDevice( self, needToRetry = True ):
         usbVid = [None]

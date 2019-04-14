@@ -6,11 +6,13 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import os
 import time
+import threading
 from run import runcore
 from ui import uidef
 from ui import uilang
 
 g_main_win = None
+g_task_detectUsbhid = None
 
 kRetryPingTimes = 5
 
@@ -137,8 +139,6 @@ class flashMain(runcore.flashRun):
         self.updateConnectStatus('black')
 
     def _deinitToolToExit( self ):
-        if self.periodicCommonTaskTimer != None:
-            self.periodicCommonTaskTimer.cancel()
         global g_main_win
         g_main_win.Show(False)
 
@@ -169,5 +169,8 @@ if __name__ == '__main__':
     g_main_win = flashMain(None)
     g_main_win.SetTitle(u"RT Flash v0.1.0")
     g_main_win.Show()
+
+    g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)
+    g_task_detectUsbhid.start()
 
     app.MainLoop()
