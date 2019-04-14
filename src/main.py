@@ -23,13 +23,17 @@ class flashMain(runcore.flashRun):
         runcore.flashRun.__init__(self, parent)
         self.connectStage = uidef.kConnectStage_Rom
         self.gaugeTimer = wx.Timer(self)
+        self.lastTime = None
         self.Bind(wx.EVT_TIMER, self.increaseGauge, self.gaugeTimer)
 
     def _startGaugeTimer( self ):
+        self.lastTime = time.time()
         self.initGauge()
 
     def _stopGaugeTimer( self ):
         self.deinitGauge()
+        curTime = time.time()
+        self.setCostTime(curTime - self.lastTime)
 
     def callbackSetMcuDevice( self, event ):
         self.setTargetSetupValue()
@@ -129,6 +133,7 @@ class flashMain(runcore.flashRun):
 
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
+        self.setCostTime(0)
         self.updateConnectStatus('black')
 
     def _deinitToolToExit( self ):

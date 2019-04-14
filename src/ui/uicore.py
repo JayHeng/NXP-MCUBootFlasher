@@ -6,6 +6,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import os
 import time
+import math
 import pywinusb.hid
 import threading
 import uidef
@@ -166,4 +167,31 @@ class flashUi(flashWin.flashWin):
     def getUserAppFilePath( self ):
         appPath = self.m_filePicker_appPath.GetPath()
         self.sbAppPath = appPath.encode('utf-8').encode("gbk")
+
+    def setCostTime( self, costTimeSec ):
+        minValueStr = '00'
+        secValueStr = '00'
+        millisecValueStr = '000'
+        if costTimeSec != 0:
+            costTimeSecMod = math.modf(costTimeSec)
+            minValue = int(costTimeSecMod[1] / 60)
+            if minValue < 10:
+                minValueStr = '0' + str(minValue)
+            elif minValue <= 59:
+                minValueStr = str(minValue)
+            else:
+                minValueStr = 'xx'
+            secValue = int(costTimeSecMod[1]) % 60
+            if secValue < 10:
+                secValueStr = '0' + str(secValue)
+            else:
+                secValueStr = str(secValue)
+            millisecValue = int(costTimeSecMod[0] * 1000)
+            if millisecValue < 10:
+                millisecValueStr = '00' + str(millisecValue)
+            elif millisecValue < 100:
+                millisecValueStr = '0' + str(millisecValue)
+            else:
+                millisecValueStr = str(millisecValue)
+        self.m_staticText_costTime.SetLabel(' ' + minValueStr + ':' + secValueStr + '.' + millisecValueStr)
 

@@ -101,12 +101,12 @@ class flashWin ( wx.Frame ):
 
 		wSizer_info = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
 
-		self.m_staticText_costTime = wx.StaticText( self, wx.ID_ANY, u" 00:00:00", wx.DefaultPosition, wx.Size( 45,-1 ), 0 )
+		self.m_staticText_costTime = wx.StaticText( self, wx.ID_ANY, u" 00:00.000", wx.DefaultPosition, wx.Size( 55,-1 ), 0 )
 		self.m_staticText_costTime.Wrap( -1 )
 
 		wSizer_info.Add( self.m_staticText_costTime, 0, wx.ALL, 5 )
 
-		self.m_gauge_action = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size( 335,20 ), wx.GA_HORIZONTAL )
+		self.m_gauge_action = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size( 310,20 ), wx.GA_HORIZONTAL )
 		self.m_gauge_action.SetValue( 100 )
 		wSizer_info.Add( self.m_gauge_action, 0, wx.ALL, 5 )
 
