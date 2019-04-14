@@ -135,7 +135,12 @@ class flashUi(flashWin.flashWin):
         else:
             pass
 
-    def increaseGauge( self, evt ):
+    def task_doIncreaseGauge( self ):
+        while True:
+            self._increaseGauge()
+            time.sleep(0.5)
+
+    def _increaseGauge( self ):
         global s_isGaugeWorking
         global s_curGauge
         global s_maxGauge
@@ -149,7 +154,7 @@ class flashUi(flashWin.flashWin):
         global s_curGauge
         global s_maxGauge
         s_isGaugeWorking = True
-        s_curGauge = 30
+        s_curGauge = 0
         s_maxGauge = self.m_gauge_action.GetRange()
         self.m_gauge_action.SetValue(s_curGauge)
 

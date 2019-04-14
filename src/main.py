@@ -13,6 +13,8 @@ from ui import uilang
 
 g_main_win = None
 g_task_detectUsbhid = None
+g_task_allInOneAction = None
+g_task_increaseGauge = None
 
 kRetryPingTimes = 5
 
@@ -24,9 +26,8 @@ class flashMain(runcore.flashRun):
     def __init__(self, parent):
         runcore.flashRun.__init__(self, parent)
         self.connectStage = uidef.kConnectStage_Rom
-        self.gaugeTimer = wx.Timer(self)
         self.lastTime = None
-        self.Bind(wx.EVT_TIMER, self.increaseGauge, self.gaugeTimer)
+        self.isAllInOneActionTaskPending = False
 
     def _startGaugeTimer( self ):
         self.lastTime = time.time()
@@ -118,8 +119,14 @@ class flashMain(runcore.flashRun):
                 pass
             connectSteps -= 1
 
-    def callbackAllInOneAction( self, event ):
-        self._startGaugeTimer()
+    def task_doAllInOneAction( self ):
+        while True:
+            if self.isAllInOneActionTaskPending:
+                self._doAllInOneAction()
+                self.isAllInOneActionTaskPending = False
+                self._stopGaugeTimer()
+
+    def _doAllInOneAction( self ):
         if self._connectStateMachine():
             if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
                 if self.flashSignedBootableImage():
@@ -131,7 +138,10 @@ class flashMain(runcore.flashRun):
             else:
                 self.updateConnectStatus('red')
                 self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][0])
-        self._stopGaugeTimer()
+
+    def callbackAllInOneAction( self, event ):
+        self.isAllInOneActionTaskPending = True
+        self._startGaugeTimer()
 
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
@@ -172,5 +182,9 @@ if __name__ == '__main__':
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)
     g_task_detectUsbhid.start()
+    g_task_allInOneAction = threading.Thread(target=g_main_win.task_doAllInOneAction)
+    g_task_allInOneAction.start()
+    g_task_increaseGauge = threading.Thread(target=g_main_win.task_doIncreaseGauge)
+    g_task_increaseGauge.start()
 
     app.MainLoop()
