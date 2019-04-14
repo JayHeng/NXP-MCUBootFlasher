@@ -18,6 +18,7 @@ kRetryDetectTimes = 5
 s_isGaugeWorking = False
 s_curGauge = 0
 s_maxGauge = 0
+s_gaugeIntervalSec = 1
 
 class flashUi(flashWin.flashWin):
 
@@ -138,14 +139,18 @@ class flashUi(flashWin.flashWin):
     def task_doIncreaseGauge( self ):
         while True:
             self._increaseGauge()
-            time.sleep(0.5)
+            global s_gaugeIntervalSec
+            time.sleep(s_gaugeIntervalSec)
 
     def _increaseGauge( self ):
         global s_isGaugeWorking
         global s_curGauge
         global s_maxGauge
+        global s_gaugeIntervalSec
         if s_isGaugeWorking:
-            if s_curGauge < (s_maxGauge - 10):
+            gaugePercentage = s_curGauge * 1.0 / s_maxGauge
+            if gaugePercentage <= 0.9:
+                s_gaugeIntervalSec = int(gaugePercentage  / 0.1) * 0.5 + 0.5
                 self.m_gauge_action.SetValue(s_curGauge)
                 s_curGauge += 1
             self.updateCostTime()
@@ -154,8 +159,10 @@ class flashUi(flashWin.flashWin):
         global s_isGaugeWorking
         global s_curGauge
         global s_maxGauge
+        global s_gaugeIntervalSec
         s_isGaugeWorking = True
         s_curGauge = 0
+        s_gaugeIntervalSec = 0.5
         s_maxGauge = self.m_gauge_action.GetRange()
         self.m_gauge_action.SetValue(s_curGauge)
 
@@ -163,8 +170,10 @@ class flashUi(flashWin.flashWin):
         global s_isGaugeWorking
         global s_curGauge
         global s_maxGauge
+        global s_gaugeIntervalSec
         s_isGaugeWorking = False
         s_curGauge = s_maxGauge
+        s_gaugeIntervalSec = 1
         self.m_gauge_action.SetValue(s_maxGauge)
 
     def getUserAppFilePath( self ):
