@@ -23,6 +23,7 @@ kMsgLanguageContentDict = {
         'revisionHistory_v1_0_0':             [kRevision_1_0_0_en],
 
         'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!'],
+        'connectError_notValidSignedFl':      ['Signed flashloader(ivt_flashloader_signed.bin) is not found!'],
         'connectError_doubleCheckBmod':       ['Put MCU in SDP mode (BMOD[1:0] pins = 2\'b01), Reset board and try again!'],
         'connectError_failToPingFl':          ['Failed to ping Flashloader, Reset board and try again!'],
         'connectInfo_readyForDownload':       ['Connected, Ready for downloading!'],

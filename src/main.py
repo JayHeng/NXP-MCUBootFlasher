@@ -129,12 +129,11 @@ class flashMain(runcore.flashRun):
     def _doAllInOneAction( self ):
         if self._connectStateMachine():
             if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
-                if self.flashSignedBootableImage():
+                if self.flashSbImage():
                     self.updateConnectStatus('blue')
                     self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][0])
                 else:
                     self.updateConnectStatus('red')
-                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_failToDownload'][0])
             else:
                 self.updateConnectStatus('red')
                 self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][0])
@@ -181,7 +180,7 @@ if __name__ == '__main__':
     app = wx.App()
 
     g_main_win = flashMain(None)
-    g_main_win.SetTitle(u"RT Flash v0.1.0")
+    g_main_win.SetTitle(u"RT Flash v0.2.0")
     g_main_win.Show()
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)

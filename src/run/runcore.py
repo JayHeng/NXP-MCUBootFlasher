@@ -9,6 +9,7 @@ import boot
 sys.path.append(os.path.abspath(".."))
 from ui import uicore
 from ui import uidef
+from ui import uilang
 from boot import bltest
 from boot import target
 
@@ -151,7 +152,10 @@ class flashRun(uicore.flashUi):
     def jumpToFlashloader( self ):
         flashloaderBinFile = None
         if self.mcuDeviceHabStatus == rundef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == rundef.kHabStatus_Closed1:
-            return False
+            flashloaderBinFile = os.path.join(self.cpuDir, 'ivt_flashloader_signed.bin')
+            if not os.path.isfile(flashloaderBinFile):
+                self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_notValidSignedFl'][0])
+                return False
         elif self.mcuDeviceHabStatus == rundef.kHabStatus_FAB or self.mcuDeviceHabStatus == rundef.kHabStatus_Open:
             flashloaderBinFile = os.path.join(self.cpuDir, 'ivt_flashloader.bin')
         else:
@@ -168,9 +172,13 @@ class flashRun(uicore.flashUi):
         status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_CurrentVersion)
         return (status == boot.status.kStatus_Success)
 
-    def flashSignedBootableImage( self ):
+    def flashSbImage( self ):
         status, results, cmdStr = self.blhost.receiveSbFile(self.sbAppPath)
-        return (status == boot.status.kStatus_Success) or (status == boot.status.kStatus_AbortDataPhase)
+        if (status == boot.status.kStatus_Success) or (status == boot.status.kStatus_AbortDataPhase):
+            return True
+        else:
+            self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_failToDownload'][0])
+            return False
 
     def resetMcuDevice( self ):
         status, results, cmdStr = self.blhost.reset()
