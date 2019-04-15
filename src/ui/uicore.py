@@ -108,18 +108,16 @@ class flashUi(flashWin.flashWin):
         else:
             pass
 
-    def setPortSetupValue( self, connectStage=uidef.kConnectStage_Rom, usbIdList=[], retryToDetectUsb=False, showError=False ):
+    def setPortSetupValue( self, connectStage=uidef.kConnectStage_Rom, usbIdList=[], retryToDetectUsb=False ):
         self.adjustPortSetupValue(connectStage, usbIdList)
-        self.updatePortSetupValue(retryToDetectUsb, showError)
+        self.updatePortSetupValue(retryToDetectUsb)
 
-    def updatePortSetupValue( self, retryToDetectUsb=False, showError=False ):
+    def updatePortSetupValue( self, retryToDetectUsb=False ):
         status = True
         if not self.isUsbhidConnected:
             self._retryToDetectUsbhidDevice(retryToDetectUsb)
             if not self.isUsbhidConnected:
                 status = False
-                if showError:
-                    self.setInfoStatus('Cannnot find USB-HID device (vid=%s, pid=%s), Please connect USB cable to your board first!' %(self.usbhidToConnect[0], self.usbhidToConnect[1]))
         return status
 
     def updateConnectStatus( self, color='black' ):

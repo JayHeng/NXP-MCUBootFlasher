@@ -45,8 +45,7 @@ class flashMain(runcore.flashRun):
     def _setUsbPort( self ):
         usbIdList = self.getUsbid()
         retryToDetectUsb = False
-        showError = True
-        self.setPortSetupValue(self.connectStage, usbIdList, retryToDetectUsb, showError)
+        self.setPortSetupValue(self.connectStage, usbIdList, retryToDetectUsb )
 
     def _retryToPingBootloader( self, bootType ):
         pingStatus = False
@@ -68,7 +67,7 @@ class flashMain(runcore.flashRun):
         self.connectStage = uidef.kConnectStage_Rom
         self.updateConnectStatus('red')
         usbIdList = self.getUsbid()
-        self.setPortSetupValue(self.connectStage, usbIdList, False, False)
+        self.setPortSetupValue(self.connectStage, usbIdList, False )
 
     def _connectStateMachine( self ):
         retryToDetectUsb = False
@@ -85,7 +84,7 @@ class flashMain(runcore.flashRun):
                         self.connectStage = uidef.kConnectStage_Flashloader
                         self.updateConnectStatus('yellow')
                         usbIdList = self.getUsbid()
-                        self.setPortSetupValue(self.connectStage, usbIdList, True, True)
+                        self.setPortSetupValue(self.connectStage, usbIdList, True )
                     else:
                         self.updateConnectStatus('red')
                         self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][0])
