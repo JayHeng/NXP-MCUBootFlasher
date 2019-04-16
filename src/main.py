@@ -198,7 +198,7 @@ if __name__ == '__main__':
     app = wx.App()
 
     g_main_win = flashMain(None)
-    g_main_win.SetTitle(u"RT Flash v0.4.0")
+    g_main_win.SetTitle(u"RT Flash v1.0.0")
     g_main_win.Show()
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)

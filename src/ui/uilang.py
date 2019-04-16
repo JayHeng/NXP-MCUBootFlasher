@@ -53,13 +53,13 @@ kMainLanguageContentDict = {
 kRevision_1_0_0_en =  "【v1.0.0】 \n" + \
                       "  Feature: \n" + \
                       "     1. Support i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP \n" + \
-                      "     2. Support USB-HID serial downloader mode \n" + \
+                      "     2. Support both UART and USB-HID serial downloader modes \n" + \
                       "     3. Support for loading .sb image file into boot device \n\n"
 kRevision_1_0_0_zh = u"【v1.0.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 支持i.MXRT全系列MCU，包含i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP \n" + \
-                     u"     2. 支持USB-HID串行下载方式（USB设备自动识别） \n" + \
-                     u"     3. 支持下载.sb格式的image文件进主动启动设备 \n\n"
+                     u"     2. 支持UART和USB-HID两种串行下载方式（COM端口/USB设备自动识别） \n" + \
+                     u"     3. 支持下载.sb格式的image文件进启动设备 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
