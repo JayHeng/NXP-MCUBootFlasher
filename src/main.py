@@ -73,7 +73,7 @@ class flashMain(runcore.flashRun):
         retryToDetectUsb = False
         connectSteps = 3
         while connectSteps:
-            if not self.updatePortSetupValue(retryToDetectUsb, True):
+            if not self.updatePortSetupValue(retryToDetectUsb):
                 self._connectFailureHandler()
                 return False
             if self.connectStage == uidef.kConnectStage_Rom:
