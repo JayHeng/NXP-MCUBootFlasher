@@ -38,6 +38,9 @@ class flashUi(flashWin.flashWin):
         self.languageIndex = 0
         self._initLanguage()
         self.setLanguage()
+        self.isAutoUsbDetection = None
+        self._initUsbDetection()
+        self.setUsbDetection()
         self.mcuDevice = None
         self.setTargetSetupValue()
         self.usbhidVid = None
@@ -59,6 +62,13 @@ class flashUi(flashWin.flashWin):
     def setInfoStatus( self, infoStatus ):
         infoStatus = 'Info: ' + infoStatus
         self.m_statusBar.SetStatusText(infoStatus.encode('utf-8'), 1)
+
+    def _initUsbDetection( self ):
+        self.m_menuItem_usbDetectionAuto.Check(True)
+        self.m_menuItem_usbDetectionStatic.Check(False)
+
+    def setUsbDetection( self ):
+        self.isAutoUsbDetection = self.m_menuItem_usbDetectionAuto.IsChecked()
 
     def setTargetSetupValue( self ):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
@@ -83,7 +93,7 @@ class flashUi(flashWin.flashWin):
             # Auto detect USB-HID device
             hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[0], 16), product_id = int(self.usbhidToConnect[1], 16))
             hidDevice = hidFilter.get_devices()
-            if len(hidDevice) > 0:
+            if (not self.isAutoUsbDetection) or (len(hidDevice) > 0):
                 self.isUsbhidConnected = True
                 usbVid[0] = self.usbhidToConnect[0]
                 usbPid[0] = self.usbhidToConnect[1]

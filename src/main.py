@@ -160,6 +160,12 @@ class flashMain(runcore.flashRun):
     def callbackClose( self, event ):
         self._deinitToolToExit()
 
+    def callbackSetUsbDetectionAsAuto( self, event ):
+        self.setUsbDetection()
+
+    def callbackSetUsbDetectionAsStatic( self, event ):
+        self.setUsbDetection()
+
     def callbackSetLanguageAsEnglish( self, event ):
         self.setLanguage()
 
