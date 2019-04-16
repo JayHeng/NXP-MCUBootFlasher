@@ -30,6 +30,36 @@ class flashWin ( wx.Frame ):
 
 		self.m_menubar.Append( self.m_menu_file, u"File" )
 
+		self.m_menu_edit = wx.Menu()
+		self.m_menubar.Append( self.m_menu_edit, u"Edit" )
+
+		self.m_menu_view = wx.Menu()
+		self.m_menu_language = wx.Menu()
+		self.m_menuItem_english = wx.MenuItem( self.m_menu_language, wx.ID_ANY, u"English", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_language.Append( self.m_menuItem_english )
+
+		self.m_menuItem_chinese = wx.MenuItem( self.m_menu_language, wx.ID_ANY, u"Chinese", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_language.Append( self.m_menuItem_chinese )
+
+		self.m_menu_view.AppendSubMenu( self.m_menu_language, u"Language" )
+
+		self.m_menubar.Append( self.m_menu_view, u"View" )
+
+		self.m_menu_tools = wx.Menu()
+		self.m_menu_usbDetection = wx.Menu()
+		self.m_menuItem_usbDetectionAuto = wx.MenuItem( self.m_menu_usbDetection, wx.ID_ANY, u"Auto", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_usbDetection.Append( self.m_menuItem_usbDetectionAuto )
+
+		self.m_menuItem_usbDetectionStatic = wx.MenuItem( self.m_menu_usbDetection, wx.ID_ANY, u"Static", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_usbDetection.Append( self.m_menuItem_usbDetectionStatic )
+
+		self.m_menu_tools.AppendSubMenu( self.m_menu_usbDetection, u"USB Detection" )
+
+		self.m_menubar.Append( self.m_menu_tools, u"Tools" )
+
+		self.m_menu_window = wx.Menu()
+		self.m_menubar.Append( self.m_menu_window, u"Window" )
+
 		self.m_menu_help = wx.Menu()
 		self.m_menuItem_homePage = wx.MenuItem( self.m_menu_help, wx.ID_ANY, u"Home Page", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_menu_help.Append( self.m_menuItem_homePage )
@@ -129,6 +159,10 @@ class flashWin ( wx.Frame ):
 		# Connect Events
 		self.Bind( wx.EVT_CLOSE, self.callbackClose )
 		self.Bind( wx.EVT_MENU, self.callbackExit, id = self.m_menuItem_exit.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetLanguageAsEnglish, id = self.m_menuItem_english.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetLanguageAsChinese, id = self.m_menuItem_chinese.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetUsbDetectionAsAuto, id = self.m_menuItem_usbDetectionAuto.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetUsbDetectionAsStatic, id = self.m_menuItem_usbDetectionStatic.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowHomePage, id = self.m_menuItem_homePage.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowAboutAuthor, id = self.m_menuItem_aboutAuthor.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowRevisionHistory, id = self.m_menuItem_revisionHistory.GetId() )
@@ -145,6 +179,18 @@ class flashWin ( wx.Frame ):
 		event.Skip()
 
 	def callbackExit( self, event ):
+		event.Skip()
+
+	def callbackSetLanguageAsEnglish( self, event ):
+		event.Skip()
+
+	def callbackSetLanguageAsChinese( self, event ):
+		event.Skip()
+
+	def callbackSetUsbDetectionAsAuto( self, event ):
+		event.Skip()
+
+	def callbackSetUsbDetectionAsStatic( self, event ):
 		event.Skip()
 
 	def callbackShowHomePage( self, event ):
