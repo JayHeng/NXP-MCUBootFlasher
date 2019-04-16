@@ -17,11 +17,11 @@ import wx.xrc
 class flashWin ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"RT Flash", pos = wx.DefaultPosition, size = wx.Size( 500,255 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"RT Flash", pos = wx.DefaultPosition, size = wx.Size( 513,291 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
-		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_ACTIVECAPTION ) )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
 
 		self.m_menubar = wx.MenuBar( 0 )
 		self.m_menu_file = wx.Menu()
@@ -80,71 +80,140 @@ class flashWin ( wx.Frame ):
 
 		bSizer_setup = wx.BoxSizer( wx.VERTICAL )
 
-		sbSizer_setup = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
+		self.m_notebook_targetSetup = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_panel_targetSetup = wx.Panel( self.m_notebook_targetSetup, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		wSizer_targetSetup = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
 
-		self.m_staticText_mcuDevice = wx.StaticText( sbSizer_setup.GetStaticBox(), wx.ID_ANY, u"i.MX RT Device:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_mcuDevice = wx.StaticText( self.m_panel_targetSetup, wx.ID_ANY, u"RT Device:", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
 		self.m_staticText_mcuDevice.Wrap( -1 )
 
-		sbSizer_setup.Add( self.m_staticText_mcuDevice, 0, wx.ALL, 5 )
+		wSizer_targetSetup.Add( self.m_staticText_mcuDevice, 0, wx.ALL, 5 )
 
 		m_choice_mcuDeviceChoices = [ u"i.MXRT1015", u"i.MXRT102x", u"i.MXRT105x", u"i.MXRT106x", u"i.MXRT1064 SIP" ]
-		self.m_choice_mcuDevice = wx.Choice( sbSizer_setup.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 180,-1 ), m_choice_mcuDeviceChoices, 0 )
+		self.m_choice_mcuDevice = wx.Choice( self.m_panel_targetSetup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 110,-1 ), m_choice_mcuDeviceChoices, 0 )
 		self.m_choice_mcuDevice.SetSelection( 2 )
-		sbSizer_setup.Add( self.m_choice_mcuDevice, 0, wx.ALL, 5 )
+		wSizer_targetSetup.Add( self.m_choice_mcuDevice, 0, wx.ALL, 5 )
 
-		self.m_staticText_usbPort = wx.StaticText( sbSizer_setup.GetStaticBox(), wx.ID_ANY, u"Download Port:", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText_usbPort.Wrap( -1 )
+		self.m_staticText_null1TargetSetup = wx.StaticText( self.m_panel_targetSetup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 180,1 ), 0 )
+		self.m_staticText_null1TargetSetup.Wrap( -1 )
 
-		sbSizer_setup.Add( self.m_staticText_usbPort, 0, wx.ALL, 5 )
-
-		self.m_textCtrl_usbPort = wx.TextCtrl( sbSizer_setup.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 180,-1 ), 0 )
-		sbSizer_setup.Add( self.m_textCtrl_usbPort, 0, wx.ALL, 5 )
+		wSizer_targetSetup.Add( self.m_staticText_null1TargetSetup, 0, wx.ALL, 5 )
 
 
-		bSizer_setup.Add( sbSizer_setup, 1, wx.EXPAND, 5 )
+		self.m_panel_targetSetup.SetSizer( wSizer_targetSetup )
+		self.m_panel_targetSetup.Layout()
+		wSizer_targetSetup.Fit( self.m_panel_targetSetup )
+		self.m_notebook_targetSetup.AddPage( self.m_panel_targetSetup, u"Target Setup", False )
+
+		bSizer_setup.Add( self.m_notebook_targetSetup, 1, wx.EXPAND |wx.ALL, 5 )
+
+		self.m_notebook_portSetup = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_panel_portSetup = wx.Panel( self.m_notebook_portSetup, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		wSizer_portSetup = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+
+		self.m_staticText_null1PortSetup = wx.StaticText( self.m_panel_portSetup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 14,-1 ), 0 )
+		self.m_staticText_null1PortSetup.Wrap( -1 )
+
+		wSizer_portSetup.Add( self.m_staticText_null1PortSetup, 0, wx.ALL, 5 )
+
+		self.m_radioBtn_uart = wx.RadioButton( self.m_panel_portSetup, wx.ID_ANY, u"UART", wx.DefaultPosition, wx.DefaultSize, 0 )
+		wSizer_portSetup.Add( self.m_radioBtn_uart, 0, wx.ALL, 5 )
+
+		self.m_radioBtn_usbhid = wx.RadioButton( self.m_panel_portSetup, wx.ID_ANY, u"USB-HID", wx.DefaultPosition, wx.DefaultSize, 0 )
+		wSizer_portSetup.Add( self.m_radioBtn_usbhid, 0, wx.ALL, 5 )
+
+		self.m_staticText_portVid = wx.StaticText( self.m_panel_portSetup, wx.ID_ANY, u"COM Port:", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_staticText_portVid.Wrap( -1 )
+
+		wSizer_portSetup.Add( self.m_staticText_portVid, 0, wx.ALL, 5 )
+
+		m_choice_portVidChoices = []
+		self.m_choice_portVid = wx.Choice( self.m_panel_portSetup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 110,-1 ), m_choice_portVidChoices, 0 )
+		self.m_choice_portVid.SetSelection( 0 )
+		wSizer_portSetup.Add( self.m_choice_portVid, 0, wx.ALL, 5 )
+
+		self.m_staticText_baudPid = wx.StaticText( self.m_panel_portSetup, wx.ID_ANY, u"Baudrate:", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_staticText_baudPid.Wrap( -1 )
+
+		wSizer_portSetup.Add( self.m_staticText_baudPid, 0, wx.ALL, 5 )
+
+		m_choice_baudPidChoices = []
+		self.m_choice_baudPid = wx.Choice( self.m_panel_portSetup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 110,-1 ), m_choice_baudPidChoices, 0 )
+		self.m_choice_baudPid.SetSelection( 0 )
+		wSizer_portSetup.Add( self.m_choice_baudPid, 0, wx.ALL, 5 )
+
+
+		self.m_panel_portSetup.SetSizer( wSizer_portSetup )
+		self.m_panel_portSetup.Layout()
+		wSizer_portSetup.Fit( self.m_panel_portSetup )
+		self.m_notebook_portSetup.AddPage( self.m_panel_portSetup, u"Port Setup", False )
+
+		bSizer_setup.Add( self.m_notebook_portSetup, 1, wx.EXPAND |wx.ALL, 5 )
 
 
 		wSizer_func.Add( bSizer_setup, 1, wx.EXPAND, 5 )
 
 		bSizer_flash = wx.BoxSizer( wx.VERTICAL )
 
-		sbSizer_flash = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
+		self.m_notebook_imageSeq = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_panel_imageSeq = wx.Panel( self.m_notebook_imageSeq, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		wSizer_imageSeq = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
 
-		self.m_staticText_appPath = wx.StaticText( sbSizer_flash.GetStaticBox(), wx.ID_ANY, u"Application Image File(.sb):", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_appPath = wx.StaticText( self.m_panel_imageSeq, wx.ID_ANY, u"Application Image File(.sb):", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText_appPath.Wrap( -1 )
 
-		sbSizer_flash.Add( self.m_staticText_appPath, 0, wx.ALL, 5 )
+		wSizer_imageSeq.Add( self.m_staticText_appPath, 0, wx.ALL, 5 )
 
-		self.m_filePicker_appPath = wx.FilePickerCtrl( sbSizer_flash.GetStaticBox(), wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.Size( 260,-1 ), wx.FLP_DEFAULT_STYLE )
-		sbSizer_flash.Add( self.m_filePicker_appPath, 0, wx.ALL, 5 )
+		self.m_filePicker_appPath = wx.FilePickerCtrl( self.m_panel_imageSeq, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.Size( 260,-1 ), wx.FLP_DEFAULT_STYLE )
+		wSizer_imageSeq.Add( self.m_filePicker_appPath, 0, wx.ALL, 5 )
 
-		self.m_button_allInOneAction = wx.Button( sbSizer_flash.GetStaticBox(), wx.ID_ANY, u"All-In-One Action", wx.DefaultPosition, wx.Size( 120,40 ), 0 )
+		self.m_staticText_null1ImageSeq = wx.StaticText( self.m_panel_imageSeq, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_staticText_null1ImageSeq.Wrap( -1 )
+
+		wSizer_imageSeq.Add( self.m_staticText_null1ImageSeq, 0, wx.ALL, 5 )
+
+		self.m_button_allInOneAction = wx.Button( self.m_panel_imageSeq, wx.ID_ANY, u"All-In-One Action", wx.DefaultPosition, wx.Size( 120,40 ), 0 )
 		self.m_button_allInOneAction.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
 
-		sbSizer_flash.Add( self.m_button_allInOneAction, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+		wSizer_imageSeq.Add( self.m_button_allInOneAction, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+		self.m_staticText_null2ImageSeq = wx.StaticText( self.m_panel_imageSeq, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 50,-1 ), 0 )
+		self.m_staticText_null2ImageSeq.Wrap( -1 )
+
+		wSizer_imageSeq.Add( self.m_staticText_null2ImageSeq, 0, wx.ALL, 5 )
+
+		self.m_staticText_costTime = wx.StaticText( self.m_panel_imageSeq, wx.ID_ANY, u" 00:00.000", wx.DefaultPosition, wx.Size( 55,-1 ), 0 )
+		self.m_staticText_costTime.Wrap( -1 )
+
+		wSizer_imageSeq.Add( self.m_staticText_costTime, 0, wx.ALL, 5 )
+
+		self.m_gauge_action = wx.Gauge( self.m_panel_imageSeq, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size( 190,20 ), wx.GA_HORIZONTAL )
+		self.m_gauge_action.SetValue( 100 )
+		wSizer_imageSeq.Add( self.m_gauge_action, 0, wx.ALL, 5 )
 
 
-		bSizer_flash.Add( sbSizer_flash, 1, wx.EXPAND, 5 )
+		self.m_panel_imageSeq.SetSizer( wSizer_imageSeq )
+		self.m_panel_imageSeq.Layout()
+		wSizer_imageSeq.Fit( self.m_panel_imageSeq )
+		self.m_notebook_imageSeq.AddPage( self.m_panel_imageSeq, u"Image Booting Sequence", False )
+
+		bSizer_flash.Add( self.m_notebook_imageSeq, 1, wx.EXPAND |wx.ALL, 5 )
+
+		wSizer_logo = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+
+		self.m_staticText_null1Logo = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 180,-1 ), 0 )
+		self.m_staticText_null1Logo.Wrap( -1 )
+
+		wSizer_logo.Add( self.m_staticText_null1Logo, 0, wx.ALL, 5 )
+
+		self.m_bitmap_nxp = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 80,30 ), 0 )
+		wSizer_logo.Add( self.m_bitmap_nxp, 0, wx.ALL, 5 )
+
+
+		bSizer_flash.Add( wSizer_logo, 1, wx.EXPAND, 5 )
 
 
 		wSizer_func.Add( bSizer_flash, 1, wx.EXPAND, 5 )
-
-		wSizer_info = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
-
-		self.m_staticText_costTime = wx.StaticText( self, wx.ID_ANY, u" 00:00.000", wx.DefaultPosition, wx.Size( 55,-1 ), 0 )
-		self.m_staticText_costTime.Wrap( -1 )
-
-		wSizer_info.Add( self.m_staticText_costTime, 0, wx.ALL, 5 )
-
-		self.m_gauge_action = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size( 310,20 ), wx.GA_HORIZONTAL )
-		self.m_gauge_action.SetValue( 100 )
-		wSizer_info.Add( self.m_gauge_action, 0, wx.ALL, 5 )
-
-		self.m_bitmap_nxp = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 80,30 ), 0 )
-		wSizer_info.Add( self.m_bitmap_nxp, 0, wx.ALL, 5 )
-
-
-		wSizer_func.Add( wSizer_info, 1, wx.EXPAND, 5 )
 
 
 		bSizer_win.Add( wSizer_func, 1, wx.EXPAND, 5 )
@@ -167,6 +236,8 @@ class flashWin ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.callbackShowAboutAuthor, id = self.m_menuItem_aboutAuthor.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowRevisionHistory, id = self.m_menuItem_revisionHistory.GetId() )
 		self.m_choice_mcuDevice.Bind( wx.EVT_CHOICE, self.callbackSetMcuDevice )
+		self.m_radioBtn_uart.Bind( wx.EVT_RADIOBUTTON, self.callbackSetUartPort )
+		self.m_radioBtn_usbhid.Bind( wx.EVT_RADIOBUTTON, self.callbackSetUsbhidPort )
 		self.m_filePicker_appPath.Bind( wx.EVT_FILEPICKER_CHANGED, self.callbackChangedAppFile )
 		self.m_button_allInOneAction.Bind( wx.EVT_BUTTON, self.callbackAllInOneAction )
 
@@ -203,6 +274,12 @@ class flashWin ( wx.Frame ):
 		event.Skip()
 
 	def callbackSetMcuDevice( self, event ):
+		event.Skip()
+
+	def callbackSetUartPort( self, event ):
+		event.Skip()
+
+	def callbackSetUsbhidPort( self, event ):
 		event.Skip()
 
 	def callbackChangedAppFile( self, event ):

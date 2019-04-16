@@ -13,6 +13,8 @@ kMenuPosition_Tools    = 0x3
 kMenuPosition_Window   = 0x4
 kMenuPosition_Help     = 0x5
 
+kPanelIndex_ImageSeq   = 0x0
+
 kMainLanguageContentDict = {
         'menu_file':                          ['File',                                  u"文件"],
         'mItem_exit':                         ['Exit',                                  u"退出"],
@@ -31,9 +33,19 @@ kMainLanguageContentDict = {
         'mItem_aboutAuthor':                  ['About Author',                          u"关于作者"],
         'mItem_revisionHistory':              ['Revision History',                      u"版本历史"],
 
-        'sText_mcuDevice':                    ['i.MX RT Device:',                       u"i.MX RT型号："],
-        'sText_usbPort':                      ['Download Port:',                        u"下载端口："],
-        'sText_appPath':                      ['Application Image File(.sb):',          u"源应用程序镜像文件(.sb)："],
+        'panel_targetSetup':                  ['Target Setup',                          u"目标器件设置"],
+        'sText_mcuDevice':                    ['RT Device:',                            u"RT型号："],
+
+        'panel_portSetup':                    ['Port Setup',                            u"下载接口设置"],
+        'radioBtn_uart':                      ['UART',                                  u"串口"],
+        'radioBtn_usbhid':                    ['USB-HID',                               u"HID设备"],
+        'sText_comPort':                      ['COM Port:',                             u"端口号："],
+        'sText_baudrate':                     ['Baudrate:',                             u"波特率："],
+        'sText_vid':                          ['Vendor ID:',                            u"厂商识别号："],
+        'sText_pid':                          ['Product ID:',                           u"产品识别号："],
+
+        'panel_imageSeq':                     ['Image Booting Sequence',                u"启动程序"],
+        'sText_appPath':                      ['Application Image File(.sb):',          u"源应用程序文件(.sb)："],
         'button_allInOneAction':              ['All-In-One Action',                     u"一键下载"],
 
 }
