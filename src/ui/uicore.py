@@ -9,6 +9,7 @@ import time
 import math
 import pywinusb.hid
 import uidef
+import uilang
 sys.path.append(os.path.abspath(".."))
 from win import flashWin
 from run import rundef
@@ -34,6 +35,9 @@ class flashUi(flashWin.flashWin):
 
         self._initStatusBar()
         self.updateConnectStatus()
+        self.languageIndex = 0
+        self._initLanguage()
+        self.setLanguage()
         self.mcuDevice = None
         self.setTargetSetupValue()
         self.usbhidVid = None
@@ -177,6 +181,50 @@ class flashUi(flashWin.flashWin):
     def getUserAppFilePath( self ):
         appPath = self.m_filePicker_appPath.GetPath()
         self.sbAppPath = appPath.encode('utf-8').encode("gbk")
+
+    def _initLanguage( self ):
+        self.m_menuItem_english.Check(True)
+        self.m_menuItem_chinese.Check(False)
+
+    def _getLastLangIndex( self ):
+        label = self.m_staticText_mcuDevice.GetLabel()
+        labelList = uilang.kMainLanguageContentDict['sText_mcuDevice'][:]
+        for index in range(len(labelList)):
+            if label == labelList[index]:
+                return index
+        return 0
+
+    def setLanguage( self ):
+        isEnglishLanguage = self.m_menuItem_english.IsChecked()
+        lastIndex = self._getLastLangIndex()
+        langIndex = 0
+        if isEnglishLanguage:
+            langIndex = uilang.kLanguageIndex_English
+        else:
+            langIndex = uilang.kLanguageIndex_Chinese
+        self.languageIndex = langIndex
+        self.m_menubar.SetMenuLabel(uilang.kMenuPosition_File, uilang.kMainLanguageContentDict['menu_file'][langIndex])
+        self.m_menuItem_exit.SetItemLabel(uilang.kMainLanguageContentDict['mItem_exit'][langIndex])
+        self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Edit, uilang.kMainLanguageContentDict['menu_edit'][langIndex])
+        self.m_menubar.SetMenuLabel(uilang.kMenuPosition_View, uilang.kMainLanguageContentDict['menu_view'][langIndex])
+        # Hard way to set label for submenu
+        self.m_menu_view.SetLabel(self.m_menu_view.FindItem(uilang.kMainLanguageContentDict['subMenu_language'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_language'][langIndex])
+        self.m_menuItem_english.SetItemLabel(uilang.kMainLanguageContentDict['mItem_english'][langIndex])
+        self.m_menuItem_chinese.SetItemLabel(uilang.kMainLanguageContentDict['mItem_chinese'][langIndex])
+        self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Tools, uilang.kMainLanguageContentDict['menu_tools'][langIndex])
+        self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_usbDetection'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_usbDetection'][langIndex])
+        self.m_menuItem_usbDetectionAuto.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionAuto'][langIndex])
+        self.m_menuItem_usbDetectionStatic.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionStatic'][langIndex])
+        self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Window, uilang.kMainLanguageContentDict['menu_window'][langIndex])
+        self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Help, uilang.kMainLanguageContentDict['menu_help'][langIndex])
+        self.m_menuItem_homePage.SetItemLabel(uilang.kMainLanguageContentDict['mItem_homePage'][langIndex])
+        self.m_menuItem_aboutAuthor.SetItemLabel(uilang.kMainLanguageContentDict['mItem_aboutAuthor'][langIndex])
+        self.m_menuItem_revisionHistory.SetItemLabel(uilang.kMainLanguageContentDict['mItem_revisionHistory'][langIndex])
+
+        self.m_staticText_mcuDevice.SetLabel(uilang.kMainLanguageContentDict['sText_mcuDevice'][langIndex])
+        self.m_staticText_usbPort.SetLabel(uilang.kMainLanguageContentDict['sText_usbPort'][langIndex])
+        self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
+        self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction'][langIndex])
 
     def setCostTime( self, costTimeSec ):
         minValueStr = '00'

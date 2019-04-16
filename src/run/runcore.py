@@ -154,7 +154,7 @@ class flashRun(uicore.flashUi):
         if self.mcuDeviceHabStatus == rundef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == rundef.kHabStatus_Closed1:
             flashloaderBinFile = os.path.join(self.cpuDir, 'ivt_flashloader_signed.bin')
             if not os.path.isfile(flashloaderBinFile):
-                self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_notValidSignedFl'][0])
+                self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_notValidSignedFl'][self.languageIndex])
                 return False
         elif self.mcuDeviceHabStatus == rundef.kHabStatus_FAB or self.mcuDeviceHabStatus == rundef.kHabStatus_Open:
             flashloaderBinFile = os.path.join(self.cpuDir, 'ivt_flashloader.bin')
@@ -177,7 +177,7 @@ class flashRun(uicore.flashUi):
         if (status == boot.status.kStatus_Success) or (status == boot.status.kStatus_AbortDataPhase):
             return True
         else:
-            self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_failToDownload'][0])
+            self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_failToDownload'][self.languageIndex])
             return False
 
     def resetMcuDevice( self ):

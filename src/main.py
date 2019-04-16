@@ -87,11 +87,11 @@ class flashMain(runcore.flashRun):
                         self.setPortSetupValue(self.connectStage, usbIdList, True )
                     else:
                         self.updateConnectStatus('red')
-                        self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][0])
+                        self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][self.languageIndex])
                         return False
                 else:
                     self.updateConnectStatus('red')
-                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][0])
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
                     return False
             elif self.connectStage == uidef.kConnectStage_Flashloader:
                 self.connectToDevice(self.connectStage)
@@ -99,16 +99,16 @@ class flashMain(runcore.flashRun):
                     self.updateConnectStatus('green')
                     self.connectStage = uidef.kConnectStage_Ready
                 else:
-                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][0])
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][self.languageIndex])
                     self._connectFailureHandler()
                     return False
             elif self.connectStage == uidef.kConnectStage_Ready:
                 if connectSteps == 1:
-                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][0])
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][self.languageIndex])
                     return True
                 else:
                     if self._retryToPingBootloader(kBootloaderType_Flashloader):
-                        self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][0])
+                        self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][self.languageIndex])
                         return True
                     else:
                         self.connectStage = uidef.kConnectStage_Rom
@@ -130,12 +130,12 @@ class flashMain(runcore.flashRun):
             if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
                 if self.flashSbImage():
                     self.updateConnectStatus('blue')
-                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][0])
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
                 else:
                     self.updateConnectStatus('red')
             else:
                 self.updateConnectStatus('red')
-                self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][0])
+                self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][self.languageIndex])
 
     def callbackAllInOneAction( self, event ):
         self.isAllInOneActionTaskPending = True
@@ -160,26 +160,32 @@ class flashMain(runcore.flashRun):
     def callbackClose( self, event ):
         self._deinitToolToExit()
 
+    def callbackSetLanguageAsEnglish( self, event ):
+        self.setLanguage()
+
+    def callbackSetLanguageAsChinese( self, event ):
+        self.setLanguage()
+
     def callbackShowHomePage( self, event ):
-        msgText = ((uilang.kMsgLanguageContentDict['homePage_info'][0]))
-        wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['homePage_title'][0], wx.OK | wx.ICON_INFORMATION)
+        msgText = ((uilang.kMsgLanguageContentDict['homePage_info'][self.languageIndex]))
+        wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['homePage_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
     def callbackShowAboutAuthor( self, event ):
-        msgText = ((uilang.kMsgLanguageContentDict['aboutAuthor_author'][0]) +
-                   (uilang.kMsgLanguageContentDict['aboutAuthor_email1'][0]) +
-                   (uilang.kMsgLanguageContentDict['aboutAuthor_email2'][0]) +
-                   (uilang.kMsgLanguageContentDict['aboutAuthor_blog'][0]))
-        wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['aboutAuthor_title'][0], wx.OK | wx.ICON_INFORMATION)
+        msgText = ((uilang.kMsgLanguageContentDict['aboutAuthor_author'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['aboutAuthor_email1'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['aboutAuthor_email2'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['aboutAuthor_blog'][self.languageIndex]))
+        wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['aboutAuthor_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
     def callbackShowRevisionHistory( self, event ):
-        msgText = ((uilang.kMsgLanguageContentDict['revisionHistory_v1_0_0'][0]))
-        wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['revisionHistory_title'][0], wx.OK | wx.ICON_INFORMATION)
+        msgText = ((uilang.kMsgLanguageContentDict['revisionHistory_v1_0_0'][self.languageIndex]))
+        wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['revisionHistory_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
 if __name__ == '__main__':
     app = wx.App()
 
     g_main_win = flashMain(None)
-    g_main_win.SetTitle(u"RT Flash v0.2.0")
+    g_main_win.SetTitle(u"RT Flash v0.3.0")
     g_main_win.Show()
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)
