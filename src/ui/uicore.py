@@ -7,6 +7,7 @@ sys.setdefaultencoding('utf-8')
 import os
 import time
 import math
+import serial.tools.list_ports
 import pywinusb.hid
 import uidef
 import uilang
@@ -43,6 +44,10 @@ class flashUi(flashWin.flashWin):
         self.setUsbDetection()
         self.mcuDevice = None
         self.setTargetSetupValue()
+        self.isUartPortSelected = None
+        self.isUsbhidPortSelected = None
+        self.uartComPort = None
+        self.uartBaudrate = None
         self.usbhidVid = None
         self.usbhidPid = None
         self.isUsbhidConnected = False
@@ -74,12 +79,15 @@ class flashUi(flashWin.flashWin):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
 
     def _initPortSetupValue( self ):
+        self.m_radioBtn_uart.SetValue(False)
+        self.m_radioBtn_usbhid.SetValue(True)
         usbIdList = self.getUsbid()
         self.setPortSetupValue(uidef.kConnectStage_Rom, usbIdList)
 
     def task_doDetectUsbhid( self ):
         while True:
-            self._retryToDetectUsbhidDevice(False)
+            if self.isUsbhidPortSelected:
+                self._retryToDetectUsbhidDevice(False)
             time.sleep(1)
 
     def _retryToDetectUsbhidDevice( self, needToRetry = True ):
@@ -104,21 +112,61 @@ class flashUi(flashWin.flashWin):
             else:
                 usbVid[0] = 'N/A'
                 usbPid[0] = usbVid[0]
-        if self.usbhidVid != usbVid[0] or self.usbhidPid != usbPid[0]:
-            self.usbhidVid = usbVid[0]
-            self.usbhidPid = usbPid[0]
-            self.m_textCtrl_usbPort.Clear()
-            self.m_textCtrl_usbPort.write("USB-HID Device: " + self.usbhidVid + "," + self.usbhidPid)
+        if self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection()) != usbVid[0] or \
+           self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection()) != usbPid[0]:
+            self.m_choice_portVid.Clear()
+            self.m_choice_portVid.SetItems(usbVid)
+            self.m_choice_portVid.SetSelection(0)
+            self.m_choice_baudPid.Clear()
+            self.m_choice_baudPid.SetItems(usbPid)
+            self.m_choice_baudPid.SetSelection(0)
 
     def adjustPortSetupValue( self, connectStage=uidef.kConnectStage_Rom, usbIdList=[] ):
-        if connectStage == uidef.kConnectStage_Rom:
-            self.usbhidToConnect[0] = usbIdList[0]
-            self.usbhidToConnect[1] = usbIdList[1]
-            self._retryToDetectUsbhidDevice(False)
-        elif connectStage == uidef.kConnectStage_Flashloader:
-            self.usbhidToConnect[0] = usbIdList[2]
-            self.usbhidToConnect[1] = usbIdList[3]
-            self._retryToDetectUsbhidDevice(False)
+        self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
+        self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
+        if self.isUartPortSelected:
+            self.m_staticText_portVid.SetLabel(uilang.kMainLanguageContentDict['sText_comPort'][self.languageIndex])
+            self.m_staticText_baudPid.SetLabel(uilang.kMainLanguageContentDict['sText_baudrate'][self.languageIndex])
+            # Auto detect available ports
+            comports = list(serial.tools.list_ports.comports())
+            ports = [None] * len(comports)
+            for i in range(len(comports)):
+                comport = list(comports[i])
+                ports[i] = comport[0]
+            lastPort = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
+            lastBaud = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
+            self.m_choice_portVid.Clear()
+            self.m_choice_portVid.SetItems(ports)
+            if lastPort in ports:
+                self.m_choice_portVid.SetSelection(self.m_choice_portVid.FindString(lastPort))
+            else:
+                self.m_choice_portVid.SetSelection(0)
+            baudItems = ['115200']
+            if connectStage == uidef.kConnectStage_Rom:
+                baudItems = rundef.kUartSpeed_Sdphost
+            elif connectStage == uidef.kConnectStage_Flashloader:
+                baudItems = rundef.kUartSpeed_Blhost
+            else:
+                pass
+            self.m_choice_baudPid.Clear()
+            self.m_choice_baudPid.SetItems(baudItems)
+            if lastBaud in baudItems:
+                self.m_choice_baudPid.SetSelection(self.m_choice_baudPid.FindString(lastBaud))
+            else:
+                self.m_choice_baudPid.SetSelection(0)
+        elif self.isUsbhidPortSelected:
+            self.m_staticText_portVid.SetLabel(uilang.kMainLanguageContentDict['sText_vid'][self.languageIndex])
+            self.m_staticText_baudPid.SetLabel(uilang.kMainLanguageContentDict['sText_pid'][self.languageIndex])
+            if connectStage == uidef.kConnectStage_Rom:
+                self.usbhidToConnect[0] = usbIdList[0]
+                self.usbhidToConnect[1] = usbIdList[1]
+                self._retryToDetectUsbhidDevice(False)
+            elif connectStage == uidef.kConnectStage_Flashloader:
+                self.usbhidToConnect[0] = usbIdList[2]
+                self.usbhidToConnect[1] = usbIdList[3]
+                self._retryToDetectUsbhidDevice(False)
+            else:
+                pass
         else:
             pass
 
@@ -128,10 +176,24 @@ class flashUi(flashWin.flashWin):
 
     def updatePortSetupValue( self, retryToDetectUsb=False ):
         status = True
-        if not self.isUsbhidConnected:
-            self._retryToDetectUsbhidDevice(retryToDetectUsb)
-            if not self.isUsbhidConnected:
-                status = False
+        self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
+        self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
+        if self.isUartPortSelected:
+            self.uartComPort = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
+            self.uartBaudrate = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
+        elif self.isUsbhidPortSelected:
+            if self.isUsbhidConnected:
+                self.usbhidVid = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
+                self.usbhidPid = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
+            else:
+                self._retryToDetectUsbhidDevice(retryToDetectUsb)
+                if not self.isUsbhidConnected:
+                    status = False
+                else:
+                    self.usbhidVid = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
+                    self.usbhidPid = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
+        else:
+            pass
         return status
 
     def updateConnectStatus( self, color='black' ):

@@ -80,22 +80,40 @@ class flashRun(uicore.flashUi):
         if connectStage == uidef.kConnectStage_Rom:
             # Create the target object.
             self.createMcuTarget()
-            sdpPeripheral = 'sdp_usb'
-            uartComPort = ''
-            uartBaudrate = ''
-            usbVid = self.tgt.romUsbVid
-            usbPid = self.tgt.romUsbPid
+            if self.isUartPortSelected:
+                sdpPeripheral = 'sdp_uart'
+                uartComPort = self.uartComPort
+                uartBaudrate = int(self.uartBaudrate)
+                usbVid = ''
+                usbPid = ''
+            elif self.isUsbhidPortSelected:
+                sdpPeripheral = 'sdp_usb'
+                uartComPort = ''
+                uartBaudrate = ''
+                usbVid = self.tgt.romUsbVid
+                usbPid = self.tgt.romUsbPid
+            else:
+                pass
             self.sdphost = bltest.createBootloader(self.tgt,
                                                    self.sdphostVectorsDir,
                                                    sdpPeripheral,
                                                    uartBaudrate, uartComPort,
                                                    usbVid, usbPid)
         elif connectStage == uidef.kConnectStage_Flashloader:
-            blPeripheral = 'usb'
-            uartComPort = ''
-            uartBaudrate = ''
-            usbVid = self.tgt.flashloaderUsbVid
-            usbPid = self.tgt.flashloaderUsbPid
+            if self.isUartPortSelected:
+                blPeripheral = 'uart'
+                uartComPort = self.uartComPort
+                uartBaudrate = int(self.uartBaudrate)
+                usbVid = ''
+                usbPid = ''
+            elif self.isUsbhidPortSelected:
+                blPeripheral = 'usb'
+                uartComPort = ''
+                uartBaudrate = ''
+                usbVid = self.tgt.flashloaderUsbVid
+                usbPid = self.tgt.flashloaderUsbPid
+            else:
+                pass
             self.blhost = bltest.createBootloader(self.tgt,
                                                   self.blhostVectorsDir,
                                                   blPeripheral,

@@ -85,7 +85,7 @@ kMsgLanguageContentDict = {
 
         'downloadError_notValidImage':        ['Please select one application image file (.sb )!',
                                               u"请先选择一个.sb文件！"],
-        'downloadError_failToDownload':       ['Failded to download application image file (.sb )!',
+        'downloadError_failToDownload':       ['Failed to download application image file (.sb )!',
                                               u"未能成功下载.sb文件！"],
         'downloadInfo_success':               ['Application image file (.sb ) has been downloaded successfully!',
                                               u".sb文件已被成功下载！"],

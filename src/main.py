@@ -40,12 +40,18 @@ class flashMain(runcore.flashRun):
     def callbackSetMcuDevice( self, event ):
         self.setTargetSetupValue()
         self.createMcuTarget()
-        self._setUsbPort()
+        self._setUartUsbPort()
 
-    def _setUsbPort( self ):
+    def _setUartUsbPort( self ):
         usbIdList = self.getUsbid()
         retryToDetectUsb = False
         self.setPortSetupValue(self.connectStage, usbIdList, retryToDetectUsb )
+
+    def callbackSetUartPort( self, event ):
+        self._setUartUsbPort()
+
+    def callbackSetUsbhidPort( self, event ):
+        self._setUartUsbPort()
 
     def _retryToPingBootloader( self, bootType ):
         pingStatus = False

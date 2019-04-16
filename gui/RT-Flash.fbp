@@ -45,7 +45,7 @@
             <property name="minimum_size"></property>
             <property name="name">flashWin</property>
             <property name="pos"></property>
-            <property name="size">513,291</property>
+            <property name="size">513,300</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">RT Flash</property>
