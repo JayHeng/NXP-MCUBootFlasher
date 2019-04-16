@@ -76,10 +76,12 @@ kMsgLanguageContentDict = {
                                               u"MCU已进入ROM SDP模式，但未能跳转Flashloader，请复位板子再试！"],
         'connectError_notValidSignedFl':      ['Signed flashloader(ivt_flashloader_signed.bin) is not found!',
                                               u"没有找到签名的Flashloader文件(ivt_flashloader_signed.bin)！"],
-        'connectError_doubleCheckBmod':       ['Put MCU in SDP mode (BMOD[1:0] pins = 2\'b01), Reset board and try again!',
+        'connectError_doubleCheckBmod':       ['Put MCU in SDP mode (BMOD[1:0] = 2\'b01), Reset board and try again!',
                                               u"将BMOD[1:0]引脚状态设置为2\'b01，然后复位板子再试！"],
         'connectError_failToPingFl':          ['Failed to ping Flashloader, Reset board and try again!',
                                               u"MCU未能与Flashloader建立连接，请复位板子再试！"],
+        'connectError_checkUsbCable':         ['Disconnected, Check USB Cable then reset board and try again!',
+                                              u"未连接，检查USB线后复位板子再试！"],
         'connectInfo_readyForDownload':       ['Connected, Ready for downloading!',
                                               u"已连接，可以进行下载操作！"],
 

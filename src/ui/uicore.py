@@ -57,7 +57,7 @@ class flashUi(flashWin.flashWin):
 
     def _initStatusBar( self ):
         self.m_statusBar.SetFieldsCount(2)
-        self.m_statusBar.SetStatusWidths([150, 350])
+        self.m_statusBar.SetStatusWidths([130, 370])
         self.setHabStatus(u"N/A")
         self.setInfoStatus('N/A')
 
@@ -65,7 +65,6 @@ class flashUi(flashWin.flashWin):
         self.m_statusBar.SetStatusText(u"【HAB Status: " + habStatus + "】", 0)
 
     def setInfoStatus( self, infoStatus ):
-        infoStatus = 'Info: ' + infoStatus
         self.m_statusBar.SetStatusText(infoStatus.encode('utf-8'), 1)
 
     def _initUsbDetection( self ):
