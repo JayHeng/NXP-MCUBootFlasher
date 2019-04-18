@@ -46,6 +46,7 @@ kMainLanguageContentDict = {
         'panel_download':                     ['Download',                              u"下载"],
         'sText_appPath':                      ['Application Image File (.sb):',         u"源应用程序文件(.sb)："],
         'button_allInOneAction_black':        ['Start',                                 u"开始"],
+        'button_allInOneAction_yellow':       ['Disconnected',                          u"断开"],
         'button_allInOneAction_green':        ['Ready',                                 u"就绪"],
         'button_allInOneAction_blue':         ['Success',                               u"成功"],
         'button_allInOneAction_red':          ['Failure',                               u"失败"],

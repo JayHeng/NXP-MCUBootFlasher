@@ -105,6 +105,8 @@ class flashUi(flashWin.flashWin):
             hidDevice = hidFilter.get_devices()
             if (not self.isAutoUsbDetection) or (len(hidDevice) > 0):
                 self.isUsbhidConnected = True
+                if self.connectStatusColor == 'yellow':
+                    self.updateConnectStatus('black')
                 usbVid[0] = self.usbhidToConnect[0]
                 usbPid[0] = self.usbhidToConnect[1]
                 break
@@ -114,6 +116,8 @@ class flashUi(flashWin.flashWin):
             else:
                 usbVid[0] = 'N/A'
                 usbPid[0] = usbVid[0]
+        if not self.isUsbhidConnected:
+            self.updateConnectStatus('yellow')
         if self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection()) != usbVid[0] or \
            self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection()) != usbPid[0]:
             self.m_choice_portVid.Clear()
@@ -204,6 +208,7 @@ class flashUi(flashWin.flashWin):
             self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_black'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
         elif color == 'yellow':
+            self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_yellow'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0xff, 0xff, 0x80 ) )
         elif color == 'green':
             self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_green'][self.languageIndex])

@@ -79,17 +79,21 @@ class flashMain(runcore.flashRun):
     def _connectStateMachine( self ):
         retryToDetectUsb = False
         connectSteps = 3
+        isConnectionFailureOnce = False
         while connectSteps:
             if not self.updatePortSetupValue(retryToDetectUsb):
                 self._connectFailureHandler()
-                return False
+                if not isConnectionFailureOnce:
+                    isConnectionFailureOnce = True
+                    continue
+                else:
+                    return False
             if self.connectStage == uidef.kConnectStage_Rom:
                 self.connectToDevice(self.connectStage)
                 if self._retryToPingBootloader(kBootloaderType_Rom):
                     self.getMcuDeviceHabStatus()
                     if self.jumpToFlashloader():
                         self.connectStage = uidef.kConnectStage_Flashloader
-                        self.updateConnectStatus('yellow')
                         usbIdList = self.getUsbid()
                         self.setPortSetupValue(self.connectStage, usbIdList, True )
                     else:
