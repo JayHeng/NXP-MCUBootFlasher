@@ -13,7 +13,7 @@ kMenuPosition_Tools    = 0x3
 kMenuPosition_Window   = 0x4
 kMenuPosition_Help     = 0x5
 
-kPanelIndex_ImageSeq   = 0x0
+kPanelIndex_Download   = 0x0
 
 kMainLanguageContentDict = {
         'menu_file':                          ['File',                                  u"文件"],
@@ -33,10 +33,9 @@ kMainLanguageContentDict = {
         'mItem_aboutAuthor':                  ['About Author',                          u"关于作者"],
         'mItem_revisionHistory':              ['Revision History',                      u"版本历史"],
 
-        'panel_targetSetup':                  ['Target Setup',                          u"目标器件设置"],
+        'panel_setup':                        ['Setup',                                 u"设置"],
         'sText_mcuDevice':                    ['RT Device:',                            u"RT型号："],
-
-        'panel_portSetup':                    ['Port Setup',                            u"下载接口设置"],
+        'sText_serialPort':                   ['Serial Port:',                          u"串行接口："],
         'radioBtn_uart':                      ['UART',                                  u"串口"],
         'radioBtn_usbhid':                    ['USB-HID',                               u"HID设备"],
         'sText_comPort':                      ['COM Port:',                             u"端口号："],
@@ -44,20 +43,23 @@ kMainLanguageContentDict = {
         'sText_vid':                          ['Vendor ID:',                            u"厂商识别号："],
         'sText_pid':                          ['Product ID:',                           u"产品识别号："],
 
-        'panel_imageSeq':                     ['Image Booting Sequence',                u"启动程序"],
-        'sText_appPath':                      ['Application Image File(.sb):',          u"源应用程序文件(.sb)："],
-        'button_allInOneAction':              ['All-In-One Action',                     u"一键下载"],
+        'panel_download':                     ['Download',                              u"下载"],
+        'sText_appPath':                      ['Application Image File (.sb):',         u"源应用程序文件(.sb)："],
+        'button_allInOneAction_black':        ['Start',                                 u"开始"],
+        'button_allInOneAction_green':        ['Ready',                                 u"就绪"],
+        'button_allInOneAction_blue':         ['Success',                               u"成功"],
+        'button_allInOneAction_red':          ['Failure',                               u"失败"],
 
 }
 
 kRevision_1_0_0_en =  "【v1.0.0】 \n" + \
                       "  Feature: \n" + \
-                      "     1. Support i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP \n" + \
+                      "     1. Support i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP \n" + \
                       "     2. Support both UART and USB-HID serial downloader modes \n" + \
                       "     3. Support for loading .sb image file into boot device \n\n"
 kRevision_1_0_0_zh = u"【v1.0.0】 \n" + \
                      u"  特性: \n" + \
-                     u"     1. 支持i.MXRT全系列MCU，包含i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP \n" + \
+                     u"     1. 支持i.MXRT全系列MCU，包含i.MXRT1015、i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP \n" + \
                      u"     2. 支持UART和USB-HID两种串行下载方式（COM端口/USB设备自动识别） \n" + \
                      u"     3. 支持下载.sb格式的image文件进启动设备 \n\n"
 

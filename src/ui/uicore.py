@@ -35,10 +35,10 @@ class flashUi(flashWin.flashWin):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
         self._initStatusBar()
-        self.updateConnectStatus()
         self.languageIndex = 0
         self._initLanguage()
         self.setLanguage()
+        self.updateConnectStatus()
         self.isAutoUsbDetection = None
         self._initUsbDetection()
         self.setUsbDetection()
@@ -197,14 +197,18 @@ class flashUi(flashWin.flashWin):
 
     def updateConnectStatus( self, color='black' ):
         if color == 'black':
+            self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_black'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
         elif color == 'yellow':
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0xff, 0xff, 0x80 ) )
         elif color == 'green':
+            self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_green'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0x80, 0xff, 0x80 ) )
         elif color == 'blue':
+            self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_blue'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0x00, 0x80, 0xff ) )
         elif color == 'red':
+            self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_red'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0xff, 0x80, 0x80 ) )
         else:
             pass
@@ -292,16 +296,14 @@ class flashUi(flashWin.flashWin):
         self.m_menuItem_aboutAuthor.SetItemLabel(uilang.kMainLanguageContentDict['mItem_aboutAuthor'][langIndex])
         self.m_menuItem_revisionHistory.SetItemLabel(uilang.kMainLanguageContentDict['mItem_revisionHistory'][langIndex])
 
-        self.m_notebook_targetSetup.SetPageText(0, uilang.kMainLanguageContentDict['panel_targetSetup'][langIndex])
+        self.m_notebook_setup.SetPageText(0, uilang.kMainLanguageContentDict['panel_setup'][langIndex])
         self.m_staticText_mcuDevice.SetLabel(uilang.kMainLanguageContentDict['sText_mcuDevice'][langIndex])
-
-        self.m_notebook_portSetup.SetPageText(0, uilang.kMainLanguageContentDict['panel_portSetup'][langIndex])
+        self.m_staticText_serialPort.SetLabel(uilang.kMainLanguageContentDict['sText_serialPort'][langIndex])
         self.m_radioBtn_uart.SetLabel(uilang.kMainLanguageContentDict['radioBtn_uart'][langIndex])
         self.m_radioBtn_usbhid.SetLabel(uilang.kMainLanguageContentDict['radioBtn_usbhid'][langIndex])
 
-        self.m_notebook_imageSeq.SetPageText(uilang.kPanelIndex_ImageSeq, uilang.kMainLanguageContentDict['panel_imageSeq'][langIndex])
+        self.m_notebook_download.SetPageText(uilang.kPanelIndex_Download, uilang.kMainLanguageContentDict['panel_download'][langIndex])
         self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
-        self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction'][langIndex])
 
     def setCostTime( self, costTimeSec ):
         minValueStr = '00'
