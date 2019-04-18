@@ -10,7 +10,7 @@ English | [中文](./README-zh.md)
 
 > * The .sb file can only be specified in xml file;  
 > * USB port is the only choice to download .sb file;  
-> * Sometimes USB Hub connection is not appliable;  
+> * Sometimes USB Hub is required to connect;  
 
 　　With RT-Flash, you can easily get started with NXP MCU secure boot. The main features of RT-Flash include：  
 
@@ -48,14 +48,13 @@ English | [中文](./README-zh.md)
                       \sdphost            -- Host command line tool to communicate with ROM
 ```
 #### 1.5 Interface
-　　The following figure shows the main interface of the RT-Flash tool. The interface consists of five parts. The functions of each part are as follows:  
+　　The following figure shows the main interface of the RT-Flash tool. The interface consists of four parts. The functions of each part are as follows:  
 
-![RT-Flash_mainWin_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_mainWin_e.png)
+![RT-Flash_mainWin_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_mainWin_ee.png)
 
 > * [Menu Bar]: Functional menu bar, providing general software settings.  
-> * [Target Setup]: Target device setting bar, providing MCU Device options.  
-> * [Port Setup]: In the serial interface setting field, select the interface for connecting to the MCU Device.  
-> * [Boot Action]: Boot main interface, providing all-in-one operation.  
+> * [Setup Window]: Target device setting bar, providing MCU Device options, serial interface options.  
+> * [Download Window]: Boot main interface, providing all-in-one operation.  
 > * [Status Bar]: Status bar, showing runtime infomation  
 
 ### 2 Preparation
@@ -68,19 +67,29 @@ English | [中文](./README-zh.md)
 #### 3.1 Setting target chip
 　　When using RT-Flash, you need to configure the target device. The target device includes MCU Device. Taking the NXP official development board EVK-MIMXRT1060 as an example, the main chip of the development board is i.MXRT1062DVL6A, so [RT Device] should be set to i.MXRT106x.  
 
-![RT-Flash_setMcuDevice_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setMcuDevice_e.png)
+![RT-Flash_setMcuDevice_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setMcuDevice_rt1060_e.png)
 
 #### 3.2 Setting download port
 　　After setting up the target device, the next step is to connect the target device. Taking the USB-HID interface as an example, supply power to the EVK-MIMXRT1060 board, and connect the PC to the J9 port with USB Cable. If everything is going well, you can find new HID device (vid=0x1fc9, pid=0x0135) named HID-compliant vendor-defined device is enumerated. If the HID device is not found, please check the board SW7 DIP switch to set Boot Mode to 2'b01(Serial Downloader mode).  
 
 ![NXP-MCUBootUtility_usbhidDetected_e](http://henjay724.com/image/cnblogs/nxpSecBoot_usbhidDetected_e.png)
 
-　　After confirming the existence of the HID device, select USB-HID in [Port Setup].  
+　　After confirming the existence of the HID device, select USB-HID.  
 
-![RT-Flash_setPort_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setPort_e.png)
+![RT-Flash_setPort_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setPort_usb_e.png)
 
-#### 3.3 Clicking All-In-One Action
-　　At first, you should select your .sb file, then just click [All-In-One Action] button, if the .sb file has been downloaded successfully, the background color of [All-In-One Action] button will turn blue.  
+#### 3.3 Clicking [Start] Button
+　　At first, you should select your .sb file, then just click [Start] button, if the .sb file has been downloaded successfully, the background color of [Start] button will turn blue and the label will be updated to 'success'.  
 
-![RT-Flash_downloadSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_downloadSb_e.png)
+![RT-Flash_downloadSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_downloadSb_success_e.png)
+
+#### 3.4 When HAB is closed
+　　When HAB is closed, the you need to put signed flashloader file into RT-Flash folder，and the signed flashloader file must be named ivt_flashloader_signed.bin.  
+
+![RT-Flash_signedFlashloader_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_signedFlashloader.PNG)
+
+　　Besides, you should make sure below two variables in bltargetconfig.py are aligned with signed flashloader。  
+
+![RT-Flash_signedFlashloader_address_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_signedFlashloader_address_e.png)
+
 
