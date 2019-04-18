@@ -34,6 +34,11 @@ class flashUi(flashWin.flashWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
+        self.connectStatusColor = None
+
+        self.isUartPortSelected = None
+        self.isUsbhidPortSelected = None
+
         self._initStatusBar()
         self.languageIndex = 0
         self._initLanguage()
@@ -44,8 +49,6 @@ class flashUi(flashWin.flashWin):
         self.setUsbDetection()
         self.mcuDevice = None
         self.setTargetSetupValue()
-        self.isUartPortSelected = None
-        self.isUsbhidPortSelected = None
         self.uartComPort = None
         self.uartBaudrate = None
         self.usbhidVid = None
@@ -196,6 +199,7 @@ class flashUi(flashWin.flashWin):
         return status
 
     def updateConnectStatus( self, color='black' ):
+        self.connectStatusColor = color
         if color == 'black':
             self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_black'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
@@ -301,9 +305,19 @@ class flashUi(flashWin.flashWin):
         self.m_staticText_serialPort.SetLabel(uilang.kMainLanguageContentDict['sText_serialPort'][langIndex])
         self.m_radioBtn_uart.SetLabel(uilang.kMainLanguageContentDict['radioBtn_uart'][langIndex])
         self.m_radioBtn_usbhid.SetLabel(uilang.kMainLanguageContentDict['radioBtn_usbhid'][langIndex])
+        if self.isUartPortSelected != None and self.isUartPortSelected:
+            self.m_staticText_portVid.SetLabel(uilang.kMainLanguageContentDict['sText_comPort'][langIndex])
+            self.m_staticText_baudPid.SetLabel(uilang.kMainLanguageContentDict['sText_baudrate'][langIndex])
+        elif self.isUsbhidPortSelected != None and self.isUsbhidPortSelected:
+            self.m_staticText_portVid.SetLabel(uilang.kMainLanguageContentDict['sText_vid'][langIndex])
+            self.m_staticText_baudPid.SetLabel(uilang.kMainLanguageContentDict['sText_pid'][langIndex])
+        else:
+            pass
 
         self.m_notebook_download.SetPageText(uilang.kPanelIndex_Download, uilang.kMainLanguageContentDict['panel_download'][langIndex])
         self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
+        if self.connectStatusColor != None:
+            self.updateConnectStatus(self.connectStatusColor)
 
     def setCostTime( self, costTimeSec ):
         minValueStr = '00'
