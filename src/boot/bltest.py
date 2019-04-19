@@ -254,12 +254,33 @@ class Bootloader(object):
         self.timeout = long(timeout)
 
     ##
+    # @brief set max timeout for waiting results from blhost
+    #
+    def _setMaxTimeout(self, args):
+        timeout = 0
+        if 'receive-sb-file' in args:
+            timeout = 10000 # don't know what is in SB file, so give it a long time
+        elif self.fileLength > 0:
+            # Assume target takes 10ms to program one page (128B), max memory size is 512Mb
+            timeout = (512 * 1024 * 1024 / 1024) * 0.01
+        elif self.eraseLength > 0:
+            # Assume target takes 1s to erase one block (32KB), max memory size is 512Mb
+            timeout = (512 * 1024 / 256) * 1
+        else:  # for other commands, 10 seconds timeout is enough
+            timeout = 50 # default timeout value : 50 seconds
+
+        self.fileLength = 0
+        self.eraseLength = 0
+
+        self.timeout = long(timeout)
+
+    ##
     # @brief Generate computed timeout arguments for the host tool.
     #
     # @param args List of bootloader command arguments.
     # @return List of arguments to set the timeout appropriate for the bootloader command.
     def _getTimeoutArgument(self, args):
-        self._setTimeoutAutomatically(args)
+        self._setMaxTimeout(args)
         argsList = ['-t', str(int(self.timeout * 1000))]
         return argsList
 
