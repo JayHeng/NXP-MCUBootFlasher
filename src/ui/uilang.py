@@ -25,7 +25,7 @@ kMainLanguageContentDict = {
         'mItem_chinese':                      ['Chinese',                               u"简体中文"],
         'menu_tools':                         ['Tools',                                 u"工具"],
         'subMenu_usbDetection':               ['USB Detection',                         u"USB识别模式"],
-        'mItem_usbDetectionAuto':             ['Auto',                                  u"动态"],
+        'mItem_usbDetectionDynamic':          ['Dynamic',                               u"动态"],
         'mItem_usbDetectionStatic':           ['Static',                                u"静态"],
         'menu_window':                        ['Window',                                u"界面"],
         'menu_help':                          ['Help',                                  u"帮助"],

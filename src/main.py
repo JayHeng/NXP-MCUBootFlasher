@@ -171,7 +171,7 @@ class flashMain(runcore.flashRun):
     def callbackClose( self, event ):
         self._deinitToolToExit()
 
-    def callbackSetUsbDetectionAsAuto( self, event ):
+    def callbackSetUsbDetectionAsDynamic( self, event ):
         self.setUsbDetection()
 
     def callbackSetUsbDetectionAsStatic( self, event ):

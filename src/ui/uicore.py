@@ -44,7 +44,7 @@ class flashUi(flashWin.flashWin):
         self._initLanguage()
         self.setLanguage()
         self.updateConnectStatus()
-        self.isAutoUsbDetection = None
+        self.isDymaticUsbDetection = None
         self._initUsbDetection()
         self.setUsbDetection()
         self.mcuDevice = None
@@ -71,11 +71,11 @@ class flashUi(flashWin.flashWin):
         self.m_statusBar.SetStatusText(infoStatus.encode('utf-8'), 1)
 
     def _initUsbDetection( self ):
-        self.m_menuItem_usbDetectionAuto.Check(True)
+        self.m_menuItem_usbDetectionDynamic.Check(True)
         self.m_menuItem_usbDetectionStatic.Check(False)
 
     def setUsbDetection( self ):
-        self.isAutoUsbDetection = self.m_menuItem_usbDetectionAuto.IsChecked()
+        self.isDymaticUsbDetection = self.m_menuItem_usbDetectionDynamic.IsChecked()
 
     def setTargetSetupValue( self ):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
@@ -103,7 +103,7 @@ class flashUi(flashWin.flashWin):
             # Auto detect USB-HID device
             hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[0], 16), product_id = int(self.usbhidToConnect[1], 16))
             hidDevice = hidFilter.get_devices()
-            if (not self.isAutoUsbDetection) or (len(hidDevice) > 0):
+            if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
                 self.isUsbhidConnected = True
                 if self.connectStatusColor == 'yellow':
                     self.updateConnectStatus('black')
@@ -297,7 +297,7 @@ class flashUi(flashWin.flashWin):
         self.m_menuItem_chinese.SetItemLabel(uilang.kMainLanguageContentDict['mItem_chinese'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Tools, uilang.kMainLanguageContentDict['menu_tools'][langIndex])
         self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_usbDetection'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_usbDetection'][langIndex])
-        self.m_menuItem_usbDetectionAuto.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionAuto'][langIndex])
+        self.m_menuItem_usbDetectionDynamic.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionDynamic'][langIndex])
         self.m_menuItem_usbDetectionStatic.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionStatic'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Window, uilang.kMainLanguageContentDict['menu_window'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Help, uilang.kMainLanguageContentDict['menu_help'][langIndex])
