@@ -20,9 +20,6 @@ kMainLanguageContentDict = {
         'mItem_exit':                         ['Exit',                                  u"退出"],
         'menu_edit':                          ['Edit',                                  u"编辑"],
         'menu_view':                          ['View',                                  u"查看"],
-        'subMenu_language':                   ['Language',                              u"语言"],
-        'mItem_english':                      ['English',                               u"英文"],
-        'mItem_chinese':                      ['Chinese',                               u"简体中文"],
         'menu_tools':                         ['Tools',                                 u"工具"],
         'subMenu_usbDetection':               ['USB Detection',                         u"USB识别模式"],
         'mItem_usbDetectionDynamic':          ['Dynamic',                               u"动态"],
@@ -63,10 +60,14 @@ kRevision_1_0_0_zh = u"【v1.0.0】 \n" + \
                      u"     1. 支持i.MXRT全系列MCU，包含i.MXRT1015、i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP \n" + \
                      u"     2. 支持UART和USB-HID两种串行下载方式（COM端口/USB设备自动识别） \n" + \
                      u"     3. 支持下载.sb格式的image文件进启动设备 \n\n"
-kRevision_1_0_1_en =  "【v1.0.1】 \n" + \
+kRevision_1_1_0_en =  "【v1.1.0】 \n" + \
+                      "  Improvement: \n" + \
+                      "     1. The text of language option in menu bar should be static and easy understanding \n" + \
                       "  Bug: \n" + \
                       "     1. Cannot download large image file (eg 6.8MB) in some case \n\n"
-kRevision_1_0_1_zh = u"【v1.0.1】 \n" + \
+kRevision_1_1_0_zh = u"【v1.1.0】 \n" + \
+                     u"  改进: \n" + \
+                     u"     1. 菜单栏里的语言选项标签应该是静态且易于理解的(中英双语同时显示) \n" + \
                      u"  缺陷: \n" + \
                      u"     1. 当输入的源image文件非常大时(比如6.8MB)，下载可能会超时失败 \n\n"
 
@@ -80,7 +81,7 @@ kMsgLanguageContentDict = {
         'aboutAuthor_blog':                   [u"Blog:      痞子衡嵌入式 https://www.cnblogs.com/henjay724/ \n",                   u"博客：痞子衡嵌入式 https://www.cnblogs.com/henjay724/ \n"],
         'revisionHistory_title':              ['Revision History',                      u"版本历史"],
         'revisionHistory_v1_0_0':             [kRevision_1_0_0_en,                      kRevision_1_0_0_zh],
-        'revisionHistory_v1_0_1':             [kRevision_1_0_1_en,                      kRevision_1_0_1_zh],
+        'revisionHistory_v1_1_0':             [kRevision_1_1_0_en,                      kRevision_1_1_0_zh],
 
         'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!',
                                               u"MCU已进入ROM SDP模式，但未能跳转Flashloader，请复位板子再试！"],

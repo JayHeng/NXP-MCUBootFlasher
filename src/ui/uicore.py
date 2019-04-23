@@ -292,9 +292,6 @@ class flashUi(flashWin.flashWin):
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Edit, uilang.kMainLanguageContentDict['menu_edit'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_View, uilang.kMainLanguageContentDict['menu_view'][langIndex])
         # Hard way to set label for submenu
-        self.m_menu_view.SetLabel(self.m_menu_view.FindItem(uilang.kMainLanguageContentDict['subMenu_language'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_language'][langIndex])
-        self.m_menuItem_english.SetItemLabel(uilang.kMainLanguageContentDict['mItem_english'][langIndex])
-        self.m_menuItem_chinese.SetItemLabel(uilang.kMainLanguageContentDict['mItem_chinese'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Tools, uilang.kMainLanguageContentDict['menu_tools'][langIndex])
         self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_usbDetection'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_usbDetection'][langIndex])
         self.m_menuItem_usbDetectionDynamic.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionDynamic'][langIndex])

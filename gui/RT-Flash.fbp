@@ -185,7 +185,7 @@
                     <property name="permission">protected</property>
                     <object class="submenu" expanded="0">
                         <property name="bitmap"></property>
-                        <property name="label">Language</property>
+                        <property name="label">Language/语言</property>
                         <property name="name">m_menu_language</property>
                         <property name="permission">protected</property>
                         <object class="wxMenuItem" expanded="0">
@@ -195,7 +195,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_RADIO</property>
-                            <property name="label">English</property>
+                            <property name="label">EN - English</property>
                             <property name="name">m_menuItem_english</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -210,7 +210,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_RADIO</property>
-                            <property name="label">Chinese</property>
+                            <property name="label">ZH - 简体中文</property>
                             <property name="name">m_menuItem_chinese</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>

@@ -35,13 +35,13 @@ class flashWin ( wx.Frame ):
 
 		self.m_menu_view = wx.Menu()
 		self.m_menu_language = wx.Menu()
-		self.m_menuItem_english = wx.MenuItem( self.m_menu_language, wx.ID_ANY, u"English", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menuItem_english = wx.MenuItem( self.m_menu_language, wx.ID_ANY, u"EN - English", wx.EmptyString, wx.ITEM_RADIO )
 		self.m_menu_language.Append( self.m_menuItem_english )
 
-		self.m_menuItem_chinese = wx.MenuItem( self.m_menu_language, wx.ID_ANY, u"Chinese", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menuItem_chinese = wx.MenuItem( self.m_menu_language, wx.ID_ANY, u"ZH - 简体中文", wx.EmptyString, wx.ITEM_RADIO )
 		self.m_menu_language.Append( self.m_menuItem_chinese )
 
-		self.m_menu_view.AppendSubMenu( self.m_menu_language, u"Language" )
+		self.m_menu_view.AppendSubMenu( self.m_menu_language, u"Language/语言" )
 
 		self.m_menubar.Append( self.m_menu_view, u"View" )
 
