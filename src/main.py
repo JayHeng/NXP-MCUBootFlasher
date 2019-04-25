@@ -42,6 +42,12 @@ class flashMain(runcore.flashRun):
         self.createMcuTarget()
         self._setUartUsbPort()
 
+    def callbackSetConnectedBoards( self, event ):
+        pass
+
+    def callbackSwitchSerialPortIndex( self, event ):
+        pass
+
     def _setUartUsbPort( self ):
         usbIdList = self.getUsbid()
         retryToDetectUsb = False

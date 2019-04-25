@@ -304,7 +304,10 @@ class flashUi(flashWin.flashWin):
 
         self.m_notebook_setup.SetPageText(0, uilang.kMainLanguageContentDict['panel_setup'][langIndex])
         self.m_staticText_mcuDevice.SetLabel(uilang.kMainLanguageContentDict['sText_mcuDevice'][langIndex])
-        self.m_staticText_serialPort.SetLabel(uilang.kMainLanguageContentDict['sText_serialPort'][langIndex])
+        self.m_staticText_mcuBoard.SetLabel(uilang.kMainLanguageContentDict['sText_mcuBoard'][langIndex])
+        self.m_staticText_connectedBoards.SetLabel(uilang.kMainLanguageContentDict['sText_connectedBoards'][langIndex])
+        self.m_staticText_detectedBoards.SetLabel(uilang.kMainLanguageContentDict['sText_detectedBoards'][langIndex])
+        self.m_staticText_serialPortIndex.SetLabel(uilang.kMainLanguageContentDict['sText_serialPortIndex'][langIndex])
         self.m_radioBtn_uart.SetLabel(uilang.kMainLanguageContentDict['radioBtn_uart'][langIndex])
         self.m_radioBtn_usbhid.SetLabel(uilang.kMainLanguageContentDict['radioBtn_usbhid'][langIndex])
         if self.isUartPortSelected != None and self.isUartPortSelected:
@@ -318,6 +321,8 @@ class flashUi(flashWin.flashWin):
 
         self.m_notebook_download.SetPageText(uilang.kPanelIndex_Download, uilang.kMainLanguageContentDict['panel_download'][langIndex])
         self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
+        self.m_staticText_successfulOperations.SetLabel(uilang.kMainLanguageContentDict['sText_successfulOperations'][langIndex])
+        self.m_staticText_failedOperations.SetLabel(uilang.kMainLanguageContentDict['sText_failedOperations'][langIndex])
         if self.connectStatusColor != None:
             self.updateConnectStatus(self.connectStatusColor)
 

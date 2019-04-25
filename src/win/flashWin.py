@@ -17,7 +17,7 @@ import wx.xrc
 class flashWin ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"RT Flash", pos = wx.DefaultPosition, size = wx.Size( 528,309 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"RT Flash", pos = wx.DefaultPosition, size = wx.Size( 576,346 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
@@ -84,33 +84,71 @@ class flashWin ( wx.Frame ):
 		self.m_panel_setup = wx.Panel( self.m_notebook_setup, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		wSizer_setup = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
 
-		self.m_staticText_mcuDevice = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"RT Device:", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_staticText_mcuDevice = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"RT Device:", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
 		self.m_staticText_mcuDevice.Wrap( -1 )
 
 		wSizer_setup.Add( self.m_staticText_mcuDevice, 0, wx.ALL, 5 )
 
 		m_choice_mcuDeviceChoices = [ u"i.MXRT1015", u"i.MXRT102x", u"i.MXRT105x", u"i.MXRT106x", u"i.MXRT1064 SIP" ]
-		self.m_choice_mcuDevice = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 110,-1 ), m_choice_mcuDeviceChoices, 0 )
+		self.m_choice_mcuDevice = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 125,-1 ), m_choice_mcuDeviceChoices, 0 )
 		self.m_choice_mcuDevice.SetSelection( 2 )
 		wSizer_setup.Add( self.m_choice_mcuDevice, 0, wx.ALL, 5 )
 
-		self.m_staticText_null1Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 180,5 ), 0 )
+		self.m_staticText_mcuBoard = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"RT Boards:", wx.DefaultPosition, wx.Size( 220,-1 ), 0 )
+		self.m_staticText_mcuBoard.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_mcuBoard, 0, wx.ALL, 5 )
+
+		self.m_staticText_null1Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 5,-1 ), 0 )
 		self.m_staticText_null1Setup.Wrap( -1 )
 
 		wSizer_setup.Add( self.m_staticText_null1Setup, 0, wx.ALL, 5 )
 
-		self.m_staticText_serialPort = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"Serial Port:", wx.DefaultPosition, wx.Size( 180,-1 ), 0 )
-		self.m_staticText_serialPort.Wrap( -1 )
+		self.m_staticText_connectedBoards = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"Connected:", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_staticText_connectedBoards.Wrap( -1 )
 
-		wSizer_setup.Add( self.m_staticText_serialPort, 0, wx.ALL, 5 )
+		wSizer_setup.Add( self.m_staticText_connectedBoards, 0, wx.ALL, 5 )
 
-		self.m_staticText_null2Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 14,-1 ), 0 )
+		self.m_textCtrl_connectedBoards = wx.TextCtrl( self.m_panel_setup, wx.ID_ANY, u"1", wx.DefaultPosition, wx.Size( 40,-1 ), wx.TE_PROCESS_ENTER )
+		wSizer_setup.Add( self.m_textCtrl_connectedBoards, 0, wx.ALL, 5 )
+
+		self.m_staticText_detectedBoards = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"Detected:", wx.DefaultPosition, wx.Size( 50,-1 ), 0 )
+		self.m_staticText_detectedBoards.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_detectedBoards, 0, wx.ALL, 5 )
+
+		self.m_staticText_detectedBoardNum = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"0", wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
+		self.m_staticText_detectedBoardNum.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_detectedBoardNum, 0, wx.ALL, 5 )
+
+		self.m_staticText_serialPortIndex = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"RT Port Index:", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
+		self.m_staticText_serialPortIndex.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_serialPortIndex, 0, wx.ALL, 5 )
+
+		m_choice_serialPortIndexChoices = [ u"0" ]
+		self.m_choice_serialPortIndex = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 40,-1 ), m_choice_serialPortIndexChoices, 0 )
+		self.m_choice_serialPortIndex.SetSelection( 0 )
+		wSizer_setup.Add( self.m_choice_serialPortIndex, 0, wx.ALL, 5 )
+
+		self.m_staticText_usbPortLoc = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"N/A", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
+		self.m_staticText_usbPortLoc.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_usbPortLoc, 0, wx.ALL, 5 )
+
+		self.m_staticText_null2Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
 		self.m_staticText_null2Setup.Wrap( -1 )
 
 		wSizer_setup.Add( self.m_staticText_null2Setup, 0, wx.ALL, 5 )
 
 		self.m_radioBtn_uart = wx.RadioButton( self.m_panel_setup, wx.ID_ANY, u"UART", wx.DefaultPosition, wx.DefaultSize, 0 )
 		wSizer_setup.Add( self.m_radioBtn_uart, 0, wx.ALL, 5 )
+
+		self.m_staticText_null3Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
+		self.m_staticText_null3Setup.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_null3Setup, 0, wx.ALL, 5 )
 
 		self.m_radioBtn_usbhid = wx.RadioButton( self.m_panel_setup, wx.ID_ANY, u"USB-HID", wx.DefaultPosition, wx.DefaultSize, 0 )
 		wSizer_setup.Add( self.m_radioBtn_usbhid, 0, wx.ALL, 5 )
@@ -121,7 +159,7 @@ class flashWin ( wx.Frame ):
 		wSizer_setup.Add( self.m_staticText_portVid, 0, wx.ALL, 5 )
 
 		m_choice_portVidChoices = []
-		self.m_choice_portVid = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 95,-1 ), m_choice_portVidChoices, 0 )
+		self.m_choice_portVid = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 125,-1 ), m_choice_portVidChoices, 0 )
 		self.m_choice_portVid.SetSelection( 0 )
 		wSizer_setup.Add( self.m_choice_portVid, 0, wx.ALL, 5 )
 
@@ -131,9 +169,14 @@ class flashWin ( wx.Frame ):
 		wSizer_setup.Add( self.m_staticText_baudPid, 0, wx.ALL, 5 )
 
 		m_choice_baudPidChoices = []
-		self.m_choice_baudPid = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 95,-1 ), m_choice_baudPidChoices, 0 )
+		self.m_choice_baudPid = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 125,-1 ), m_choice_baudPidChoices, 0 )
 		self.m_choice_baudPid.SetSelection( 0 )
 		wSizer_setup.Add( self.m_choice_baudPid, 0, wx.ALL, 5 )
+
+		self.m_staticText_null4Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 220,1 ), 0 )
+		self.m_staticText_null4Setup.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_null4Setup, 0, wx.ALL, 5 )
 
 
 		self.m_panel_setup.SetSizer( wSizer_setup )
@@ -184,6 +227,31 @@ class flashWin ( wx.Frame ):
 		self.m_gauge_action.SetValue( 100 )
 		wSizer_download.Add( self.m_gauge_action, 0, wx.ALL, 5 )
 
+		self.m_staticText_successfulOperations = wx.StaticText( self.m_panel_download, wx.ID_ANY, u"Successful:", wx.DefaultPosition, wx.Size( 70,-1 ), 0 )
+		self.m_staticText_successfulOperations.Wrap( -1 )
+
+		wSizer_download.Add( self.m_staticText_successfulOperations, 0, wx.ALL, 5 )
+
+		self.m_staticText_successfulOperationNum = wx.StaticText( self.m_panel_download, wx.ID_ANY, u"0", wx.DefaultPosition, wx.Size( 40,-1 ), 0 )
+		self.m_staticText_successfulOperationNum.Wrap( -1 )
+
+		wSizer_download.Add( self.m_staticText_successfulOperationNum, 0, wx.ALL, 5 )
+
+		self.m_staticText_failedOperations = wx.StaticText( self.m_panel_download, wx.ID_ANY, u"Failed:", wx.DefaultPosition, wx.Size( 70,-1 ), 0 )
+		self.m_staticText_failedOperations.Wrap( -1 )
+
+		wSizer_download.Add( self.m_staticText_failedOperations, 0, wx.ALL, 5 )
+
+		self.m_staticText_failedOperationNum = wx.StaticText( self.m_panel_download, wx.ID_ANY, u"0", wx.DefaultPosition, wx.Size( 40,-1 ), 0 )
+		self.m_staticText_failedOperationNum.Wrap( -1 )
+
+		wSizer_download.Add( self.m_staticText_failedOperationNum, 0, wx.ALL, 5 )
+
+		self.m_staticText_null3Download = wx.StaticText( self.m_panel_download, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 260,2 ), 0 )
+		self.m_staticText_null3Download.Wrap( -1 )
+
+		wSizer_download.Add( self.m_staticText_null3Download, 0, wx.ALL, 5 )
+
 
 		self.m_panel_download.SetSizer( wSizer_download )
 		self.m_panel_download.Layout()
@@ -229,6 +297,8 @@ class flashWin ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.callbackShowAboutAuthor, id = self.m_menuItem_aboutAuthor.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowRevisionHistory, id = self.m_menuItem_revisionHistory.GetId() )
 		self.m_choice_mcuDevice.Bind( wx.EVT_CHOICE, self.callbackSetMcuDevice )
+		self.m_textCtrl_connectedBoards.Bind( wx.EVT_TEXT_ENTER, self.callbackSetConnectedBoards )
+		self.m_choice_serialPortIndex.Bind( wx.EVT_CHOICE, self.callbackSwitchSerialPortIndex )
 		self.m_radioBtn_uart.Bind( wx.EVT_RADIOBUTTON, self.callbackSetUartPort )
 		self.m_radioBtn_usbhid.Bind( wx.EVT_RADIOBUTTON, self.callbackSetUsbhidPort )
 		self.m_filePicker_appPath.Bind( wx.EVT_FILEPICKER_CHANGED, self.callbackChangedAppFile )
@@ -267,6 +337,12 @@ class flashWin ( wx.Frame ):
 		event.Skip()
 
 	def callbackSetMcuDevice( self, event ):
+		event.Skip()
+
+	def callbackSetConnectedBoards( self, event ):
+		event.Skip()
+
+	def callbackSwitchSerialPortIndex( self, event ):
 		event.Skip()
 
 	def callbackSetUartPort( self, event ):
