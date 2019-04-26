@@ -43,10 +43,10 @@ class flashMain(runcore.flashRun):
         self._setUartUsbPort()
 
     def callbackSetConnectedBoards( self, event ):
-        pass
+        self.setMcuBoards()
 
     def callbackSwitchSerialPortIndex( self, event ):
-        pass
+        self.setSerialPortIndex()
 
     def _setUartUsbPort( self ):
         usbIdList = self.getUsbid()

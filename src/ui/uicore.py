@@ -38,6 +38,9 @@ class flashUi(flashWin.flashWin):
 
         self.isUartPortSelected = None
         self.isUsbhidPortSelected = None
+        self.connectedBoards = 0
+        self.detectedBoards = 0
+        self.serialPortIndex = 0
 
         self._initStatusBar()
         self.languageIndex = 0
@@ -56,6 +59,8 @@ class flashUi(flashWin.flashWin):
         self.isUsbhidConnected = False
         self.usbhidToConnect = [None] * 2
         self._initPortSetupValue()
+        self._initMcuBoards()
+        self.setMcuBoards()
         self.sbAppPath = None
 
     def _initStatusBar( self ):
@@ -80,6 +85,50 @@ class flashUi(flashWin.flashWin):
     def setTargetSetupValue( self ):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
 
+    def _adjustSerialPortIndexValue( self ):
+        itemNum = 0
+        if self.isUartPortSelected:
+            self.m_staticText_detectedBoardNum.SetLabel('N/A')
+            itemNum = self.connectedBoards
+        elif self.isUsbhidPortSelected:
+            self.m_staticText_detectedBoardNum.SetLabel(str(self.detectedBoards))
+            itemNum = min(self.connectedBoards, self.detectedBoards)
+        else:
+            pass
+        lastItem = self.m_choice_serialPortIndex.GetString(self.m_choice_serialPortIndex.GetSelection())
+        itemList = range(itemNum)
+        for i in range(itemNum):
+            itemList[i] = str(i)
+        self.m_choice_serialPortIndex.Clear()
+        self.m_choice_serialPortIndex.SetItems(itemList)
+        if lastItem in itemList:
+            self.m_choice_serialPortIndex.SetSelection(self.m_choice_serialPortIndex.FindString(lastItem))
+        else:
+            self.m_choice_serialPortIndex.SetSelection(0)
+
+    def _setDetectedBoardNum( self, num):
+        if self.detectedBoards != num:
+            self.m_staticText_detectedBoardNum.SetLabel(str(num))
+            self.detectedBoards = num
+            self._adjustSerialPortIndexValue()
+
+    def _initMcuBoards( self ):
+        self.m_textCtrl_connectedBoards.Clear()
+        self.m_textCtrl_connectedBoards.write('1')
+        self._setDetectedBoardNum(0)
+
+    def setMcuBoards( self ):
+        try:
+            boards = int(self.m_textCtrl_connectedBoards.GetLineText(0))
+            self.connectedBoards = boards
+            self._adjustSerialPortIndexValue()
+        except:
+            self.m_textCtrl_connectedBoards.Clear()
+            self.m_textCtrl_connectedBoards.write(str(self.connectedBoards))
+
+    def setSerialPortIndex( self ):
+        self.serialPortIndex = int(self.m_choice_serialPortIndex.GetString(self.m_choice_serialPortIndex.GetSelection()))
+
     def _initPortSetupValue( self ):
         self.m_radioBtn_uart.SetValue(False)
         self.m_radioBtn_usbhid.SetValue(True)
@@ -103,6 +152,7 @@ class flashUi(flashWin.flashWin):
             # Auto detect USB-HID device
             hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[0], 16), product_id = int(self.usbhidToConnect[1], 16))
             hidDevice = hidFilter.get_devices()
+            self._setDetectedBoardNum(len(hidDevice))
             if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
                 self.isUsbhidConnected = True
                 if self.connectStatusColor == 'yellow':
@@ -114,7 +164,7 @@ class flashUi(flashWin.flashWin):
             if retryCnt != 0:
                 time.sleep(2)
             else:
-                usbVid[0] = 'N/A'
+                usbVid[0] = 'N/A - Not Found'
                 usbPid[0] = usbVid[0]
         if not self.isUsbhidConnected:
             self.updateConnectStatus('yellow')
@@ -179,6 +229,7 @@ class flashUi(flashWin.flashWin):
     def setPortSetupValue( self, connectStage=uidef.kConnectStage_Rom, usbIdList=[], retryToDetectUsb=False ):
         self.adjustPortSetupValue(connectStage, usbIdList)
         self.updatePortSetupValue(retryToDetectUsb)
+        self._adjustSerialPortIndexValue()
 
     def updatePortSetupValue( self, retryToDetectUsb=False ):
         status = True
