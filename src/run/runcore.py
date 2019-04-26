@@ -82,8 +82,8 @@ class flashRun(uicore.flashUi):
             self.createMcuTarget()
             if self.isUartPortSelected:
                 sdpPeripheral = 'sdp_uart'
-                uartComPort = self.uartComPort
-                uartBaudrate = int(self.uartBaudrate)
+                uartComPort = self.uartComPort[deviceIndex]
+                uartBaudrate = int(self.uartBaudrate[deviceIndex])
                 usbDevicePath = ''
             elif self.isUsbhidPortSelected:
                 sdpPeripheral = 'sdp_usb'
@@ -100,8 +100,8 @@ class flashRun(uicore.flashUi):
         elif connectStage == uidef.kConnectStage_Flashloader:
             if self.isUartPortSelected:
                 blPeripheral = 'uart'
-                uartComPort = self.uartComPort
-                uartBaudrate = int(self.uartBaudrate)
+                uartComPort = self.uartComPort[deviceIndex]
+                uartBaudrate = int(self.uartBaudrate[deviceIndex])
                 usbDevicePath = ''
             elif self.isUsbhidPortSelected:
                 blPeripheral = 'usb'

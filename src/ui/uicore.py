@@ -53,8 +53,8 @@ class flashUi(flashWin.flashWin):
         self.setUsbDetection()
         self.mcuDevice = None
         self.setTargetSetupValue()
-        self.uartComPort = None
-        self.uartBaudrate = None
+        self.uartComPort = [None]
+        self.uartBaudrate = [None]
         self.usbhidVid = None
         self.usbhidPid = None
         self.isUsbhidConnected = False
@@ -89,11 +89,10 @@ class flashUi(flashWin.flashWin):
 
     def _adjustSerialPortIndexValue( self ):
         itemNum = 0
+        self.m_staticText_detectedBoardNum.SetLabel(str(self.detectedBoards))
         if self.isUartPortSelected:
-            self.m_staticText_detectedBoardNum.SetLabel('N/A')
             itemNum = self.connectedBoards
         elif self.isUsbhidPortSelected:
-            self.m_staticText_detectedBoardNum.SetLabel(str(self.detectedBoards))
             itemNum = min(self.connectedBoards, self.detectedBoards)
         else:
             pass
@@ -108,7 +107,17 @@ class flashUi(flashWin.flashWin):
         else:
             self.m_choice_serialPortIndex.SetSelection(0)
 
-    def _setDetectedBoardNum( self, num):
+    def _recoverLastSerialPort( self ):
+        if self.isUartPortSelected:
+            if len(self.uartComPort) > self.serialPortIndex and self.uartComPort[self.serialPortIndex] != None:
+                self.m_choice_portVid.SetSelection(self.m_choice_portVid.FindString(self.uartComPort[self.serialPortIndex]))
+                self.m_choice_baudPid.SetSelection(self.m_choice_baudPid.FindString(self.uartBaudrate[self.serialPortIndex]))
+        elif self.isUsbhidPortSelected:
+            pass
+        else:
+            pass
+
+    def _setUsbDetectedBoardNum( self, num):
         if self.detectedBoards != num:
             self.m_staticText_detectedBoardNum.SetLabel(str(num))
             self.detectedBoards = num
@@ -117,7 +126,7 @@ class flashUi(flashWin.flashWin):
     def _initMcuBoards( self ):
         self.m_textCtrl_connectedBoards.Clear()
         self.m_textCtrl_connectedBoards.write('1')
-        self._setDetectedBoardNum(0)
+        self._setUsbDetectedBoardNum(0)
 
     def setMcuBoards( self ):
         try:
@@ -130,6 +139,7 @@ class flashUi(flashWin.flashWin):
 
     def setSerialPortIndex( self ):
         self.serialPortIndex = int(self.m_choice_serialPortIndex.GetString(self.m_choice_serialPortIndex.GetSelection()))
+        self._recoverLastSerialPort()
 
     def _initPortSetupValue( self ):
         self.m_radioBtn_uart.SetValue(False)
@@ -154,7 +164,7 @@ class flashUi(flashWin.flashWin):
             # Auto detect USB-HID device
             hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[0], 16), product_id = int(self.usbhidToConnect[1], 16))
             hidDevice = hidFilter.get_devices()
-            self._setDetectedBoardNum(len(hidDevice))
+            self._setUsbDetectedBoardNum(len(hidDevice))
             if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
                 if self.connectStage == uidef.kConnectStage_Rom:
                     for i in range(len(hidDevice)):
@@ -270,8 +280,17 @@ class flashUi(flashWin.flashWin):
         self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
         self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
         if self.isUartPortSelected:
-            self.uartComPort = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
-            self.uartBaudrate = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
+            if len(self.uartComPort) <= self.serialPortIndex:
+                for i in range(self.serialPortIndex - len(self.uartComPort) + 1):
+                    self.uartComPort.append(None)
+                    self.uartBaudrate.append(None)
+            self.uartComPort[self.serialPortIndex] = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
+            self.uartBaudrate[self.serialPortIndex] = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
+            self.detectedBoards = 0
+            for i in range(len(self.uartComPort)):
+                if self.uartComPort[i] != None:
+                    self.detectedBoards += 1
+            self.m_staticText_detectedBoardNum.SetLabel(str(self.detectedBoards))
         elif self.isUsbhidPortSelected:
             if self.isUsbhidConnected:
                 self.usbhidVid = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())

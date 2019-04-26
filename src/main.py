@@ -58,6 +58,12 @@ class flashMain(runcore.flashRun):
     def callbackSetUsbhidPort( self, event ):
         self._setUartUsbPort()
 
+    def callbackSetPortVid( self, event ):
+        self.updatePortSetupValue()
+
+    def callbackSetBaudPid( self, event ):
+        self.updatePortSetupValue()
+
     def _retryToPingBootloader( self, bootType ):
         pingStatus = False
         pingCnt = kRetryPingTimes
@@ -147,10 +153,12 @@ class flashMain(runcore.flashRun):
         if self.isUsbhidPortSelected:
             boards = min(len(self.usbDevicePath), self.connectedBoards)
         elif self.isUartPortSelected:
-            pass
+            boards = len(self.uartComPort)
         else:
             pass
         for board in range(boards):
+            if self.isUartPortSelected and self.uartComPort[board] == None:
+                continue
             if self._connectStateMachine(board):
                 if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
                     if self.flashSbImage():
@@ -168,6 +176,8 @@ class flashMain(runcore.flashRun):
             self.connectStage = uidef.kConnectStage_Rom
             self._setUartUsbPort()
             self.isUsbhidConnected = False
+        if self.isUartPortSelected:
+            boards = self.detectedBoards
         self.setDownloadOperationResults(boards, successes)
 
     def callbackAllInOneAction( self, event ):

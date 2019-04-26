@@ -301,6 +301,8 @@ class flashWin ( wx.Frame ):
 		self.m_choice_serialPortIndex.Bind( wx.EVT_CHOICE, self.callbackSwitchSerialPortIndex )
 		self.m_radioBtn_uart.Bind( wx.EVT_RADIOBUTTON, self.callbackSetUartPort )
 		self.m_radioBtn_usbhid.Bind( wx.EVT_RADIOBUTTON, self.callbackSetUsbhidPort )
+		self.m_choice_portVid.Bind( wx.EVT_CHOICE, self.callbackSetPortVid )
+		self.m_choice_baudPid.Bind( wx.EVT_CHOICE, self.callbackSetBaudPid )
 		self.m_filePicker_appPath.Bind( wx.EVT_FILEPICKER_CHANGED, self.callbackChangedAppFile )
 		self.m_button_allInOneAction.Bind( wx.EVT_BUTTON, self.callbackAllInOneAction )
 
@@ -349,6 +351,12 @@ class flashWin ( wx.Frame ):
 		event.Skip()
 
 	def callbackSetUsbhidPort( self, event ):
+		event.Skip()
+
+	def callbackSetPortVid( self, event ):
+		event.Skip()
+
+	def callbackSetBaudPid( self, event ):
 		event.Skip()
 
 	def callbackChangedAppFile( self, event ):

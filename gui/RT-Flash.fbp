@@ -2070,7 +2070,7 @@
                                                             <event name="OnAux2Up"></event>
                                                             <event name="OnChar"></event>
                                                             <event name="OnCharHook"></event>
-                                                            <event name="OnChoice"></event>
+                                                            <event name="OnChoice">callbackSetPortVid</event>
                                                             <event name="OnEnterWindow"></event>
                                                             <event name="OnEraseBackground"></event>
                                                             <event name="OnKeyDown"></event>
@@ -2256,7 +2256,7 @@
                                                             <event name="OnAux2Up"></event>
                                                             <event name="OnChar"></event>
                                                             <event name="OnCharHook"></event>
-                                                            <event name="OnChoice"></event>
+                                                            <event name="OnChoice">callbackSetBaudPid</event>
                                                             <event name="OnEnterWindow"></event>
                                                             <event name="OnEraseBackground"></event>
                                                             <event name="OnKeyDown"></event>
