@@ -1,6 +1,6 @@
 # RT Flash
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v1.0.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v1.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v1.1.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v1.1.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
 
 English | [中文](./README-zh.md)
 
@@ -11,12 +11,15 @@ English | [中文](./README-zh.md)
 > * The .sb file can only be specified in xml file;  
 > * USB port is the only choice to download .sb file;  
 > * Sometimes USB Hub is required to connect;  
+> * Maximum four boards can be supported for batch downloading  
 
 　　With RT-Flash, you can easily get started with NXP MCU secure boot. The main features of RT-Flash include：  
 
 > * Support i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP  
 > * Support both UART and USB-HID serial downloader modes  
 > * Support for loading .sb image file into boot device  
+> * Support batch downloading for multiple image files in one folder  
+> * Support batch downloading for unlimited boards  
 
 #### 1.2 Download
 　　RT-Flash is developed in Python, and it is open source. The development environment is Python 2.7.15 (32bit), wxPython 4.0.3, pySerial 3.4, pywinusb 0.4.2, PyInstaller 3.3.1 (or higher).  
@@ -50,7 +53,7 @@ English | [中文](./README-zh.md)
 #### 1.5 Interface
 　　The following figure shows the main interface of the RT-Flash tool. The interface consists of four parts. The functions of each part are as follows:  
 
-![RT-Flash_mainWin_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_mainWin_ee.png)
+![RT-Flash_mainWin](http://henjay724.com/image/cnblogs/RT-Flash_v1.1.0.PNG)
 
 > * [Menu Bar]: Functional menu bar, providing general software settings.  
 > * [Setup Window]: Target device setting bar, providing MCU Device options, serial interface options.  
@@ -67,7 +70,7 @@ English | [中文](./README-zh.md)
 #### 3.1 Setting target chip
 　　When using RT-Flash, you need to configure the target device. The target device includes MCU Device. Taking the NXP official development board EVK-MIMXRT1060 as an example, the main chip of the development board is i.MXRT1062DVL6A, so [RT Device] should be set to i.MXRT106x.  
 
-![RT-Flash_setMcuDevice_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setMcuDevice_rt1060_e.png)
+![RT-Flash_setMcuDevice](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setMcuDevice_rt1060.PNG)
 
 #### 3.2 Setting download port
 　　After setting up the target device, the next step is to connect the target device. Taking the USB-HID interface as an example, supply power to the EVK-MIMXRT1060 board, and connect the PC to the J9 port with USB Cable. If everything is going well, you can find new HID device (vid=0x1fc9, pid=0x0135) named HID-compliant vendor-defined device is enumerated. If the HID device is not found, please check the board SW7 DIP switch to set Boot Mode to 2'b01(Serial Downloader mode).  
@@ -76,14 +79,29 @@ English | [中文](./README-zh.md)
 
 　　After confirming the existence of the HID device, select USB-HID.  
 
-![RT-Flash_setPort_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setPort_usb_e.png)
+![RT-Flash_setPort_usb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setPort_usb_e.png)
 
 #### 3.3 Clicking [Start] Button
-　　At first, you should select your .sb file, then just click [Start] button, if the .sb file has been downloaded successfully, the background color of [Start] button will turn blue and the label will be updated to 'success'.  
+　　At first, you should select your .sb file, then just click [Start] button, if the .sb file has been downloaded successfully, the value of [Successful Boards] will be 1.  
 
-![RT-Flash_downloadSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_downloadSb_success_e.png)
+![RT-Flash_SingleBoardSingleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_SingleBoardSingleSb_downloadSuccess_e.png)
 
-#### 3.4 When HAB is closed
+#### 3.4 Batch downloading
+##### 3.4.1 Multiple files
+　　If you want to download multiple image files once, you need to put all these image files into one folder and then choose this folder in tool, finally just click [Start] button.   
+
+![RT-Flash_SingleBoardMultipleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_SingleBoardMultipleSb_downloadSuccess_e.png)
+
+##### 3.4.2 Multiple boards
+　　If you want to download image into multiple boards once, you need to set actual board number in [Connected] field, not that you have to push 'Enter' in your keyboard to confirm the board number. If USB port is selected, you can see the detected board number in [Detected] field, finally just click [Start] button.  
+
+![RT-Flash_MultipleBoardSingleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_MultipleBoardMultipleSb_downloadSuccess_e.png)
+
+　　If UART port is selected, you have to set every port in [RT Port Index] manually and make sure the status is 'Already Set'.   
+
+![RT-Flash_setPort_multipleUart_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setPort_multipleUart_e.png)
+
+#### 3.5 When HAB is closed
 　　When HAB is closed, the you need to put signed flashloader file into RT-Flash folder，and the signed flashloader file must be named ivt_flashloader_signed.bin.  
 
 ![RT-Flash_signedFlashloader_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_signedFlashloader.PNG)

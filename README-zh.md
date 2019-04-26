@@ -1,6 +1,6 @@
 # RT Flash
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v1.0.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v1.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v1.1.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v1.1.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
 
 [English](./README.md) | 中文
 
@@ -11,12 +11,15 @@
 > * 使用MfgTool2仅能在xml中指定.sb文件，无法直接在GUI里选择.sb文件；  
 > * 使用MfgTool2仅能选择USB端口，无法使用UART端口；  
 > * 使用MfgTool2的USB端口下载时，有时无法识别某些端口连接，必须要加Hub方可识别;  
+> * 使用MfgTool2批量下载时，最多只能支持4块板卡;  
 
 　　借助于RT-Flash，你可以轻松实现批量生产。RT-Flash主要功能如下：  
 
 > * 支持i.MXRT全系列MCU，包含i.MXRT1015、i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP  
 > * 支持UART和USB-HID两种串行下载方式（COM端口/USB设备自动识别）  
 > * 支持下载.sb格式的image文件进启动设备  
+> * 支持批量下载多个.sb格式的image文件(同一文件夹下)  
+> * 支持批量下载多个板卡(板卡数量不限)
 
 #### 1.2 下载
 　　RT-Flash完全基于Python语言开发，并且源代码全部开源，其具体开发环境为Python 2.7.15 (32bit)、wxPython 4.0.3、pySerial 3.4、pywinusb 0.4.2、PyInstaller 3.3.1（或更高）。  
@@ -52,7 +55,7 @@
 #### 1.5 界面
 　　下图为RT-Flash工具的主界面，界面主要由四部分组成，各部分功能如下：  
 
-![RT-Flash_mainWin_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_mainWin_ee.png)
+![RT-Flash_mainWin](http://henjay724.com/image/cnblogs/RT-Flash_v1.1.0.PNG)
 
 > * 【Menu Bar】：功能菜单栏，提供软件通用设置。  
 > * 【Setup Window】：设置栏，提供MCU Device选项、串行接口选项。  
@@ -69,7 +72,7 @@
 #### 3.1 设置目标芯片
 　　在使用RT-Flash时首先需要配置目标设备，目标设备即MCU Device。以NXP官方开发板EVK-MIMXRT1060为例，该开发板主芯片为i.MXRT1062DVL6A，所以【RT Device】应设为i.MXRT106x。  
 
-![RT-Flash_setMcuDevice_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setMcuDevice_rt1060_e.png)
+![RT-Flash_setMcuDevice](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setMcuDevice_rt1060.PNG)
 
 #### 3.2 设置下载端口
 　　设置好目标设备之后，下一步便是连接目标设备，以USB-HID接口连接为例，给EVK-MIMXRT1060板子供电，并用USB Cable将PC与J9口连接起来，如果一切正常，应该可以在设备管理器找到vid,pid为0x1fc9,0x0135的HID-compliant vendor-defined device设备被枚举。如果没有发现该HID设备，请仔细检查板子SW7拨码开关是否将Boot Mode设为2'b01即Serial Downloader模式。  
@@ -78,14 +81,29 @@
 
 　　确认HID设备存在之后，选中USB-HID即可。  
 
-![RT-Flash_setPort_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_setPort_usb_e.png)
+![RT-Flash_setPort_usb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setPort_usb_e.png)
 
 #### 3.3 点击一键下载
-　　选中要下载的.sb文件，直接点击【Start】按钮便可将.sb文件下载进启动设备。如果成功下载，【Start】按钮背景会变蓝色且按钮标签会变成'Success'，此外状态栏里会显示"Application image file (.sb) has been downloaded successfully!"。  
+　　选中要下载的.sb文件，直接点击【Start】按钮便可将.sb文件下载进启动设备。如果成功下载，【Successful Boards】里数值会变成1，此外状态栏里会显示"Application image file (.sb) has been downloaded successfully!"。  
 
-![RT-Flash_downloadSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_downloadSb_success_e.png)
+![RT-Flash_SingleBoardSingleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_SingleBoardSingleSb_downloadSuccess_e.png)
 
-#### 3.4 在HAB Closed情况下
+#### 3.4 批量下载
+##### 3.4.1 批量多文件
+　　如果你想一次性下载多个.sb文件，你需要将这些文件放置于同一个文件夹，然后在工具里第二个【Browse】下选中这个文件夹（注意必须保证第一个【Browse】按钮里的路径是空），然后直接点击【Start】按钮便可。  
+
+![RT-Flash_SingleBoardMultipleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_SingleBoardMultipleSb_downloadSuccess_e.png)
+
+##### 3.4.2 批量多板卡
+　　如果你想一次性下载程序进多个板卡，你需要在板卡设置栏【Connected】填入实际连接板卡数（填入数值后必须按键盘上的Enter键来确定），以USB接口为例，此时你会看到【Detected】里会显示实际识别板卡数，最终下载以实际识别板卡数为准。然后直接点击【Start】按钮便可。  
+
+![RT-Flash_MultipleBoardSingleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_MultipleBoardMultipleSb_downloadSuccess_e.png)
+
+　　如果选择的是UART接口，你必须在【RT Port Index】里逐一选中每个Port进行具体设置，并保证右侧状态均为"Already Set"。  
+
+![RT-Flash_setPort_multipleUart_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setPort_multipleUart_e.png)
+
+#### 3.5 在HAB Closed情况下
 　　当芯片HAB状态处于Closed的情况下，此时需要将你生成的含签名的flashloader文件放置于RT-Flash指定目录下（此处以RT106x为例），并且文件必须命名为ivt_flashloader_signed.bin。  
 
 ![RT-Flash_signedFlashloader_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_signedFlashloader.PNG)
