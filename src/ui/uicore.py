@@ -34,6 +34,7 @@ class flashUi(flashWin.flashWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
+        self.connectStage = uidef.kConnectStage_Rom
         self.connectStatusColor = None
 
         self.isUartPortSelected = None
@@ -58,6 +59,7 @@ class flashUi(flashWin.flashWin):
         self.usbhidPid = None
         self.isUsbhidConnected = False
         self.usbhidToConnect = [None] * 2
+        self.usbDevicePath = []
         self._initPortSetupValue()
         self._initMcuBoards()
         self.setMcuBoards()
@@ -154,6 +156,38 @@ class flashUi(flashWin.flashWin):
             hidDevice = hidFilter.get_devices()
             self._setDetectedBoardNum(len(hidDevice))
             if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
+                if self.connectStage == uidef.kConnectStage_Rom:
+                    for i in range(len(hidDevice)):
+                        if len(self.usbDevicePath):
+                            hasThisPath = False
+                            for j in range(len(self.usbDevicePath)):
+                                if self.usbDevicePath[j]['rom'] == hidDevice[i].device_path:
+                                    hasThisPath = True
+                                    break
+                            if not hasThisPath:
+                                usbDevicePath = {'rom':hidDevice[i].device_path,
+                                                 'flashloader':None
+                                                 }
+                                self.usbDevicePath.append(usbDevicePath)
+                        else:
+                            usbDevicePath = {'rom':hidDevice[i].device_path,
+                                             'flashloader':None
+                                             }
+                            self.usbDevicePath.append(usbDevicePath)
+                elif self.connectStage == uidef.kConnectStage_Flashloader:
+                    for i in range(len(hidDevice)):
+                        hasThisPath = False
+                        for j in range(len(self.usbDevicePath)):
+                            if self.usbDevicePath[j]['flashloader'] == hidDevice[i].device_path:
+                                hasThisPath = True
+                                break
+                        if not hasThisPath:
+                            for j in range(len(self.usbDevicePath)):
+                                if self.usbDevicePath[j]['flashloader'] == None:
+                                    self.usbDevicePath[j]['flashloader'] = hidDevice[i].device_path
+                                    break
+                else:
+                    pass
                 self.isUsbhidConnected = True
                 if self.connectStatusColor == 'yellow':
                     self.updateConnectStatus('black')

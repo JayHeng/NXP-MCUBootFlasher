@@ -25,7 +25,6 @@ class flashMain(runcore.flashRun):
 
     def __init__(self, parent):
         runcore.flashRun.__init__(self, parent)
-        self.connectStage = uidef.kConnectStage_Rom
         self.lastTime = None
         self.isAllInOneActionTaskPending = False
 
@@ -82,7 +81,7 @@ class flashMain(runcore.flashRun):
         self.setPortSetupValue(self.connectStage, usbIdList, False )
         self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_checkUsbCable'][self.languageIndex])
 
-    def _connectStateMachine( self ):
+    def _connectStateMachine( self, deviceIndex=0 ):
         retryToDetectUsb = False
         connectSteps = 3
         isConnectionFailureOnce = False
@@ -95,7 +94,7 @@ class flashMain(runcore.flashRun):
                 else:
                     return False
             if self.connectStage == uidef.kConnectStage_Rom:
-                self.connectToDevice(self.connectStage)
+                self.connectToDevice(self.connectStage, deviceIndex)
                 if self._retryToPingBootloader(kBootloaderType_Rom):
                     self.getMcuDeviceHabStatus()
                     if self.jumpToFlashloader():
@@ -111,7 +110,7 @@ class flashMain(runcore.flashRun):
                     self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
                     return False
             elif self.connectStage == uidef.kConnectStage_Flashloader:
-                self.connectToDevice(self.connectStage)
+                self.connectToDevice(self.connectStage, deviceIndex)
                 if self._retryToPingBootloader(kBootloaderType_Flashloader):
                     self.updateConnectStatus('green')
                     self.connectStage = uidef.kConnectStage_Ready
@@ -143,16 +142,26 @@ class flashMain(runcore.flashRun):
             time.sleep(1)
 
     def _doAllInOneAction( self ):
-        if self._connectStateMachine():
-            if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
-                if self.flashSbImage():
-                    self.updateConnectStatus('blue')
-                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
+        boards = 0
+        if self.isUsbhidPortSelected:
+            boards = len(self.usbDevicePath)
+        elif self.isUartPortSelected:
+            pass
+        else:
+            pass
+        for board in range(boards):
+            self.connectStage = uidef.kConnectStage_Rom
+            self.isUsbhidConnected = False
+            if self._connectStateMachine(board):
+                if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
+                    if self.flashSbImage():
+                        self.updateConnectStatus('blue')
+                        self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
+                    else:
+                        self.updateConnectStatus('red')
                 else:
                     self.updateConnectStatus('red')
-            else:
-                self.updateConnectStatus('red')
-                self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][self.languageIndex])
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][self.languageIndex])
 
     def callbackAllInOneAction( self, event ):
         self.isAllInOneActionTaskPending = True

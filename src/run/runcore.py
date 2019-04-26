@@ -76,7 +76,7 @@ class flashRun(uicore.flashUi):
         self.createMcuTarget()
         return [self.tgt.romUsbVid, self.tgt.romUsbPid, self.tgt.flashloaderUsbVid, self.tgt.flashloaderUsbPid]
 
-    def connectToDevice( self , connectStage):
+    def connectToDevice( self , connectStage, deviceIndex=0 ):
         if connectStage == uidef.kConnectStage_Rom:
             # Create the target object.
             self.createMcuTarget()
@@ -84,41 +84,37 @@ class flashRun(uicore.flashUi):
                 sdpPeripheral = 'sdp_uart'
                 uartComPort = self.uartComPort
                 uartBaudrate = int(self.uartBaudrate)
-                usbVid = ''
-                usbPid = ''
+                usbDevicePath = ''
             elif self.isUsbhidPortSelected:
                 sdpPeripheral = 'sdp_usb'
                 uartComPort = ''
                 uartBaudrate = ''
-                usbVid = self.tgt.romUsbVid
-                usbPid = self.tgt.romUsbPid
+                usbDevicePath = self.usbDevicePath[deviceIndex]['rom']
             else:
                 pass
             self.sdphost = bltest.createBootloader(self.tgt,
                                                    self.sdphostVectorsDir,
                                                    sdpPeripheral,
                                                    uartBaudrate, uartComPort,
-                                                   usbVid, usbPid)
+                                                   usbDevicePath)
         elif connectStage == uidef.kConnectStage_Flashloader:
             if self.isUartPortSelected:
                 blPeripheral = 'uart'
                 uartComPort = self.uartComPort
                 uartBaudrate = int(self.uartBaudrate)
-                usbVid = ''
-                usbPid = ''
+                usbDevicePath = ''
             elif self.isUsbhidPortSelected:
                 blPeripheral = 'usb'
                 uartComPort = ''
                 uartBaudrate = ''
-                usbVid = self.tgt.flashloaderUsbVid
-                usbPid = self.tgt.flashloaderUsbPid
+                usbDevicePath = self.usbDevicePath[deviceIndex]['flashloader']
             else:
                 pass
             self.blhost = bltest.createBootloader(self.tgt,
                                                   self.blhostVectorsDir,
                                                   blPeripheral,
                                                   uartBaudrate, uartComPort,
-                                                  usbVid, usbPid,
+                                                  usbDevicePath,
                                                   True)
         elif connectStage == uidef.kConnectStage_Reset:
             self.tgt = None
