@@ -137,9 +137,21 @@ class flashUi(flashWin.flashWin):
             self.m_textCtrl_connectedBoards.Clear()
             self.m_textCtrl_connectedBoards.write(str(self.connectedBoards))
 
+    def _updateSerialPortInfo( self ):
+        if self.isUartPortSelected:
+            if self.serialPortIndex < len(self.uartComPort) and self.uartComPort[self.serialPortIndex] != None:
+                self.m_staticText_portInfo.SetLabel('Already set')
+            else:
+                self.m_staticText_portInfo.SetLabel('Not set')
+        elif self.isUsbhidPortSelected:
+            self.m_staticText_portInfo.SetLabel('N/A')
+        else:
+            pass
+
     def setSerialPortIndex( self ):
         self.serialPortIndex = int(self.m_choice_serialPortIndex.GetString(self.m_choice_serialPortIndex.GetSelection()))
         self._recoverLastSerialPort()
+        self._updateSerialPortInfo()
 
     def _initPortSetupValue( self ):
         self.m_radioBtn_uart.SetValue(False)
@@ -304,6 +316,7 @@ class flashUi(flashWin.flashWin):
                     self.usbhidPid = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
         else:
             pass
+        self._updateSerialPortInfo()
         return status
 
     def updateConnectStatus( self, color='black' ):

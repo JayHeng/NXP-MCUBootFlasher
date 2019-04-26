@@ -66,11 +66,15 @@ kRevision_1_0_0_zh = u"【v1.0.0】 \n" + \
                      u"     2. 支持UART和USB-HID两种串行下载方式（COM端口/USB设备自动识别） \n" + \
                      u"     3. 支持下载.sb格式的image文件进启动设备 \n\n"
 kRevision_1_1_0_en =  "【v1.1.0】 \n" + \
+                      "  Feature: \n" + \
+                      "     1. Support downloading image into multiple boards at any one time \n" + \
                       "  Improvement: \n" + \
                       "     1. The text of language option in menu bar should be static and easy understanding \n" + \
                       "  Bug: \n" + \
                       "     1. Cannot download large image file (eg 6.8MB) in some case \n\n"
 kRevision_1_1_0_zh = u"【v1.1.0】 \n" + \
+                     u"  特性: \n" + \
+                     u"     1. 支持批量下载多个板卡(板卡数量不限) \n" + \
                      u"  改进: \n" + \
                      u"     1. 菜单栏里的语言选项标签应该是静态且易于理解的(中英双语同时显示) \n" + \
                      u"  缺陷: \n" + \

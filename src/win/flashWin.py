@@ -132,10 +132,10 @@ class flashWin ( wx.Frame ):
 		self.m_choice_serialPortIndex.SetSelection( 0 )
 		wSizer_setup.Add( self.m_choice_serialPortIndex, 0, wx.ALL, 5 )
 
-		self.m_staticText_usbPortLoc = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"N/A", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
-		self.m_staticText_usbPortLoc.Wrap( -1 )
+		self.m_staticText_portInfo = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"N/A", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
+		self.m_staticText_portInfo.Wrap( -1 )
 
-		wSizer_setup.Add( self.m_staticText_usbPortLoc, 0, wx.ALL, 5 )
+		wSizer_setup.Add( self.m_staticText_portInfo, 0, wx.ALL, 5 )
 
 		self.m_staticText_null2Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
 		self.m_staticText_null2Setup.Wrap( -1 )
