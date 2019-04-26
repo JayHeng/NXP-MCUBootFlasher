@@ -182,6 +182,7 @@ class flashMain(runcore.flashRun):
             self._setUartUsbPort()
             self.isUsbhidConnected = False
             self.setDownloadOperationResults(operations, successes)
+        self.usbDevicePath = []
 
     def callbackAllInOneAction( self, event ):
         self.isAllInOneActionTaskPending = True
