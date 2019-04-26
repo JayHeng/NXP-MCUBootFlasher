@@ -25,6 +25,8 @@
 　　RT-Flash完全基于Python语言开发，并且源代码全部开源，其具体开发环境为Python 2.7.15 (32bit)、wxPython 4.0.3、pySerial 3.4、pywinusb 0.4.2、PyInstaller 3.3.1（或更高）。  
 
 > * 源代码: https://github.com/JayHeng/RT-Flash  
+> * 用户手册：https://www.cnblogs.com/henjay724/p/10776084.html
+> * 问题反馈：https://www.cnblogs.com/henjay724/p/10776095.html
 
 　　RT-Flash在发布时借助PyInstaller将所有的Python依赖全部打包进一个可执行文件（\RT-Flash\bin\RT-Flash.exe），因此如果不是对RT-Flash的二次开发，你不需要安装任何Python软件及相关库。  
 

@@ -25,6 +25,7 @@ English | [中文](./README-zh.md)
 　　RT-Flash is developed in Python, and it is open source. The development environment is Python 2.7.15 (32bit), wxPython 4.0.3, pySerial 3.4, pywinusb 0.4.2, PyInstaller 3.3.1 (or higher).  
 
 > * Source code: https://github.com/JayHeng/RT-Flash  
+> * Feedback: https://www.cnblogs.com/henjay724/p/10776095.html  
 
 　　RT-Flash is packaged by PyInstaller, all Python dependencies have been packaged into an executable file (\RT-Flash\bin\RT-Flash.exe), so if you do not want to develop RT-Flash for new feature, there is no need to install any Python software or related libraries.  
 
