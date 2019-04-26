@@ -143,25 +143,32 @@ class flashMain(runcore.flashRun):
 
     def _doAllInOneAction( self ):
         boards = 0
+        successes = 0
         if self.isUsbhidPortSelected:
-            boards = len(self.usbDevicePath)
+            boards = min(len(self.usbDevicePath), self.connectedBoards)
         elif self.isUartPortSelected:
             pass
         else:
             pass
         for board in range(boards):
-            self.connectStage = uidef.kConnectStage_Rom
-            self.isUsbhidConnected = False
             if self._connectStateMachine(board):
                 if self.sbAppPath != None and os.path.isfile(self.sbAppPath):
                     if self.flashSbImage():
+                        successes += 1
                         self.updateConnectStatus('blue')
                         self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
                     else:
                         self.updateConnectStatus('red')
+                    self.resetMcuDevice()
+                    if self.isUsbhidPortSelected:
+                        time.sleep(2)
                 else:
                     self.updateConnectStatus('red')
                     self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][self.languageIndex])
+            self.connectStage = uidef.kConnectStage_Rom
+            self._setUartUsbPort()
+            self.isUsbhidConnected = False
+        self.setDownloadOperationResults(boards, successes)
 
     def callbackAllInOneAction( self, event ):
         self.isAllInOneActionTaskPending = True
@@ -170,6 +177,7 @@ class flashMain(runcore.flashRun):
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
         self.setCostTime(0)
+        self.setDownloadOperationResults(0)
         self.updateConnectStatus('black')
 
     def _deinitToolToExit( self ):

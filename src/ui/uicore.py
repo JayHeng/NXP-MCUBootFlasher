@@ -355,6 +355,15 @@ class flashUi(flashWin.flashWin):
         self.m_menuItem_english.Check(True)
         self.m_menuItem_chinese.Check(False)
 
+    def setDownloadOperationResults( self, totalCnt, successCnt=0 ):
+        failureCnt = 0
+        if totalCnt:
+            failureCnt = totalCnt - successCnt
+        else:
+            successCnt = 0
+        self.m_staticText_successfulOperationNum.SetLabel(str(successCnt))
+        self.m_staticText_failedOperationNum.SetLabel(str(failureCnt))
+
     def _getLastLangIndex( self ):
         label = self.m_staticText_mcuDevice.GetLabel()
         labelList = uilang.kMainLanguageContentDict['sText_mcuDevice'][:]
