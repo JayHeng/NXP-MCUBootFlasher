@@ -32,7 +32,7 @@ kMainLanguageContentDict = {
 
         'panel_setup':                        ['Setup',                                 u"设置"],
         'sText_mcuDevice':                    ['RT Device:',                            u"RT型号:"],
-        'sText_mcuBoard':                     ['RT Boards:',                            u"RT板卡数量:"],
+        'sText_mcuBoard':                     ['RT Boards (Unlimited):',                u"RT板卡数(不限量):"],
         'sText_connectedBoards':              ['Connected:',                            u"总连接数:"],
         'sText_detectedBoards':               ['Detected:',                             u"已识别数:"],
         'sText_serialPortIndex':              ['RT Port Index:',                        u"RT接口编号:"],
@@ -44,14 +44,14 @@ kMainLanguageContentDict = {
         'sText_pid':                          ['Product ID:',                           u"产品识别号:"],
 
         'panel_download':                     ['Download',                              u"下载"],
-        'sText_appPath':                      ['Application Image File (.sb):',         u"源应用程序文件(.sb):"],
+        'sText_appPath':                      ['Application Image File (.sb) / Folder:',u"源应用程序文件(.sb)/文件夹:"],
         'button_allInOneAction_black':        ['Start',                                 u"开始"],
         'button_allInOneAction_yellow':       ['Disconnected',                          u"断开"],
         'button_allInOneAction_green':        ['Ready',                                 u"就绪"],
         'button_allInOneAction_blue':         ['Success',                               u"成功"],
         'button_allInOneAction_red':          ['Failure',                               u"失败"],
-        'sText_successfulOperations':         ['Successful:',                           u"下载成功:"],
-        'sText_failedOperations':             ['Failed:',                               u"下载失败:"],
+        'sText_successfulBoards':             ['Successful Boards:',                    u"下载成功板卡:"],
+        'sText_failedBoards':                 ['Failed Boards:',                        u"下载失败板卡:"],
 
 }
 
@@ -68,6 +68,7 @@ kRevision_1_0_0_zh = u"【v1.0.0】 \n" + \
 kRevision_1_1_0_en =  "【v1.1.0】 \n" + \
                       "  Feature: \n" + \
                       "     1. Support downloading image into multiple boards at any one time \n" + \
+                      "     2. Support downloading multiple image files from one folder at any one time \n" + \
                       "  Improvement: \n" + \
                       "     1. The text of language option in menu bar should be static and easy understanding \n" + \
                       "  Bug: \n" + \
@@ -75,6 +76,7 @@ kRevision_1_1_0_en =  "【v1.1.0】 \n" + \
 kRevision_1_1_0_zh = u"【v1.1.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 支持批量下载多个板卡(板卡数量不限) \n" + \
+                     u"     2. 支持批量下载多个.sb格式的image文件(来自同一文件夹) \n" + \
                      u"  改进: \n" + \
                      u"     1. 菜单栏里的语言选项标签应该是静态且易于理解的(中英双语同时显示) \n" + \
                      u"  缺陷: \n" + \
@@ -105,10 +107,20 @@ kMsgLanguageContentDict = {
         'connectInfo_readyForDownload':       ['Connected, Ready for downloading!',
                                               u"已连接，可以进行下载操作！"],
 
-        'downloadError_notValidImage':        ['Please select one application image file (.sb )!',
-                                              u"请先选择一个.sb文件！"],
+        'downloadError_notValidImage':        ['Please select one application image file (.sb ) or folder containing .sb file!',
+                                              u"请先选择一个.sb文件或文件夹！"],
+        'downloadError_clearImageFileFirst':  ['Please clear application image file path first then set folder path!',
+                                              u"请先清除.sb文件路径，然后再设.sb文件夹路径！"],
+        'downloadError_notValidImageFolder':  ['Please select one folder containing application image file (.sb )!',
+                                              u"请选择一个包含.sb文件的文件夹！"],
         'downloadError_failToDownload':       ['Failed to download application image file (.sb )!',
                                               u"未能成功下载.sb文件！"],
         'downloadInfo_success':               ['Application image file (.sb ) has been downloaded successfully!',
                                               u".sb文件已被成功下载！"],
+
+        'portInfo_alreadySet':                ['Already Set',
+                                              u"已设置"],
+        'portInfo_notSet':                    ['Not Set',
+                                              u"未设置"],
+
 }

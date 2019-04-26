@@ -63,7 +63,9 @@ class flashUi(flashWin.flashWin):
         self._initPortSetupValue()
         self._initMcuBoards()
         self.setMcuBoards()
-        self.sbAppPath = None
+        self.sbAppFilePath = None
+        self.sbAppFolderPath = None
+        self.sbAppFiles = []
 
     def _initStatusBar( self ):
         self.m_statusBar.SetFieldsCount(2)
@@ -140,9 +142,9 @@ class flashUi(flashWin.flashWin):
     def _updateSerialPortInfo( self ):
         if self.isUartPortSelected:
             if self.serialPortIndex < len(self.uartComPort) and self.uartComPort[self.serialPortIndex] != None:
-                self.m_staticText_portInfo.SetLabel('Already set')
+                self.m_staticText_portInfo.SetLabel(uilang.kMsgLanguageContentDict['portInfo_alreadySet'][self.languageIndex])
             else:
-                self.m_staticText_portInfo.SetLabel('Not set')
+                self.m_staticText_portInfo.SetLabel(uilang.kMsgLanguageContentDict['portInfo_notSet'][self.languageIndex])
         elif self.isUsbhidPortSelected:
             self.m_staticText_portInfo.SetLabel('N/A')
         else:
@@ -380,8 +382,25 @@ class flashUi(flashWin.flashWin):
         self.m_gauge_action.SetValue(s_maxGauge)
 
     def getUserAppFilePath( self ):
-        appPath = self.m_filePicker_appPath.GetPath()
-        self.sbAppPath = appPath.encode('utf-8').encode("gbk")
+        appFilePath = self.m_filePicker_appFilePath.GetPath()
+        self.sbAppFilePath = appFilePath.encode('utf-8').encode("gbk")
+        self.sbAppFiles = []
+        self.sbAppFiles.append(self.sbAppFilePath)
+
+    def getUserAppFolderPath( self ):
+        appFolderPath = self.m_dirPicker_appFolderPath.GetPath()
+        self.sbAppFolderPath = appFolderPath.encode('utf-8').encode("gbk")
+        sbAppFiles = []
+        files = os.listdir(self.sbAppFolderPath)
+        for file in files:
+            if os.path.splitext(file)[1] == '.sb':
+                sbAppFiles.append(os.path.join(self.sbAppFolderPath, file))
+        self.sbAppFiles = sbAppFiles[:]
+        if len(sbAppFiles) == 0:
+            self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImageFolder'][self.languageIndex])
+
+    def resetUserAppFolderPath( self ):
+        self.m_dirPicker_appFolderPath.SetPath('')
 
     def _initLanguage( self ):
         self.m_menuItem_english.Check(True)
@@ -393,8 +412,8 @@ class flashUi(flashWin.flashWin):
             failureCnt = totalCnt - successCnt
         else:
             successCnt = 0
-        self.m_staticText_successfulOperationNum.SetLabel(str(successCnt))
-        self.m_staticText_failedOperationNum.SetLabel(str(failureCnt))
+        self.m_staticText_successfulBoardNum.SetLabel(str(successCnt))
+        self.m_staticText_failedBoardNum.SetLabel(str(failureCnt))
 
     def _getLastLangIndex( self ):
         label = self.m_staticText_mcuDevice.GetLabel()
@@ -447,8 +466,8 @@ class flashUi(flashWin.flashWin):
 
         self.m_notebook_download.SetPageText(uilang.kPanelIndex_Download, uilang.kMainLanguageContentDict['panel_download'][langIndex])
         self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
-        self.m_staticText_successfulOperations.SetLabel(uilang.kMainLanguageContentDict['sText_successfulOperations'][langIndex])
-        self.m_staticText_failedOperations.SetLabel(uilang.kMainLanguageContentDict['sText_failedOperations'][langIndex])
+        self.m_staticText_successfulBoards.SetLabel(uilang.kMainLanguageContentDict['sText_successfulBoards'][langIndex])
+        self.m_staticText_failedBoards.SetLabel(uilang.kMainLanguageContentDict['sText_failedBoards'][langIndex])
         if self.connectStatusColor != None:
             self.updateConnectStatus(self.connectStatusColor)
 

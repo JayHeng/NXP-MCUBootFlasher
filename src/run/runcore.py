@@ -186,8 +186,8 @@ class flashRun(uicore.flashUi):
         status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_CurrentVersion)
         return (status == boot.status.kStatus_Success)
 
-    def flashSbImage( self ):
-        status, results, cmdStr = self.blhost.receiveSbFile(self.sbAppPath)
+    def flashSbImage( self, sbAppFile ):
+        status, results, cmdStr = self.blhost.receiveSbFile(sbAppFile)
         if (status == boot.status.kStatus_Success) or (status == boot.status.kStatus_AbortDataPhase):
             return True
         else:
