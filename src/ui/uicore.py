@@ -223,7 +223,7 @@ class flashUi(flashWin.flashWin):
                 time.sleep(2)
             else:
                 usbVid[0] = 'N/A - Not Found'
-                usbPid[0] = usbVid[0]
+                usbPid[0] = 'N/A - Not Found'
         if not self.isUsbhidConnected:
             self.updateConnectStatus('yellow')
         if self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection()) != usbVid[0] or \
