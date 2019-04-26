@@ -1,6 +1,6 @@
 # RT Flash
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v1.1.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v1.1.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v2.0.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v2.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
 
 [English](./README.md) | 中文
 
@@ -55,7 +55,7 @@
 #### 1.5 界面
 　　下图为RT-Flash工具的主界面，界面主要由四部分组成，各部分功能如下：  
 
-![RT-Flash_mainWin](http://henjay724.com/image/cnblogs/RT-Flash_v1.1.0.PNG)
+![RT-Flash_mainWin](http://henjay724.com/image/cnblogs/RT-Flash_v2.0.0.PNG)
 
 > * 【Menu Bar】：功能菜单栏，提供软件通用设置。  
 > * 【Setup Window】：设置栏，提供MCU Device选项、串行接口选项。  

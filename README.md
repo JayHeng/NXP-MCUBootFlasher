@@ -1,6 +1,6 @@
 # RT Flash
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v1.1.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v1.1.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/RT-Flash/v2.0.0.svg)](https://github.com/JayHeng/RT-Flash/compare/v2.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/RT-Flash/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/RT-Flash.svg)](https://github.com/JayHeng/RT-Flash/blob/master/LICENSE)
 
 English | [中文](./README-zh.md)
 
@@ -53,7 +53,7 @@ English | [中文](./README-zh.md)
 #### 1.5 Interface
 　　The following figure shows the main interface of the RT-Flash tool. The interface consists of four parts. The functions of each part are as follows:  
 
-![RT-Flash_mainWin](http://henjay724.com/image/cnblogs/RT-Flash_v1.1.0.PNG)
+![RT-Flash_mainWin](http://henjay724.com/image/cnblogs/RT-Flash_v2.0.0.PNG)
 
 > * [Menu Bar]: Functional menu bar, providing general software settings.  
 > * [Setup Window]: Target device setting bar, providing MCU Device options, serial interface options.  
