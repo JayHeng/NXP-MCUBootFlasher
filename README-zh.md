@@ -4,6 +4,12 @@
 
 [English](./README.md) | 中文
 
+```text
+对于MCUBootUtility，RT-Flash工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
+```
+
+<img src="http://henjay724.com/image/cnblogs/MCUBootUtility_qq.png" style="zoom:100%" />
+
 ### 1 软件概览
 #### 1.1 介绍
 　　RT-Flash是一个专为基于NXP i.MX RT系列芯片的产品量产而设计的工具，其功能与官方MfgTool2工具类似，但是解决了MfgTool2工具在实际量产使用中的一些痛点：  
