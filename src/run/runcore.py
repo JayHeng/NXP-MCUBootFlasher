@@ -15,7 +15,9 @@ from boot import target
 
 def createTarget(device, exeBinRoot):
     # Build path to target directory and config file.
-    if device == uidef.kMcuDevice_iMXRT1015:
+    if device == uidef.kMcuDevice_iMXRT1011:
+        cpu = "MIMXRT1011"
+    elif device == uidef.kMcuDevice_iMXRT1015:
         cpu = "MIMXRT1015"
     elif device == uidef.kMcuDevice_iMXRT102x:
         cpu = "MIMXRT1021"
@@ -151,17 +153,30 @@ class flashRun(uicore.flashUi):
             pass
 
     def getMcuDeviceHabStatus( self ):
-        secConfig = self._getDeviceRegisterBySdphost( rundef.kRegisterAddr_SRC_SBMR2)
-        if secConfig != None:
-            self.mcuDeviceHabStatus = ((secConfig & rundef.kRegisterMask_SecConfig) >> rundef.kRegisterShift_SecConfig)
-            if self.mcuDeviceHabStatus == rundef.kHabStatus_FAB:
-                self.setHabStatus(u"FAB")
-            elif self.mcuDeviceHabStatus == rundef.kHabStatus_Open:
-                self.setHabStatus(u"Open")
-            elif self.mcuDeviceHabStatus == rundef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == rundef.kHabStatus_Closed1:
+        if self.mcuDevice == uidef.kMcuDevice_iMXRT1011:
+            status, results, cmdStr = self.sdphost.errorStatus()
+            if status == boot.status.kSDP_Status_HabEnabled:
+                self.mcuDeviceHabStatus = rundef.kHabStatus_Closed0
                 self.setHabStatus(u"Closed")
+            elif status == boot.status.kSDP_Status_HabDisabled:
+                self.mcuDeviceHabStatus = rundef.kHabStatus_Open
+                self.setHabStatus(u"Open")
             else:
                 pass
+        elif self.mcuDevice != uidef.kMcuDevice_iMXRT1011:
+            secConfig = self._getDeviceRegisterBySdphost( rundef.kRegisterAddr_SRC_SBMR2)
+            if secConfig != None:
+                self.mcuDeviceHabStatus = ((secConfig & rundef.kRegisterMask_SecConfig) >> rundef.kRegisterShift_SecConfig)
+                if self.mcuDeviceHabStatus == rundef.kHabStatus_FAB:
+                    self.setHabStatus(u"FAB")
+                elif self.mcuDeviceHabStatus == rundef.kHabStatus_Open:
+                    self.setHabStatus(u"Open")
+                elif self.mcuDeviceHabStatus == rundef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == rundef.kHabStatus_Closed1:
+                    self.setHabStatus(u"Closed")
+                else:
+                    pass
+        else:
+            pass
 
     def jumpToFlashloader( self ):
         flashloaderBinFile = None
