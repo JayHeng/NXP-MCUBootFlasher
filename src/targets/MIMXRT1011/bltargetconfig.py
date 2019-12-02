@@ -52,9 +52,6 @@ flexspiNorMemBase = 0x60000000
 isSipFlexspiNorDevice = False
 isEccTypeSetInFuseMiscConf = False
 
-quadspiNorDevice = None
-quadspiNorMemBase = None
-
 # memory map
 memoryRange = {
     # ITCM, 128KByte

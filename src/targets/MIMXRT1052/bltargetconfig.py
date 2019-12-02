@@ -40,6 +40,7 @@ build = 'Release'
 availablePeripherals = 0x11
 romUsbVid = '0x1FC9'
 romUsbPid = '0x0130'
+hasSdpReadRegisterCmd = True
 flashloaderUsbVid = '0x15A2'
 flashloaderUsbPid = '0x0073'
 flashloaderLoadAddr = 0x20000000

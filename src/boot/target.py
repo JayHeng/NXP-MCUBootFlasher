@@ -36,7 +36,7 @@ from utils import misc
 ##
 # Bootloader target definition.
 class Target(object):
-    
+
     def __init__(self, cpu, board='', build='', **kwargs):
                 #baseDir='.', elfFile=None, memory={}, availableCommands=0,
                 #availablePeripherals=0, deviceMemoryAccessable=False, systemDeviceId=0, isBootROM=False, isCrcCheckSupported=False):
@@ -50,6 +50,7 @@ class Target(object):
         self.availablePeripherals = misc.get_dict_default(kwargs, 'availablePeripherals', 0)
         self.romUsbVid = misc.get_dict_default(kwargs, 'romUsbVid', None)
         self.romUsbPid = misc.get_dict_default(kwargs, 'romUsbPid', None)
+        self.hasSdpReadRegisterCmd = misc.get_dict_default(kwargs, 'hasSdpReadRegisterCmd', None)
         self.flashloaderUsbVid = misc.get_dict_default(kwargs, 'flashloaderUsbVid', None)
         self.flashloaderUsbPid = misc.get_dict_default(kwargs, 'flashloaderUsbPid', None)
         self.flashloaderLoadAddr = misc.get_dict_default(kwargs, 'flashloaderLoadAddr', None)
@@ -59,14 +60,14 @@ class Target(object):
         self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase', None)
         self.isSipFlexspiNorDevice = misc.get_dict_default(kwargs, 'isSipFlexspiNorDevice', None)
         self.isEccTypeSetInFuseMiscConf = misc.get_dict_default(kwargs, 'isEccTypeSetInFuseMiscConf', None)
-        
+
     ##
     # @brief Check if a command is supported by the target.
     #
     # @return True if the command is supported. False if not.
     def isCommandSupported(self, tag):
         return bool(commands.Commands[tag].propertyMask & self.availableCommands)
-    
+
     ##
     # @brief Check if a peripheral is supported by the target.
     #
@@ -75,4 +76,4 @@ class Target(object):
         return bool(peripherals.PeripheralMasks[name].propertyMask & self.availablePeripherals)
 
 
-        
+

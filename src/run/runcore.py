@@ -139,31 +139,22 @@ class flashRun(uicore.flashUi):
         return var32Vaule
 
     def _getDeviceRegisterBySdphost( self, regAddr):
-        filename = 'readReg.dat'
-        filepath = os.path.join(self.sdphostVectorsDir, filename)
-        status, results, cmdStr = self.sdphost.readRegister(regAddr, 32, 4, filename)
-        if (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled):
-            regVal = self._getVal32FromBinFile(filepath)
-            return regVal
-        else:
-            return None
-        try:
-            os.remove(filepath)
-        except:
-            pass
+        if self.tgt.hasSdpReadRegisterCmd:
+            filename = 'readReg.dat'
+            filepath = os.path.join(self.sdphostVectorsDir, filename)
+            status, results, cmdStr = self.sdphost.readRegister(regAddr, 32, 4, filename)
+            if (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled):
+                regVal = self._getVal32FromBinFile(filepath)
+                return regVal
+            else:
+                return None
+            try:
+                os.remove(filepath)
+            except:
+                pass
 
     def getMcuDeviceHabStatus( self ):
-        if self.mcuDevice == uidef.kMcuDevice_iMXRT1011:
-            status, results, cmdStr = self.sdphost.errorStatus()
-            if status == boot.status.kSDP_Status_HabEnabled:
-                self.mcuDeviceHabStatus = rundef.kHabStatus_Closed0
-                self.setHabStatus(u"Closed")
-            elif status == boot.status.kSDP_Status_HabDisabled:
-                self.mcuDeviceHabStatus = rundef.kHabStatus_Open
-                self.setHabStatus(u"Open")
-            else:
-                pass
-        elif self.mcuDevice != uidef.kMcuDevice_iMXRT1011:
+        if self.tgt.hasSdpReadRegisterCmd:
             secConfig = self._getDeviceRegisterBySdphost( rundef.kRegisterAddr_SRC_SBMR2)
             if secConfig != None:
                 self.mcuDeviceHabStatus = ((secConfig & rundef.kRegisterMask_SecConfig) >> rundef.kRegisterShift_SecConfig)
@@ -176,7 +167,15 @@ class flashRun(uicore.flashUi):
                 else:
                     pass
         else:
-            pass
+            status, results, cmdStr = self.sdphost.errorStatus()
+            if status == boot.status.kSDP_Status_HabEnabled:
+                self.mcuDeviceHabStatus = rundef.kHabStatus_Closed0
+                self.setHabStatus(u"Closed")
+            elif status == boot.status.kSDP_Status_HabDisabled:
+                self.mcuDeviceHabStatus = rundef.kHabStatus_Open
+                self.setHabStatus(u"Open")
+            else:
+                pass
 
     def jumpToFlashloader( self ):
         flashloaderBinFile = None
