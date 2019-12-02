@@ -89,9 +89,9 @@ class flashWin ( wx.Frame ):
 
 		wSizer_setup.Add( self.m_staticText_mcuDevice, 0, wx.ALL, 5 )
 
-		m_choice_mcuDeviceChoices = [ u"i.MXRT1011", u"i.MXRT1015", u"i.MXRT102x", u"i.MXRT105x", u"i.MXRT106x", u"i.MXRT1064 SIP" ]
+		m_choice_mcuDeviceChoices = [ u"i.MXRT1011", u"i.MXRT1015", u"i.MXRT1021", u"i.MXRT105x", u"i.MXRT106x", u"i.MXRT1064 SIP" ]
 		self.m_choice_mcuDevice = wx.Choice( self.m_panel_setup, wx.ID_ANY, wx.DefaultPosition, wx.Size( 125,-1 ), m_choice_mcuDeviceChoices, 0 )
-		self.m_choice_mcuDevice.SetSelection( 0 )
+		self.m_choice_mcuDevice.SetSelection( 3 )
 		wSizer_setup.Add( self.m_choice_mcuDevice, 0, wx.ALL, 5 )
 
 		self.m_staticText_null1Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 220,2 ), 0 )

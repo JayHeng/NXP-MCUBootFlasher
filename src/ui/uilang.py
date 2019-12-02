@@ -81,6 +81,20 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"     1. 菜单栏里的语言选项标签应该是静态且易于理解的(中英双语同时显示) \n" + \
                      u"  缺陷: \n" + \
                      u"     1. 当输入的源image文件非常大时(比如6.8MB)，下载可能会超时失败 \n\n"
+kRevision_3_0_0_en =  "【v3.0.0】 \n" + \
+                      "  Feature: \n" + \
+                      "     1. Support i.MXRT1011 \n" + \
+                      "  Improvement: \n" + \
+                      "     1.  \n" + \
+                      "  Bug: \n" + \
+                      "     1.  \n\n"
+kRevision_3_0_0_zh = u"【v3.0.0】 \n" + \
+                     u"  特性: \n" + \
+                     u"     1. 支持i.MXRT1011 \n" + \
+                     u"  改进: \n" + \
+                     u"     1. \n" + \
+                     u"  缺陷: \n" + \
+                     u"     1. \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -93,6 +107,7 @@ kMsgLanguageContentDict = {
         'revisionHistory_title':              ['Revision History',                      u"版本历史"],
         'revisionHistory_v1_0_0':             [kRevision_1_0_0_en,                      kRevision_1_0_0_zh],
         'revisionHistory_v2_0_0':             [kRevision_2_0_0_en,                      kRevision_2_0_0_zh],
+        'revisionHistory_v3_0_0':             [kRevision_3_0_0_en,                      kRevision_3_0_0_zh],
 
         'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!',
                                               u"MCU已进入ROM SDP模式，但未能跳转Flashloader，请复位板子再试！"],
