@@ -98,7 +98,7 @@ kRevision_3_0_0_zh = u"【v3.0.0】 \n" + \
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
-        'homePage_info':                      ['https://github.com/JayHeng/RT-Flash.git \n',                                       u"https://github.com/JayHeng/RT-Flash.git \n"],
+        'homePage_info':                      ['https://github.com/JayHeng/NXP-MCUBootFlasher.git \n',                             u"https://github.com/JayHeng/NXP-MCUBootFlasher.git \n"],
         'aboutAuthor_title':                  ['About Author',                          u"关于作者"],
         'aboutAuthor_author':                 [u"Author:  痞子衡 \n",                   u"作者：痞子衡 \n"],
         'aboutAuthor_email1':                 ['Email:     jie.heng@nxp.com \n',        u"邮箱：jie.heng@nxp.com \n"],
