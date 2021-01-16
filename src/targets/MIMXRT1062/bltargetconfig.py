@@ -43,14 +43,17 @@ romUsbPid = '0x0135'
 hasSdpReadRegisterCmd = True
 flashloaderUsbVid = '0x15A2'
 flashloaderUsbPid = '0x0073'
-flashloaderLoadAddr = 0x20000000
-flashloaderJumpAddr = 0x20000400
+flashloaderLoadAddr = 0x20208200
+flashloaderJumpAddr = 0x20208200
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
-hasRemappedFuse = True
-flexspiNorMemBase = 0x60000000
+flexspiNorMemBase0 = 0x60000000
+flexspiNorMemBase1 = None
+xspiNorCfgInfoOffset = 0x0
 isSipFlexspiNorDevice = False
-isEccTypeSetInFuseMiscConf = True
+quadspiNorMemBase = None
+ftfxNorMemBase = None
+c040hdNorMemBase = None
 
 # memory map
 memoryRange = {
@@ -66,7 +69,7 @@ memoryRange = {
 }
 
 reservedRegionDict = {   # new
-    # OCRAM, 1MB
-    'ram' : [0x20203800, 0x20207F58]
+    # OCRAM, 32KB
+    'ram' : [0x20200000, 0x20207FFF]
 }
 

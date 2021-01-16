@@ -47,10 +47,13 @@ flashloaderLoadAddr = 0x20205800
 flashloaderJumpAddr = 0x20205800
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
-hasRemappedFuse = False
-flexspiNorMemBase = 0x60000000
+flexspiNorMemBase0 = 0x60000000
+flexspiNorMemBase1 = None
+xspiNorCfgInfoOffset = 0x400
 isSipFlexspiNorDevice = False
-isEccTypeSetInFuseMiscConf = False
+quadspiNorMemBase = None
+ftfxNorMemBase = None
+c040hdNorMemBase = None
 
 # memory map
 memoryRange = {

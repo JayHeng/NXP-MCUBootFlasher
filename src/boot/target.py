@@ -56,10 +56,14 @@ class Target(object):
         self.flashloaderLoadAddr = misc.get_dict_default(kwargs, 'flashloaderLoadAddr', None)
         self.flashloaderJumpAddr = misc.get_dict_default(kwargs, 'flashloaderJumpAddr', None)
         self.supportedPeripheralSpeed_uart = misc.get_dict_default(kwargs, 'supportedPeripheralSpeed_uart', None)
-        self.hasRemappedFuse = misc.get_dict_default(kwargs, 'hasRemappedFuse', None)
-        self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase', None)
+        self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase0', None)
+        self.flexspiNorMemBase0 = misc.get_dict_default(kwargs, 'flexspiNorMemBase0', None)
+        self.flexspiNorMemBase1 = misc.get_dict_default(kwargs, 'flexspiNorMemBase1', None)
+        self.xspiNorCfgInfoOffset = misc.get_dict_default(kwargs, 'xspiNorCfgInfoOffset', None)
         self.isSipFlexspiNorDevice = misc.get_dict_default(kwargs, 'isSipFlexspiNorDevice', None)
-        self.isEccTypeSetInFuseMiscConf = misc.get_dict_default(kwargs, 'isEccTypeSetInFuseMiscConf', None)
+        self.quadspiNorMemBase = misc.get_dict_default(kwargs, 'quadspiNorMemBase', None)
+        self.ftfxNorMemBase = misc.get_dict_default(kwargs, 'ftfxNorMemBase', None)
+        self.c040hdNorMemBase = misc.get_dict_default(kwargs, 'c040hdNorMemBase', None)
 
     ##
     # @brief Check if a command is supported by the target.

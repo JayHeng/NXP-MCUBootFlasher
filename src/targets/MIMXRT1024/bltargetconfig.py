@@ -32,7 +32,7 @@ import sys, os
 sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
 
-cpu = 'MIMXRT1015'
+cpu = 'MIMXRT1024'
 board = 'EVK'
 compiler = 'iar'
 build = 'Release'
@@ -50,19 +50,19 @@ supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verif
 flexspiNorMemBase0 = 0x60000000
 flexspiNorMemBase1 = None
 xspiNorCfgInfoOffset = 0x0
-isSipFlexspiNorDevice = False
+isSipFlexspiNorDevice = True
 quadspiNorMemBase = None
 ftfxNorMemBase = None
 c040hdNorMemBase = None
 
 # memory map
 memoryRange = {
-    # ITCM, 128KByte
-    'itcm' : MemoryRange(0x00000000, 0x20000, 'state_mem0.dat'),
-    # DTCM, 128KByte
-    'dtcm' : MemoryRange(0x20000000, 0x20000, 'state_mem1.dat'),
-    # OCRAM, 128KByte
-    'ocram' : MemoryRange(0x20200000, 0x20000, 'state_mem2.dat'),
+    # ITCM, 256KByte
+    'itcm' : MemoryRange(0x00000000, 0x40000, 'state_mem0.dat'),
+    # DTCM, 256KByte
+    'dtcm' : MemoryRange(0x20000000, 0x40000, 'state_mem1.dat'),
+    # OCRAM, 256KByte
+    'ocram' : MemoryRange(0x20200000, 0x40000, 'state_mem2.dat'),
 
     # FLASH, 64KByte / 512MByte
     'flash': MemoryRange(0x00000000, 0x20000000, 'state_flash_mem.dat', True, 0x10000)
