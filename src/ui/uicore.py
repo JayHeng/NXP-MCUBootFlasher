@@ -52,6 +52,7 @@ class flashUi(flashWin.flashWin):
         self._initUsbDetection()
         self.setUsbDetection()
         self.mcuDevice = None
+        self._initTargetSetupValue()
         self.setTargetSetupValue()
         self.uartComPort = [None]
         self.uartBaudrate = [None]
@@ -85,6 +86,11 @@ class flashUi(flashWin.flashWin):
 
     def setUsbDetection( self ):
         self.isDymaticUsbDetection = self.m_menuItem_usbDetectionDynamic.IsChecked()
+
+    def _initTargetSetupValue( self ):
+        self.m_choice_mcuDevice.Clear()
+        self.m_choice_mcuDevice.SetItems(uidef.kMcuDevice_Latest)
+        self.m_choice_mcuDevice.SetSelection(6)
 
     def setTargetSetupValue( self ):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())

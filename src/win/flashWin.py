@@ -17,7 +17,7 @@ import wx.xrc
 class flashWin ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"RT Flash", pos = wx.DefaultPosition, size = wx.Size( 576,379 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"NXP MCU Boot Flasher", pos = wx.DefaultPosition, size = wx.Size( 576,379 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
@@ -84,7 +84,7 @@ class flashWin ( wx.Frame ):
 		self.m_panel_setup = wx.Panel( self.m_notebook_setup, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		wSizer_setup = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
 
-		self.m_staticText_mcuDevice = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"RT Device:", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
+		self.m_staticText_mcuDevice = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"MCU Device:", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
 		self.m_staticText_mcuDevice.Wrap( -1 )
 
 		wSizer_setup.Add( self.m_staticText_mcuDevice, 0, wx.ALL, 5 )
@@ -99,7 +99,7 @@ class flashWin ( wx.Frame ):
 
 		wSizer_setup.Add( self.m_staticText_null1Setup, 0, wx.ALL, 5 )
 
-		self.m_staticText_mcuBoard = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"RT Boards (Unlimited):", wx.DefaultPosition, wx.Size( 220,-1 ), 0 )
+		self.m_staticText_mcuBoard = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"MCU Boards (Unlimited):", wx.DefaultPosition, wx.Size( 220,-1 ), 0 )
 		self.m_staticText_mcuBoard.Wrap( -1 )
 
 		wSizer_setup.Add( self.m_staticText_mcuBoard, 0, wx.ALL, 5 )
@@ -132,7 +132,7 @@ class flashWin ( wx.Frame ):
 
 		wSizer_setup.Add( self.m_staticText_null3Setup, 0, wx.ALL, 5 )
 
-		self.m_staticText_serialPortIndex = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"RT Port Index:", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
+		self.m_staticText_serialPortIndex = wx.StaticText( self.m_panel_setup, wx.ID_ANY, u"MCU Port Idx:", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
 		self.m_staticText_serialPortIndex.Wrap( -1 )
 
 		wSizer_setup.Add( self.m_staticText_serialPortIndex, 0, wx.ALL, 5 )

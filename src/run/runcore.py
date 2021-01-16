@@ -14,19 +14,33 @@ from boot import bltest
 from boot import target
 
 def createTarget(device, exeBinRoot):
-    # Build path to target directory and config file.
-    if device == uidef.kMcuDevice_iMXRT1011:
+    cpu = "MIMXRT1052"
+    if device == uidef.kMcuDevice_iMXRT500:
+        cpu = "MIMXRT595"
+    elif device == uidef.kMcuDevice_iMXRT600:
+        cpu = "MIMXRT685"
+    elif device == uidef.kMcuDevice_iMXRT1011:
         cpu = "MIMXRT1011"
     elif device == uidef.kMcuDevice_iMXRT1015:
         cpu = "MIMXRT1015"
     elif device == uidef.kMcuDevice_iMXRT102x:
         cpu = "MIMXRT1021"
+    elif device == uidef.kMcuDevice_iMXRT1024:
+        cpu = "MIMXRT1024"
     elif device == uidef.kMcuDevice_iMXRT105x:
         cpu = "MIMXRT1052"
     elif device == uidef.kMcuDevice_iMXRT106x:
         cpu = "MIMXRT1062"
     elif device == uidef.kMcuDevice_iMXRT1064:
         cpu = "MIMXRT1064"
+    elif device == uidef.kMcuDevice_iMXRT117x:
+        cpu = "MIMXRT1176"
+    elif device in uidef.kMcuDevice_Niobe4minis:
+        cpu = "LPC55S16"
+    elif device in uidef.kMcuDevice_Niobe4s:
+        cpu = "LPC55S69"
+    elif device in uidef.kMcuDevice_Kinetis:
+        cpu = "MKxx"
     else:
         pass
     targetBaseDir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'targets', cpu)
