@@ -51,6 +51,7 @@ class flashUi(flashWin.flashWin):
         self.isDymaticUsbDetection = None
         self._initUsbDetection()
         self.setUsbDetection()
+        self.mcuSeries = None
         self.mcuDevice = None
         self._initTargetSetupValue()
         self.setTargetSetupValue()
@@ -94,6 +95,18 @@ class flashUi(flashWin.flashWin):
 
     def setTargetSetupValue( self ):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
+        if self.mcuDevice in uidef.kMcuDevice_iMXRTxxx:
+            self.mcuSeries = uidef.kMcuSeries_iMXRTxxx
+        elif self.mcuDevice in uidef.kMcuDevice_iMXRT10yy:
+            self.mcuSeries = uidef.kMcuSeries_iMXRT10yy
+        elif self.mcuDevice in uidef.kMcuDevice_iMXRT11yy:
+            self.mcuSeries = uidef.kMcuSeries_iMXRT11yy
+        elif self.mcuDevice in uidef.kMcuDevice_LPC:
+            self.mcuSeries = uidef.kMcuSeries_LPC
+        elif self.mcuDevice in uidef.kMcuDevice_Kinetis:
+            self.mcuSeries = uidef.kMcuSeries_Kinetis
+        else:
+            pass
 
     def _adjustSerialPortIndexValue( self ):
         itemNum = 0
