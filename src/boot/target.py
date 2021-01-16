@@ -62,6 +62,8 @@ class Target(object):
         self.xspiNorCfgInfoOffset = misc.get_dict_default(kwargs, 'xspiNorCfgInfoOffset', None)
         self.isSipFlexspiNorDevice = misc.get_dict_default(kwargs, 'isSipFlexspiNorDevice', None)
         self.quadspiNorMemBase = misc.get_dict_default(kwargs, 'quadspiNorMemBase', None)
+        self.registerAddrDict = misc.get_dict_default(kwargs, 'registerAddrDict', None)
+        self.registerDefnDict = misc.get_dict_default(kwargs, 'registerDefnDict', None)
         self.ftfxNorMemBase = misc.get_dict_default(kwargs, 'ftfxNorMemBase', None)
         self.c040hdNorMemBase = misc.get_dict_default(kwargs, 'c040hdNorMemBase', None)
 

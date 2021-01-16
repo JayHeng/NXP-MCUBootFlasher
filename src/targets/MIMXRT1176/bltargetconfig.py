@@ -31,6 +31,7 @@
 import sys, os
 sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
+from run import rundef
 
 cpu = 'MIMXRT1176'
 board = 'EVK'
@@ -52,6 +53,8 @@ flexspiNorMemBase1 = 0x60000000
 xspiNorCfgInfoOffset = 0x400
 isSipFlexspiNorDevice = False
 quadspiNorMemBase = None
+registerAddrDict = rundef.registerAddrDict_RT11yy
+registerDefnDict  = rundef.registerDefnDict_RT11yy
 ftfxNorMemBase = None
 c040hdNorMemBase = None
 

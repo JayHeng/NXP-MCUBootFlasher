@@ -52,6 +52,8 @@ flexspiNorMemBase1 = None
 xspiNorCfgInfoOffset = None
 isSipFlexspiNorDevice = None
 quadspiNorMemBase = None
+registerAddrDict = None
+registerDefnDict  = None
 ftfxNorMemBase = 0x00000000
 c040hdNorMemBase = None
 
