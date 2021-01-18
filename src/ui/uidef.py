@@ -59,8 +59,4 @@ kMcuDevice_Niobe4minis = [kMcuDevice_Niobe4mini_0, kMcuDevice_Niobe4mini_1]
 kMcuDevice_Niobe4s     = [kMcuDevice_Niobe4_0, kMcuDevice_Niobe4_1]
 kMcuDevice_LPC         = [kMcuDevice_Niobe4mini_0, kMcuDevice_Niobe4mini_1, kMcuDevice_Niobe4_0, kMcuDevice_Niobe4_1]
 
-kMcuDevice_Latest     = kMcuDevice_iMXRTxxx
-kMcuDevice_Latest.extend(kMcuDevice_iMXRT10yy)
-kMcuDevice_Latest.extend(kMcuDevice_iMXRT11yy)
-kMcuDevice_Latest.extend(kMcuDevice_LPC)
-kMcuDevice_Latest.extend(kMcuDevice_Kinetis)
+kMcuDevice_Latest     = kMcuDevice_iMXRTxxx + kMcuDevice_iMXRT10yy + kMcuDevice_iMXRT11yy + kMcuDevice_LPC + kMcuDevice_Kinetis
