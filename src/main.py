@@ -93,6 +93,19 @@ class flashMain(runcore.flashRun):
             time.sleep(2)
         return pingStatus
 
+    def _doubleCheckBootModeError( self ):
+        if (self.mcuSeries == uidef.kMcuSeries_iMXRT10yy) or \
+           (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy):
+            self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
+        elif (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx):
+            self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckIsp'][self.languageIndex])
+        elif (self.mcuSeries == uidef.kMcuSeries_LPC):
+            self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckIspBoot'][self.languageIndex])
+        elif (self.mcuSeries == uidef.kMcuSeries_Kinetis):
+            self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckFopt'][self.languageIndex])
+        else:
+            pass
+
     def _connectFailureHandler( self ):
         self.connectStage = uidef.kConnectStage_Rom
         self.updateConnectStatus('red')
@@ -102,7 +115,16 @@ class flashMain(runcore.flashRun):
 
     def _connectStateMachine( self, deviceIndex=0 ):
         retryToDetectUsb = False
-        connectSteps = 3
+        connectSteps = 0
+        if (self.mcuSeries == uidef.kMcuSeries_iMXRT10yy) or \
+           (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy):
+            connectSteps = 3
+        if (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx) or \
+           (self.mcuSeries == uidef.kMcuSeries_LPC) or \
+           (self.mcuSeries == uidef.kMcuSeries_Kinetis):
+            connectSteps = 2
+        else:
+            pass
         isConnectionFailureOnce = False
         while connectSteps:
             if not self.updatePortSetupValue(retryToDetectUsb):
@@ -115,18 +137,27 @@ class flashMain(runcore.flashRun):
             if self.connectStage == uidef.kConnectStage_Rom:
                 self.connectToDevice(self.connectStage, deviceIndex)
                 if self._retryToPingBootloader(kBootloaderType_Rom):
-                    self.getMcuDeviceHabStatus()
-                    if self.jumpToFlashloader():
-                        self.connectStage = uidef.kConnectStage_Flashloader
-                        usbIdList = self.getUsbid()
-                        self.setPortSetupValue(self.connectStage, usbIdList, True )
+                    if (self.mcuSeries == uidef.kMcuSeries_iMXRT10yy) or \
+                       (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy):
+                        self.getMcuDeviceHabStatus()
+                        if self.jumpToFlashloader():
+                            self.connectStage = uidef.kConnectStage_Flashloader
+                            usbIdList = self.getUsbid()
+                            self.setPortSetupValue(self.connectStage, usbIdList, True )
+                        else:
+                            self.updateConnectStatus('red')
+                            self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][self.languageIndex])
+                            return False
+                    elif (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx) or \
+                         (self.mcuSeries == uidef.kMcuSeries_LPC) or \
+                         (self.mcuSeries == uidef.kMcuSeries_Kinetis):
+                        self.updateConnectStatus('green')
+                        self.connectStage = uidef.kConnectStage_Ready
                     else:
-                        self.updateConnectStatus('red')
-                        self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][self.languageIndex])
-                        return False
+                        pass
                 else:
                     self.updateConnectStatus('red')
-                    self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
+                    self._doubleCheckBootModeError()
                     return False
             elif self.connectStage == uidef.kConnectStage_Flashloader:
                 self.connectToDevice(self.connectStage, deviceIndex)

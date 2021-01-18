@@ -81,7 +81,7 @@ class flashRun(uicore.flashUi):
         self.tgt = None
         self.cpuDir = None
         self.sdphostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'sdphost', 'win', 'vectors')
-        self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost', 'win', 'vectors')
+        self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost2_3', 'win', 'vectors')
         self.mcuDeviceHabStatus = None
         self.createMcuTarget()
 
@@ -96,23 +96,47 @@ class flashRun(uicore.flashUi):
         if connectStage == uidef.kConnectStage_Rom:
             # Create the target object.
             self.createMcuTarget()
+            xhost = None
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                xhost = 'sdp_'
+            elif (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy) or \
+                 (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx) or \
+                 (self.mcuSeries == uidef.kMcuSeries_LPC) or \
+                 (self.mcuSeries == uidef.kMcuSeries_Kinetis):
+                xhost = ''
+            else:
+                pass
+            xPeripheral = None
             if self.isUartPortSelected:
-                sdpPeripheral = 'sdp_uart'
+                xPeripheral = xhost + 'uart'
                 uartComPort = self.uartComPort[deviceIndex]
                 uartBaudrate = int(self.uartBaudrate[deviceIndex])
                 usbDevicePath = ''
             elif self.isUsbhidPortSelected:
-                sdpPeripheral = 'sdp_usb'
+                xPeripheral = xhost + 'uart'
                 uartComPort = ''
                 uartBaudrate = ''
                 usbDevicePath = self.usbDevicePath[deviceIndex]['rom']
             else:
                 pass
-            self.sdphost = bltest.createBootloader(self.tgt,
-                                                   self.sdphostVectorsDir,
-                                                   sdpPeripheral,
-                                                   uartBaudrate, uartComPort,
-                                                   usbDevicePath)
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                self.sdphost = bltest.createBootloader(self.tgt,
+                                                       self.sdphostVectorsDir,
+                                                       xPeripheral,
+                                                       uartBaudrate, uartComPort,
+                                                       usbDevicePath)
+            elif (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy) or \
+                 (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx) or \
+                 (self.mcuSeries == uidef.kMcuSeries_LPC) or \
+                 (self.mcuSeries == uidef.kMcuSeries_Kinetis):
+                self.blhost = bltest.createBootloader(self.tgt,
+                                                      self.blhostVectorsDir,
+                                                      xPeripheral,
+                                                      uartBaudrate, uartComPort,
+                                                      usbDevicePath,
+                                                      True)
+            else:
+                pass
         elif connectStage == uidef.kConnectStage_Flashloader:
             if self.isUartPortSelected:
                 blPeripheral = 'uart'
@@ -138,8 +162,17 @@ class flashRun(uicore.flashUi):
             pass
 
     def pingRom( self ):
-        status, results, cmdStr = self.sdphost.errorStatus()
-        return (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            status, results, cmdStr = self.sdphost.errorStatus()
+            return (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled)
+        elif (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy) or \
+             (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx) or \
+             (self.mcuSeries == uidef.kMcuSeries_LPC) or \
+             (self.mcuSeries == uidef.kMcuSeries_Kinetis):
+            status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_CurrentVersion)
+            return (status == boot.status.kStatus_Success)
+        else:
+            pass
 
     def _getVal32FromBinFile( self, filename, offset=0):
         var32Vaule = 0
@@ -168,28 +201,42 @@ class flashRun(uicore.flashUi):
                 pass
 
     def getMcuDeviceHabStatus( self ):
-        if self.tgt.hasSdpReadRegisterCmd:
-            secConfig = self._getDeviceRegisterBySdphost( rundef.kRegisterAddr_SRC_SBMR2)
-            if secConfig != None:
-                self.mcuDeviceHabStatus = ((secConfig & rundef.kRegisterMask_SecConfig) >> rundef.kRegisterShift_SecConfig)
-                if self.mcuDeviceHabStatus == rundef.kHabStatus_FAB:
-                    self.setHabStatus(u"FAB")
-                elif self.mcuDeviceHabStatus == rundef.kHabStatus_Open:
-                    self.setHabStatus(u"Open")
-                elif self.mcuDeviceHabStatus == rundef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == rundef.kHabStatus_Closed1:
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            if self.tgt.hasSdpReadRegisterCmd:
+                secConfig = self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_SRC_SBMR2'])
+                if secConfig != None:
+                    self.mcuDeviceHabStatus = ((secConfig & self.tgt.registerDefnDict['kRegisterMask_SRC_SBMR2_SecConfig']) >> self.tgt.registerDefnDict['kRegisterShift_SRC_SBMR2_SecConfig'])
+                    if self.mcuDeviceHabStatus == rundef.kHabStatus_FAB:
+                        self.setHabStatus(u"FAB")
+                    elif self.mcuDeviceHabStatus == rundef.kHabStatus_Open:
+                        self.setHabStatus(u"Open")
+                    elif self.mcuDeviceHabStatus == rundef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == rundef.kHabStatus_Closed1:
+                        self.setHabStatus(u"Closed")
+                    else:
+                        pass
+            else:
+                status, results, cmdStr = self.sdphost.errorStatus()
+                if status == boot.status.kSDP_Status_HabEnabled:
+                    self.mcuDeviceHabStatus = rundef.kHabStatus_Closed0
                     self.setHabStatus(u"Closed")
+                elif status == boot.status.kSDP_Status_HabDisabled:
+                    self.mcuDeviceHabStatus = rundef.kHabStatus_Open
+                    self.setHabStatus(u"Open")
                 else:
                     pass
-        else:
-            status, results, cmdStr = self.sdphost.errorStatus()
-            if status == boot.status.kSDP_Status_HabEnabled:
-                self.mcuDeviceHabStatus = rundef.kHabStatus_Closed0
-                self.setHabStatus(u"Closed")
-            elif status == boot.status.kSDP_Status_HabDisabled:
-                self.mcuDeviceHabStatus = rundef.kHabStatus_Open
-                self.setHabStatus(u"Open")
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_FlashSecurityState)
+            if status == boot.status.kStatus_Success:
+                if results[0] == 0:
+                    self.mcuDeviceHabStatus = rundef.kHabStatus_Open
+                    self.setHabStatus(u"Open")
+                else:
+                    self.mcuDeviceHabStatus = rundef.kHabStatus_Closed0
+                    self.setHabStatus(u"Closed")
             else:
                 pass
+        else:
+            pass
 
     def jumpToFlashloader( self ):
         flashloaderBinFile = None
@@ -202,12 +249,19 @@ class flashRun(uicore.flashUi):
             flashloaderBinFile = os.path.join(self.cpuDir, 'ivt_flashloader.bin')
         else:
             pass
-        status, results, cmdStr = self.sdphost.writeFile(self.tgt.flashloaderLoadAddr, flashloaderBinFile)
-        if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
-            return False
-        status, results, cmdStr = self.sdphost.jumpAddress(self.tgt.flashloaderJumpAddr)
-        if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
-            return False
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            status, results, cmdStr = self.sdphost.writeFile(self.tgt.flashloaderLoadAddr, flashloaderBinFile)
+            if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
+                return False
+            status, results, cmdStr = self.sdphost.jumpAddress(self.tgt.flashloaderJumpAddr)
+            if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
+                return False
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            status, results, cmdStr = self.blhost.loadImage(flashloaderBinFile)
+            if status != boot.status.kStatus_Success:
+                return False
+        else:
+            pass
         return True
 
     def pingFlashloader( self ):

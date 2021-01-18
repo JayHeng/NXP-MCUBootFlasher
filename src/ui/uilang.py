@@ -138,4 +138,11 @@ kMsgLanguageContentDict = {
         'portInfo_notSet':                    ['Not Set',
                                               u"未设置"],
 
+        'connectError_doubleCheckIsp':        ['Put MCU in ISP modes (ISP[2:0] pins = 3\'bx10 (USB/UART)), Reset board and try again!',
+                                              u"将ISP[2:0]引脚设为3\'bx10 (USB/UART)，然后复位板子再试！"],
+        'connectError_doubleCheckFopt':       ['Put MCU in ROM boot mode (FOPT = 0x3D, assert BOOTCFG0(NMI)), Reset board and try again!',
+                                              u"将FOPT(FCF区域0x40d)设为0x3D以及按住BOOTCFG0，然后复位板子再试！"],
+        'connectError_doubleCheckIspBoot':    ['Put MCU in ISP boot mode (ISP0 pin = LOW), Reset board and try again!',
+                                              u"将ISP0引脚设为低，然后复位板子再试！"],
+
 }
