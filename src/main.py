@@ -77,17 +77,17 @@ class flashMain(runcore.flashRun):
     def callbackSetBaudPid( self, event ):
         self.updatePortSetupValue()
 
-    def _retryToPingBootloader( self, bootType ):
+    def _retryToPingBootloader( self, bootType, deviceIndex=0 ):
         pingStatus = False
         pingCnt = kRetryPingTimes
         while (not pingStatus) and pingCnt > 0:
             if bootType == kBootloaderType_Rom:
-                pingStatus = self.pingRom()
+                pingStatus = self.pingRom(deviceIndex)
             elif bootType == kBootloaderType_Flashloader:
                 # This is mainly for RT1170 flashloader, but it is also ok for other RT devices
                 if self.isUartPortSelected:
                     time.sleep(3)
-                pingStatus = self.pingFlashloader()
+                pingStatus = self.pingFlashloader(deviceIndex)
             else:
                 pass
             if pingStatus:
@@ -109,11 +109,11 @@ class flashMain(runcore.flashRun):
         else:
             pass
 
-    def _connectFailureHandler( self ):
-        self.connectStage = uidef.kConnectStage_Rom
+    def _connectFailureHandler( self, deviceIndex=0 ):
+        self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
         self.updateConnectStatus('red')
         usbIdList = self.getUsbid()
-        self.setPortSetupValue(self.connectStage, usbIdList, False )
+        self.setPortSetupValue(self.connectStage[deviceIndex], usbIdList, False )
         self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_checkUsbCable'][self.languageIndex])
 
     def _connectStateMachine( self, deviceIndex=0 ):
@@ -131,22 +131,22 @@ class flashMain(runcore.flashRun):
         isConnectionFailureOnce = False
         while connectSteps:
             if not self.updatePortSetupValue(retryToDetectUsb):
-                self._connectFailureHandler()
+                self._connectFailureHandler(deviceIndex)
                 if not isConnectionFailureOnce:
                     isConnectionFailureOnce = True
                     continue
                 else:
                     return False
-            if self.connectStage == uidef.kConnectStage_Rom:
-                self.connectToDevice(self.connectStage, deviceIndex)
-                if self._retryToPingBootloader(kBootloaderType_Rom):
+            if self.connectStage[deviceIndex] == uidef.kConnectStage_Rom:
+                self.connectToDevice(self.connectStage[deviceIndex], deviceIndex)
+                if self._retryToPingBootloader(kBootloaderType_Rom, deviceIndex):
                     if (self.mcuSeries == uidef.kMcuSeries_iMXRT10yy) or \
                        (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy):
-                        self.getMcuDeviceHabStatus()
-                        if self.jumpToFlashloader():
-                            self.connectStage = uidef.kConnectStage_Flashloader
+                        self.getMcuDeviceHabStatus(deviceIndex)
+                        if self.jumpToFlashloader(deviceIndex):
+                            self.connectStage[deviceIndex] = uidef.kConnectStage_Flashloader
                             usbIdList = self.getUsbid()
-                            self.setPortSetupValue(self.connectStage, usbIdList, True )
+                            self.setPortSetupValue(self.connectStage[deviceIndex], usbIdList, True )
                         else:
                             self.updateConnectStatus('red')
                             self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][self.languageIndex])
@@ -155,32 +155,32 @@ class flashMain(runcore.flashRun):
                          (self.mcuSeries == uidef.kMcuSeries_LPC) or \
                          (self.mcuSeries == uidef.kMcuSeries_Kinetis):
                         self.updateConnectStatus('green')
-                        self.connectStage = uidef.kConnectStage_Ready
+                        self.connectStage[deviceIndex] = uidef.kConnectStage_Ready
                     else:
                         pass
                 else:
                     self.updateConnectStatus('red')
                     self._doubleCheckBootModeError()
                     return False
-            elif self.connectStage == uidef.kConnectStage_Flashloader:
-                self.connectToDevice(self.connectStage, deviceIndex)
-                if self._retryToPingBootloader(kBootloaderType_Flashloader):
+            elif self.connectStage[deviceIndex] == uidef.kConnectStage_Flashloader:
+                self.connectToDevice(self.connectStage[deviceIndex], deviceIndex)
+                if self._retryToPingBootloader(kBootloaderType_Flashloader, deviceIndex):
                     self.updateConnectStatus('green')
-                    self.connectStage = uidef.kConnectStage_Ready
+                    self.connectStage[deviceIndex] = uidef.kConnectStage_Ready
                 else:
                     self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][self.languageIndex])
-                    self._connectFailureHandler()
+                    self._connectFailureHandler(deviceIndex)
                     return False
-            elif self.connectStage == uidef.kConnectStage_Ready:
+            elif self.connectStage[deviceIndex] == uidef.kConnectStage_Ready:
                 if connectSteps == 1:
                     self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][self.languageIndex])
                     return True
                 else:
-                    if self._retryToPingBootloader(kBootloaderType_Flashloader):
+                    if self._retryToPingBootloader(kBootloaderType_Flashloader, deviceIndex):
                         self.setInfoStatus(uilang.kMsgLanguageContentDict['connectInfo_readyForDownload'][self.languageIndex])
                         return True
                     else:
-                        self.connectStage = uidef.kConnectStage_Rom
+                        self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
                         connectSteps += 1
             else:
                 pass
@@ -208,7 +208,7 @@ class flashMain(runcore.flashRun):
             operations += 1
             if self._connectStateMachine(board):
                 for i in range(len(self.sbAppFiles)):
-                    if self.flashSbImage(self.sbAppFiles[i]):
+                    if self.flashSbImage(self.sbAppFiles[i], board):
                         if i == len(self.sbAppFiles) - 1:
                             successes += 1
                         self.updateConnectStatus('blue')
@@ -216,8 +216,8 @@ class flashMain(runcore.flashRun):
                     else:
                         self.updateConnectStatus('red')
                         break
-                self.resetMcuDevice()
-            self.connectStage = uidef.kConnectStage_Rom
+                self.resetMcuDevice(board)
+            self.connectStage[board] = uidef.kConnectStage_Rom
             self._setUartUsbPort()
             self.setDownloadOperationResults(operations, successes)
 

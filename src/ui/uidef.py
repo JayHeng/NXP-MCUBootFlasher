@@ -1,6 +1,8 @@
 import wx
 import sys, os
 
+kMaxMfgBoards = 50
+
 kConnectStage_Rom            = 1
 kConnectStage_Flashloader    = 2
 kConnectStage_Ready          = 3

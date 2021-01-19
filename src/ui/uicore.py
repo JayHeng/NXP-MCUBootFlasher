@@ -34,7 +34,7 @@ class flashUi(flashWin.flashWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
-        self.connectStage = uidef.kConnectStage_Rom
+        self.connectStage = [uidef.kConnectStage_Rom] * uidef.kMaxMfgBoards
         self.connectStatusColor = None
 
         self.isUartPortSelected = None
@@ -199,7 +199,7 @@ class flashUi(flashWin.flashWin):
             hidDevice = hidFilter.get_devices()
             self._setUsbDetectedBoardNum(len(hidDevice))
             if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
-                if self.connectStage == uidef.kConnectStage_Rom:
+                if self.connectStage[0] == uidef.kConnectStage_Rom:
                     for i in range(len(hidDevice)):
                         if len(self.usbDevicePath):
                             hasThisPath = False
@@ -217,7 +217,7 @@ class flashUi(flashWin.flashWin):
                                              'flashloader':None
                                              }
                             self.usbDevicePath.append(usbDevicePath)
-                elif self.connectStage == uidef.kConnectStage_Flashloader:
+                elif self.connectStage[0] == uidef.kConnectStage_Flashloader:
                     for i in range(len(hidDevice)):
                         hasThisPath = False
                         for j in range(len(self.usbDevicePath)):
