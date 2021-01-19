@@ -83,14 +83,16 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"     1. 当输入的源image文件非常大时(比如6.8MB)，下载可能会超时失败 \n\n"
 kRevision_3_0_0_en =  "【v3.0.0】 \n" + \
                       "  Feature: \n" + \
-                      "     1. Support i.MXRT1011 \n" + \
+                      "     1. Support i.MXRT1011, i.MXRT1024 SIP, i.MXRT117x \n" + \
+                      "     2. Can download image automatically when new board is connected \n" + \
                       "  Improvement: \n" + \
                       "     1.  \n" + \
                       "  Bug: \n" + \
                       "     1.  \n\n"
 kRevision_3_0_0_zh = u"【v3.0.0】 \n" + \
                      u"  特性: \n" + \
-                     u"     1. 支持i.MXRT1011 \n" + \
+                     u"     1. 支持i.MXRT1011、i.MXRT1064 SIP、i.MXRT117x \n" + \
+                     u"     2. 板子连接上时自动下载sb文件(仅适用USB接口) \n" + \
                      u"  改进: \n" + \
                      u"     1. \n" + \
                      u"  缺陷: \n" + \
