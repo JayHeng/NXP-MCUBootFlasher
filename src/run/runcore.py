@@ -113,7 +113,7 @@ class flashRun(uicore.flashUi):
                 uartBaudrate = int(self.uartBaudrate[deviceIndex])
                 usbDevicePath = ''
             elif self.isUsbhidPortSelected:
-                xPeripheral = xhost + 'uart'
+                xPeripheral = xhost + 'usb'
                 uartComPort = ''
                 uartBaudrate = ''
                 usbDevicePath = self.usbDevicePath[deviceIndex]['rom']
