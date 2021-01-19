@@ -84,6 +84,9 @@ class flashMain(runcore.flashRun):
             if bootType == kBootloaderType_Rom:
                 pingStatus = self.pingRom()
             elif bootType == kBootloaderType_Flashloader:
+                # This is mainly for RT1170 flashloader, but it is also ok for other RT devices
+                if self.isUartPortSelected:
+                    time.sleep(3)
                 pingStatus = self.pingFlashloader()
             else:
                 pass
