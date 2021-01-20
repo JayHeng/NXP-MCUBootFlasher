@@ -184,7 +184,7 @@ class flashUi(flashWin.flashWin):
             if self.isUsbhidPortSelected:
                 deviceNum = 0
                 if self.isDymaticUsbDetection:
-                    deviceNum = uidef.kMaxMfgBoards
+                    deviceNum = 1 #uidef.kMaxMfgBoards
                 else:
                     deviceNum = 1
                 for i in range(deviceNum):
@@ -213,10 +213,17 @@ class flashUi(flashWin.flashWin):
                                     hasThisPath = True
                                     break
                             if not hasThisPath:
-                                usbDevicePath = {'rom':hidDevice[i].device_path,
-                                                 'flashloader':None
-                                                 }
-                                self.usbDevicePath.append(usbDevicePath)
+                                isNewPathInserted = False
+                                for j in range(len(self.usbDevicePath)):
+                                    if self.usbDevicePath[j]['rom'] == None:
+                                        self.usbDevicePath[j]['rom'] = hidDevice[i].device_path
+                                        isNewPathInserted = True
+                                        break
+                                if not isNewPathInserted:
+                                    usbDevicePath = {'rom':hidDevice[i].device_path,
+                                                     'flashloader':None
+                                                     }
+                                    self.usbDevicePath.append(usbDevicePath)
                         else:
                             usbDevicePath = {'rom':hidDevice[i].device_path,
                                              'flashloader':None
