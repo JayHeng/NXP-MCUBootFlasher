@@ -59,7 +59,9 @@ class flashUi(flashWin.flashWin):
         self.uartBaudrate = [None]
         self.isUsbhidConnected = [False] * uidef.kMaxMfgBoards
         self.usbhidToConnect = [[None] * 2] * uidef.kMaxMfgBoards
-        self.usbDevicePath = []
+        usbDevicePath = {'rom':None,
+                         'flashloader':None}
+        self.usbDevicePath = [usbDevicePath] * uidef.kMaxMfgBoards
         self._initPortSetupValue()
         self._initMcuBoards()
         self.setMcuBoards()
@@ -184,7 +186,7 @@ class flashUi(flashWin.flashWin):
             if self.isUsbhidPortSelected:
                 deviceNum = 0
                 if self.isDymaticUsbDetection:
-                    deviceNum = 1 #uidef.kMaxMfgBoards
+                    deviceNum = uidef.kMaxMfgBoards
                 else:
                     deviceNum = 1
                 for i in range(deviceNum):
@@ -202,47 +204,68 @@ class flashUi(flashWin.flashWin):
             # Auto detect USB-HID device
             hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[deviceIndex][0], 16), product_id = int(self.usbhidToConnect[deviceIndex][1], 16))
             hidDevice = hidFilter.get_devices()
+            #------------------------------------------------
+            # Example RT1170
+            # Port 1
+            #rom: \\?\hid#vid_1fc9&pid_013d#a&2eb8245&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+            #fl:  \\?\hid#vid_15a2&pid_0073#a&20680ae4&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+            # Port 2
+            #rom: \\?\hid#vid_1fc9&pid_013d#9&17f9e48f&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+            #fl:  \\?\hid#vid_15a2&pid_0073#9&35766d2e&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+            #------------------------------------------------
+            # Example RT1050
+            # Port 2
+            #rom: \\?\hid#vid_1fc9&pid_0130#9&2897791a&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+            #fl:  \\?\hid#vid_15a2&pid_0073#9&35766d2e&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
             self._setUsbDetectedBoardNum(len(hidDevice))
             if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
+                #----------------------------------------------------------------
                 if self.connectStage[deviceIndex] == uidef.kConnectStage_Rom:
                     for i in range(len(hidDevice)):
-                        if len(self.usbDevicePath):
-                            hasThisPath = False
-                            for j in range(len(self.usbDevicePath)):
-                                if self.usbDevicePath[j]['rom'] == hidDevice[i].device_path:
-                                    hasThisPath = True
-                                    break
-                            if not hasThisPath:
-                                isNewPathInserted = False
-                                for j in range(len(self.usbDevicePath)):
-                                    if self.usbDevicePath[j]['rom'] == None:
-                                        self.usbDevicePath[j]['rom'] = hidDevice[i].device_path
-                                        isNewPathInserted = True
+                        if self.usbDevicePath[deviceIndex]['rom'] == hidDevice[i].device_path:
+                            break
+                        elif self.usbDevicePath[deviceIndex]['rom'] == None:
+                            romUsbPath = hidDevice[i].device_path
+                            flUsbPath = self.usbDevicePath[deviceIndex]['flashloader']
+                            if flUsbPath == None:
+                                self.usbDevicePath[deviceIndex]['rom'] = romUsbPath
+                                break
+                            else:
+                                if (romUsbPath[26] == flUsbPath[26]) and \
+                                   (romUsbPath[27] == flUsbPath[27]):
+                                    if romUsbPath[27] == "&":
+                                        self.usbDevicePath[deviceIndex]['rom'] = romUsbPath
                                         break
-                                if not isNewPathInserted:
-                                    usbDevicePath = {'rom':hidDevice[i].device_path,
-                                                     'flashloader':None
-                                                     }
-                                    self.usbDevicePath.append(usbDevicePath)
+                                    elif flUsbPath[27] == "&":
+                                        continue
+                                    else:
+                                        if (romUsbPath[28] == flUsbPath[28]):
+                                            if romUsbPath[28] == "&":
+                                                self.usbDevicePath[deviceIndex]['rom'] = romUsbPath
+                                                break
                         else:
-                            usbDevicePath = {'rom':hidDevice[i].device_path,
-                                             'flashloader':None
-                                             }
-                            self.usbDevicePath.append(usbDevicePath)
+                            pass
                 elif self.connectStage[deviceIndex] == uidef.kConnectStage_Flashloader:
                     for i in range(len(hidDevice)):
-                        hasThisPath = False
-                        for j in range(len(self.usbDevicePath)):
-                            if self.usbDevicePath[j]['flashloader'] == hidDevice[i].device_path:
-                                hasThisPath = True
-                                break
-                        if not hasThisPath:
-                            for j in range(len(self.usbDevicePath)):
-                                if self.usbDevicePath[j]['flashloader'] == None:
-                                    self.usbDevicePath[j]['flashloader'] = hidDevice[i].device_path
+                        romUsbPath = self.usbDevicePath[deviceIndex]['rom']
+                        flUsbPath = hidDevice[i].device_path
+                        if romUsbPath != None and romUsbPath[25] == "#":
+                            # max 256 usb instance
+                            if (romUsbPath[26] == flUsbPath[26]) and \
+                               (romUsbPath[27] == flUsbPath[27]):
+                                if romUsbPath[27] == "&":
+                                    self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath
                                     break
+                                elif flUsbPath[27] == "&":
+                                    continue
+                                else:
+                                    if (romUsbPath[28] == flUsbPath[28]):
+                                        if romUsbPath[28] == "&":
+                                            self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath
+                                            break
                 else:
                     pass
+                #----------------------------------------------------------------
                 self.isUsbhidConnected[deviceIndex] = True
                 if self.connectStatusColor == 'yellow':
                     self.updateConnectStatus('black')

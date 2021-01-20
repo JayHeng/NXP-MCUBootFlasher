@@ -267,9 +267,9 @@ class flashMain(runcore.flashRun):
         self._setUartUsbPort(deviceIndex)
         self.isUsbhidConnected[deviceIndex] = False
         if self.isDymaticUsbDetection:
-            self.usbDevicePath[deviceIndex] = {'rom':None,
-                                               'flashloader':None
-                                               }
+            self.usbDevicePath[deviceIndex]['rom'] = None
+            # Never clear 'flashloader' here, it will be used to help insert usb device
+            #self.usbDevicePath[deviceIndex]['flashloader'] = None
         else:
             self.updateConnectStatus('black')
             self.setDownloadOperationResults(1, successes)
