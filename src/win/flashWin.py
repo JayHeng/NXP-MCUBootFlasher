@@ -17,7 +17,7 @@ import wx.xrc
 class flashWin ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"NXP MCU Boot Flasher", pos = wx.DefaultPosition, size = wx.Size( 576,379 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"NXP MCU Boot Flasher", pos = wx.DefaultPosition, size = wx.Size( 576,420 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
@@ -188,6 +188,14 @@ class flashWin ( wx.Frame ):
 
 		wSizer_setup.Add( self.m_staticText_null6Setup, 0, wx.ALL, 5 )
 
+		self.m_staticText_null7Setup = wx.StaticText( self.m_panel_setup, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 60,1 ), 0 )
+		self.m_staticText_null7Setup.Wrap( -1 )
+
+		wSizer_setup.Add( self.m_staticText_null7Setup, 0, wx.ALL, 5 )
+
+		self.m_bitmap_nxp = wx.StaticBitmap( self.m_panel_setup, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 80,30 ), 0 )
+		wSizer_setup.Add( self.m_bitmap_nxp, 0, wx.ALL, 5 )
+
 
 		self.m_panel_setup.SetSizer( wSizer_setup )
 		self.m_panel_setup.Layout()
@@ -275,13 +283,29 @@ class flashWin ( wx.Frame ):
 
 		wSizer_logo = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
 
-		self.m_staticText_null1Logo = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 180,-1 ), 0 )
-		self.m_staticText_null1Logo.Wrap( -1 )
+		self.m_button_slot0 = wx.Button( self, wx.ID_ANY, u"slot0", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot0, 0, wx.ALL, 5 )
 
-		wSizer_logo.Add( self.m_staticText_null1Logo, 0, wx.ALL, 5 )
+		self.m_button_slot1 = wx.Button( self, wx.ID_ANY, u"slot1", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot1, 0, wx.ALL, 5 )
 
-		self.m_bitmap_nxp = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 80,30 ), 0 )
-		wSizer_logo.Add( self.m_bitmap_nxp, 0, wx.ALL, 5 )
+		self.m_button_slot2 = wx.Button( self, wx.ID_ANY, u"slot2", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot2, 0, wx.ALL, 5 )
+
+		self.m_button_slot3 = wx.Button( self, wx.ID_ANY, u"slot3", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot3, 0, wx.ALL, 5 )
+
+		self.m_button_slot4 = wx.Button( self, wx.ID_ANY, u"slot4", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot4, 0, wx.ALL, 5 )
+
+		self.m_button_slot5 = wx.Button( self, wx.ID_ANY, u"slot5", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot5, 0, wx.ALL, 5 )
+
+		self.m_button_slot6 = wx.Button( self, wx.ID_ANY, u"slot6", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot6, 0, wx.ALL, 5 )
+
+		self.m_button_slot7 = wx.Button( self, wx.ID_ANY, u"slot7", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_logo.Add( self.m_button_slot7, 0, wx.ALL, 5 )
 
 
 		bSizer_download.Add( wSizer_logo, 1, wx.EXPAND, 5 )
