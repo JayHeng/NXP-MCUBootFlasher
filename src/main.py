@@ -16,6 +16,7 @@ from ui import uilang
 g_main_win = None
 g_task_detectUsbhid = None
 g_task_uartAllInOneAction = None
+g_task_usbAllInOneAction = [None] * uidef.kMaxMfgBoards
 g_task_increaseGauge = None
 
 kRetryPingTimes = 5
@@ -40,6 +41,7 @@ class flashMain(runcore.flashRun):
         runcore.flashRun.__init__(self, parent)
         self.lastTime = None
         self.isUartAllInOneActionTaskPending = False
+        self.isUsbAllInOneActionTaskPending = [False] * uidef.kMaxMfgBoards
 
     def _startGaugeTimer( self ):
         self.lastTime = time.time()
@@ -60,10 +62,10 @@ class flashMain(runcore.flashRun):
     def callbackSwitchSerialPortIndex( self, event ):
         self.setSerialPortIndex()
 
-    def _setUartUsbPort( self ):
+    def _setUartUsbPort( self, deviceIndex=0 ):
         usbIdList = self.getUsbid()
         retryToDetectUsb = False
-        self.setPortSetupValue(self.connectStage, usbIdList, retryToDetectUsb )
+        self.setPortSetupValue(self.connectStage[deviceIndex], usbIdList, retryToDetectUsb )
 
     def callbackSetUartPort( self, event ):
         self._setUartUsbPort()
@@ -220,11 +222,68 @@ class flashMain(runcore.flashRun):
             self.connectStage[board] = uidef.kConnectStage_Rom
             self._setUartUsbPort()
             self.setDownloadOperationResults(operations, successes)
+        self.updateConnectStatus('black')
+
+    def task_doUsb0AllInOneAction( self ):
+        while True:
+            if self.isUsbAllInOneActionTaskPending[0]:
+                self._doUsbAutoAllInOneAction(0)
+                self.isUsbAllInOneActionTaskPending[0] = False
+                if not self.isDymaticUsbDetection:
+                    self._stopGaugeTimer()
+            else:
+                if self.isDymaticUsbDetection:
+                    try:
+                        if self.usbDevicePath[0]['rom'] != None:
+                            self.isUsbAllInOneActionTaskPending[0] = True
+                        else:
+                            pass
+                    except:
+                        pass
+            time.sleep(1)
+
+    def _doUsbAutoAllInOneAction( self, deviceIndex=0 ):
+        if len(self.sbAppFiles) == 0:
+            self.updateConnectStatus('red')
+            if not self.isDymaticUsbDetection:
+                self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][self.languageIndex])
+            return
+        successes = 0
+        if self._connectStateMachine(deviceIndex):
+            for i in range(len(self.sbAppFiles)):
+                if self.flashSbImage(self.sbAppFiles[i], deviceIndex):
+                    if i == len(self.sbAppFiles) - 1:
+                        successes = 1
+                    self.updateConnectStatus('blue')
+                    if not self.isDymaticUsbDetection:
+                        self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
+                else:
+                    self.updateConnectStatus('red')
+                    break
+            if not self.isDymaticUsbDetection:
+                self.resetMcuDevice(deviceIndex)
+                time.sleep(2)
+        self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
+        if self.isDymaticUsbDetection:
+            self.usbDevicePath[deviceIndex] = {'rom':None,
+                                               'flashloader':None
+                                               }
+        else:
+            self._setUartUsbPort(deviceIndex)
+            self.isUsbhidConnected = False
+            self.updateConnectStatus('black')
+            self.setDownloadOperationResults(1, successes)
+            self.usbDevicePath = []
 
     def callbackAllInOneAction( self, event ):
         if self.isUartPortSelected:
             self.isUartAllInOneActionTaskPending = True
             self._startGaugeTimer()
+        elif self.isUsbhidPortSelected and (not self.isDymaticUsbDetection):
+            self.isUsbAllInOneActionTaskPending[0] = True
+            self._startGaugeTimer()
+        else:
+            pass
 
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
@@ -249,6 +308,7 @@ class flashMain(runcore.flashRun):
     def _deinitToolToExit( self ):
         self._stopTask(g_task_detectUsbhid)
         self._stopTask(g_task_uartAllInOneAction)
+        self._stopTask(g_task_usbAllInOneAction[0])
         self._stopTask(g_task_increaseGauge)
         global g_main_win
         g_main_win.Show(False)
@@ -305,6 +365,9 @@ if __name__ == '__main__':
     g_task_uartAllInOneAction = threading.Thread(target=g_main_win.task_doUartAllInOneAction)
     g_task_uartAllInOneAction.setDaemon(True)
     g_task_uartAllInOneAction.start()
+    g_task_usbAllInOneAction[0] = threading.Thread(target=g_main_win.task_doUsb0AllInOneAction)
+    g_task_usbAllInOneAction[0].setDaemon(True)
+    g_task_usbAllInOneAction[0].start()
     g_task_increaseGauge = threading.Thread(target=g_main_win.task_doIncreaseGauge)
     g_task_increaseGauge.setDaemon(True)
     g_task_increaseGauge.start()
