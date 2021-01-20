@@ -58,11 +58,11 @@ kBlhostError_ReturnedError = -4
 # @param peripheral
 # @param port
 # @param loadTarget
-def createBootloader(target, vectorsDir, peripheral, speed=None, port=None, usbDevicePath=None, usePing=True):
+def createBootloader(target, vectorsDir, peripheral, speed=None, port=None, vid=None, pid=None, usbDevicePath=None, usePing=True):
     if peripheral.split(',')[0] in peripherals.Peripherals:
-        return BootloaderDevice(target, vectorsDir, peripheral, speed, port, usbDevicePath, usePing)
+        return BootloaderDevice(target, vectorsDir, peripheral, speed, port, vid, pid, usbDevicePath, usePing)
     elif peripheral.split(',')[0] in peripherals.PeripheralsSDP:
-        return BootloaderDeviceSDP(target, vectorsDir, peripheral, speed, port, usbDevicePath)
+        return BootloaderDeviceSDP(target, vectorsDir, peripheral, speed, port,vid, pid, usbDevicePath)
     else:
         raise ValueError("Unrecognized peripheral '{}'".format(peripheral.split(',')[0]))
 
@@ -510,12 +510,12 @@ class Bootloader(object):
 # @brief The bootloader running on a real device.
 class BootloaderDevice(Bootloader):
 
-    def __init__(self, target, vectorsDir, peripheral, speed, port, usbDevicePath, usePing):
+    def __init__(self, target, vectorsDir, peripheral, speed, port, vid, pid, usbDevicePath, usePing):
         super(BootloaderDevice, self).__init__(target, vectorsDir)
         self._speed = speed
         self._port = port
-        self._vid = None
-        self._pid = None
+        self._vid = vid
+        self._pid = pid
         self._usbDevicePath = usbDevicePath
         self._usePing = usePing
         self._toolName = os.path.abspath(os.path.join(vectorsDir, '..', 'blhost'))
@@ -527,7 +527,12 @@ class BootloaderDevice(Bootloader):
         self._updatePeripheralSpeed()
 
         if peripheralDevice == peripherals.kPeripheral_USB:
-            self._commandArgs.extend(['-u', self._usbDevicePath])
+            if self._vid != None and self._pid != None:
+                self._commandArgs.extend(['-u', self._vid + ',' + self._pid])
+            elif self._usbDevicePath != None:
+                self._commandArgs.extend(['-u', self._usbDevicePath])
+            else:
+                pass
         elif peripheralDevice == peripherals.kPeripheral_UART:
             self._commandArgs.extend(['-p', self._port + ',' + self._speed])
         else:
@@ -658,12 +663,12 @@ class BootloaderDevice(Bootloader):
 # @brief The bootloader running on a real device, SDP mode.
 class BootloaderDeviceSDP(Bootloader):
 
-    def __init__(self, target, vectorsDir, peripheral, speed, port, usbDevicePath):
+    def __init__(self, target, vectorsDir, peripheral, speed, port, vid, pid, usbDevicePath):
         super(BootloaderDeviceSDP, self).__init__(target, vectorsDir)
         self._speed = speed
         self._port = port
-        self._vid = None
-        self._pid = None
+        self._vid = vid
+        self._pid = pid
         self._usbDevicePath = usbDevicePath
         self._toolName = os.path.abspath(os.path.join(vectorsDir, '..', 'sdphost'))
         self._commandArgs.append(self._toolName)
@@ -673,7 +678,12 @@ class BootloaderDeviceSDP(Bootloader):
         self._updatePeripheralSpeed()
 
         if peripheralDevice == peripherals.kPeripheral_SDP_USB:
-            self._commandArgs.extend(['-u', self._usbDevicePath])
+            if self._vid != None and self._pid != None:
+                self._commandArgs.extend(['-u', self._vid + ',' + self._pid])
+            elif self._usbDevicePath != None:
+                self._commandArgs.extend(['-u', self._usbDevicePath])
+            else:
+                pass
         else:
             self._commandArgs.extend(['-p', self._port + ',' + self._speed])
 

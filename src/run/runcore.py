@@ -111,12 +111,21 @@ class flashRun(uicore.flashUi):
                 xPeripheral = xhost + 'uart'
                 uartComPort = self.uartComPort[deviceIndex]
                 uartBaudrate = int(self.uartBaudrate[deviceIndex])
-                usbDevicePath = ''
+                usbVid = None
+                usbPid = None
+                usbDevicePath = None
             elif self.isUsbhidPortSelected:
                 xPeripheral = xhost + 'usb'
                 uartComPort = ''
                 uartBaudrate = ''
-                usbDevicePath = self.usbDevicePath[deviceIndex]['rom']
+                if self.isDymaticUsbDetection:
+                    usbVid = None
+                    usbPid = None
+                    usbDevicePath = self.usbDevicePath[deviceIndex]['rom']
+                else:
+                    usbVid = self.tgt.romUsbVid
+                    usbPid = self.tgt.romUsbPid
+                    usbDevicePath = None
             else:
                 pass
             if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
@@ -124,7 +133,7 @@ class flashRun(uicore.flashUi):
                                                        self.sdphostVectorsDir,
                                                        xPeripheral,
                                                        uartBaudrate, uartComPort,
-                                                       usbDevicePath)
+                                                       usbVid, usbPid, usbDevicePath)
             elif (self.mcuSeries == uidef.kMcuSeries_iMXRT11yy) or \
                  (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx) or \
                  (self.mcuSeries == uidef.kMcuSeries_LPC) or \
@@ -133,7 +142,7 @@ class flashRun(uicore.flashUi):
                                                       self.blhostVectorsDir,
                                                       xPeripheral,
                                                       uartBaudrate, uartComPort,
-                                                      usbDevicePath,
+                                                      usbVid, usbPid, usbDevicePath,
                                                       True)
             else:
                 pass
@@ -142,19 +151,28 @@ class flashRun(uicore.flashUi):
                 blPeripheral = 'uart'
                 uartComPort = self.uartComPort[deviceIndex]
                 uartBaudrate = int(self.uartBaudrate[deviceIndex])
-                usbDevicePath = ''
+                usbVid = None
+                usbPid = None
+                usbDevicePath = None
             elif self.isUsbhidPortSelected:
                 blPeripheral = 'usb'
                 uartComPort = ''
                 uartBaudrate = ''
-                usbDevicePath = self.usbDevicePath[deviceIndex]['flashloader']
+                if self.isDymaticUsbDetection:
+                    usbVid = None
+                    usbPid = None
+                    usbDevicePath = self.usbDevicePath[deviceIndex]['flashloader']
+                else:
+                    usbVid = self.tgt.flashloaderUsbVid
+                    usbPid = self.tgt.flashloaderUsbPid
+                    usbDevicePath = None
             else:
                 pass
             self.blhost[deviceIndex] = bltest.createBootloader(self.tgt,
                                                   self.blhostVectorsDir,
                                                   blPeripheral,
                                                   uartBaudrate, uartComPort,
-                                                  usbDevicePath,
+                                                  usbVid, usbPid, usbDevicePath,
                                                   True)
         elif connectStage == uidef.kConnectStage_Reset:
             #self.tgt = None
