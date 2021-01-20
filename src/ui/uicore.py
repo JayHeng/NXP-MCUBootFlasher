@@ -57,10 +57,8 @@ class flashUi(flashWin.flashWin):
         self.setTargetSetupValue()
         self.uartComPort = [None]
         self.uartBaudrate = [None]
-        self.usbhidVid = None
-        self.usbhidPid = None
-        self.isUsbhidConnected = False
-        self.usbhidToConnect = [None] * 2
+        self.isUsbhidConnected = [False] * uidef.kMaxMfgBoards
+        self.usbhidToConnect = [[None] * 2] * uidef.kMaxMfgBoards
         self.usbDevicePath = []
         self._initPortSetupValue()
         self._initMcuBoards()
@@ -178,28 +176,35 @@ class flashUi(flashWin.flashWin):
         self.m_radioBtn_uart.SetValue(False)
         self.m_radioBtn_usbhid.SetValue(True)
         usbIdList = self.getUsbid()
-        self.setPortSetupValue(uidef.kConnectStage_Rom, usbIdList)
+        for i in range(uidef.kMaxMfgBoards):
+            self.setPortSetupValue(i, uidef.kConnectStage_Rom, usbIdList)
 
     def task_doDetectUsbhid( self ):
         while True:
             if self.isUsbhidPortSelected:
-                self._retryToDetectUsbhidDevice(False)
+                deviceNum = 0
+                if self.isDymaticUsbDetection:
+                    deviceNum = uidef.kMaxMfgBoards
+                else:
+                    deviceNum = 1
+                for i in range(deviceNum):
+                    self._retryToDetectUsbhidDevice(i, False)
             time.sleep(1)
 
-    def _retryToDetectUsbhidDevice( self, needToRetry = True ):
+    def _retryToDetectUsbhidDevice( self, deviceIndex=0, needToRetry = True ):
         usbVid = [None]
         usbPid = [None]
-        self.isUsbhidConnected = False
+        self.isUsbhidConnected[deviceIndex] = False
         retryCnt = 1
         if needToRetry:
             retryCnt = kRetryDetectTimes
         while retryCnt > 0:
             # Auto detect USB-HID device
-            hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[0], 16), product_id = int(self.usbhidToConnect[1], 16))
+            hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[deviceIndex][0], 16), product_id = int(self.usbhidToConnect[deviceIndex][1], 16))
             hidDevice = hidFilter.get_devices()
             self._setUsbDetectedBoardNum(len(hidDevice))
             if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
-                if self.connectStage[0] == uidef.kConnectStage_Rom:
+                if self.connectStage[deviceIndex] == uidef.kConnectStage_Rom:
                     for i in range(len(hidDevice)):
                         if len(self.usbDevicePath):
                             hasThisPath = False
@@ -217,7 +222,7 @@ class flashUi(flashWin.flashWin):
                                              'flashloader':None
                                              }
                             self.usbDevicePath.append(usbDevicePath)
-                elif self.connectStage[0] == uidef.kConnectStage_Flashloader:
+                elif self.connectStage[deviceIndex] == uidef.kConnectStage_Flashloader:
                     for i in range(len(hidDevice)):
                         hasThisPath = False
                         for j in range(len(self.usbDevicePath)):
@@ -231,11 +236,11 @@ class flashUi(flashWin.flashWin):
                                     break
                 else:
                     pass
-                self.isUsbhidConnected = True
+                self.isUsbhidConnected[deviceIndex] = True
                 if self.connectStatusColor == 'yellow':
                     self.updateConnectStatus('black')
-                usbVid[0] = self.usbhidToConnect[0]
-                usbPid[0] = self.usbhidToConnect[1]
+                usbVid[0] = self.usbhidToConnect[deviceIndex][0]
+                usbPid[0] = self.usbhidToConnect[deviceIndex][1]
                 break
             retryCnt = retryCnt - 1
             if retryCnt != 0:
@@ -243,7 +248,7 @@ class flashUi(flashWin.flashWin):
             else:
                 usbVid[0] = 'N/A - Not Found'
                 usbPid[0] = 'N/A - Not Found'
-        if not self.isUsbhidConnected:
+        if not self.isUsbhidConnected[deviceIndex]:
             self.updateConnectStatus('yellow')
         if self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection()) != usbVid[0] or \
            self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection()) != usbPid[0]:
@@ -254,7 +259,7 @@ class flashUi(flashWin.flashWin):
             self.m_choice_baudPid.SetItems(usbPid)
             self.m_choice_baudPid.SetSelection(0)
 
-    def adjustPortSetupValue( self, connectStage=uidef.kConnectStage_Rom, usbIdList=[] ):
+    def adjustPortSetupValue( self, deviceIndex=0, connectStage=uidef.kConnectStage_Rom, usbIdList=[] ):
         self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
         self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
         if self.isUartPortSelected:
@@ -291,24 +296,24 @@ class flashUi(flashWin.flashWin):
             self.m_staticText_portVid.SetLabel(uilang.kMainLanguageContentDict['sText_vid'][self.languageIndex])
             self.m_staticText_baudPid.SetLabel(uilang.kMainLanguageContentDict['sText_pid'][self.languageIndex])
             if connectStage == uidef.kConnectStage_Rom:
-                self.usbhidToConnect[0] = usbIdList[0]
-                self.usbhidToConnect[1] = usbIdList[1]
-                self._retryToDetectUsbhidDevice(False)
+                self.usbhidToConnect[deviceIndex][0] = usbIdList[0]
+                self.usbhidToConnect[deviceIndex][1] = usbIdList[1]
+                self._retryToDetectUsbhidDevice(deviceIndex, False)
             elif connectStage == uidef.kConnectStage_Flashloader:
-                self.usbhidToConnect[0] = usbIdList[2]
-                self.usbhidToConnect[1] = usbIdList[3]
-                self._retryToDetectUsbhidDevice(False)
+                self.usbhidToConnect[deviceIndex][0] = usbIdList[2]
+                self.usbhidToConnect[deviceIndex][1] = usbIdList[3]
+                self._retryToDetectUsbhidDevice(deviceIndex, False)
             else:
                 pass
         else:
             pass
 
-    def setPortSetupValue( self, connectStage=uidef.kConnectStage_Rom, usbIdList=[], retryToDetectUsb=False ):
-        self.adjustPortSetupValue(connectStage, usbIdList)
-        self.updatePortSetupValue(retryToDetectUsb)
+    def setPortSetupValue( self, deviceIndex=0, connectStage=uidef.kConnectStage_Rom, usbIdList=[], retryToDetectUsb=False ):
+        self.adjustPortSetupValue(deviceIndex, connectStage, usbIdList)
+        self.updatePortSetupValue(deviceIndex, retryToDetectUsb)
         self._adjustSerialPortIndexValue()
 
-    def updatePortSetupValue( self, retryToDetectUsb=False ):
+    def updatePortSetupValue( self, deviceIndex=0, retryToDetectUsb=False ):
         status = True
         self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
         self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
@@ -325,16 +330,10 @@ class flashUi(flashWin.flashWin):
                     self.detectedBoards += 1
             self.m_staticText_detectedBoardNum.SetLabel(str(self.detectedBoards))
         elif self.isUsbhidPortSelected:
-            if self.isUsbhidConnected:
-                self.usbhidVid = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
-                self.usbhidPid = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
-            else:
-                self._retryToDetectUsbhidDevice(retryToDetectUsb)
-                if not self.isUsbhidConnected:
+            if not self.isUsbhidConnected[deviceIndex]:
+                self._retryToDetectUsbhidDevice(deviceIndex, retryToDetectUsb)
+                if not self.isUsbhidConnected[deviceIndex]:
                     status = False
-                else:
-                    self.usbhidVid = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
-                    self.usbhidPid = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
         else:
             pass
         self._updateSerialPortInfo()

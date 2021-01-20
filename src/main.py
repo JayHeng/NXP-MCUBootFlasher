@@ -65,7 +65,7 @@ class flashMain(runcore.flashRun):
     def _setUartUsbPort( self, deviceIndex=0 ):
         usbIdList = self.getUsbid()
         retryToDetectUsb = False
-        self.setPortSetupValue(self.connectStage[deviceIndex], usbIdList, retryToDetectUsb )
+        self.setPortSetupValue(deviceIndex, self.connectStage[deviceIndex], usbIdList, retryToDetectUsb )
 
     def callbackSetUartPort( self, event ):
         self._setUartUsbPort()
@@ -115,7 +115,7 @@ class flashMain(runcore.flashRun):
         self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
         self.updateConnectStatus('red')
         usbIdList = self.getUsbid()
-        self.setPortSetupValue(self.connectStage[deviceIndex], usbIdList, False )
+        self.setPortSetupValue(deviceIndex, self.connectStage[deviceIndex], usbIdList, False )
         self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_checkUsbCable'][self.languageIndex])
 
     def _connectStateMachine( self, deviceIndex=0 ):
@@ -132,7 +132,7 @@ class flashMain(runcore.flashRun):
             pass
         isConnectionFailureOnce = False
         while connectSteps:
-            if not self.updatePortSetupValue(retryToDetectUsb):
+            if not self.updatePortSetupValue(deviceIndex, retryToDetectUsb):
                 self._connectFailureHandler(deviceIndex)
                 if not isConnectionFailureOnce:
                     isConnectionFailureOnce = True
@@ -148,7 +148,7 @@ class flashMain(runcore.flashRun):
                         if self.jumpToFlashloader(deviceIndex):
                             self.connectStage[deviceIndex] = uidef.kConnectStage_Flashloader
                             usbIdList = self.getUsbid()
-                            self.setPortSetupValue(self.connectStage[deviceIndex], usbIdList, True )
+                            self.setPortSetupValue(deviceIndex, self.connectStage[deviceIndex], usbIdList, True )
                         else:
                             self.updateConnectStatus('red')
                             self.setInfoStatus(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][self.languageIndex])
@@ -264,13 +264,13 @@ class flashMain(runcore.flashRun):
                 self.resetMcuDevice(deviceIndex)
                 time.sleep(2)
         self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
+        self._setUartUsbPort(deviceIndex)
+        self.isUsbhidConnected[deviceIndex] = False
         if self.isDymaticUsbDetection:
             self.usbDevicePath[deviceIndex] = {'rom':None,
                                                'flashloader':None
                                                }
         else:
-            self._setUartUsbPort(deviceIndex)
-            self.isUsbhidConnected = False
             self.updateConnectStatus('black')
             self.setDownloadOperationResults(1, successes)
             self.usbDevicePath = []
