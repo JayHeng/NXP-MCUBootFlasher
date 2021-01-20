@@ -47,7 +47,7 @@ kMainLanguageContentDict = {
         'sText_appPath':                      ['Application Image File (.sb) / Folder:',u"源应用程序文件(.sb)/文件夹:"],
         'button_allInOneAction_black':        ['Start',                                 u"开始"],
         'button_allInOneAction_yellow':       ['Disconnected',                          u"断开"],
-        'button_allInOneAction_green':        ['Ready',                                 u"就绪"],
+        'button_allInOneAction_green':        ['Downloading...',                        u"下载中..."],
         'button_allInOneAction_blue':         ['Success',                               u"成功"],
         'button_allInOneAction_red':          ['Failure',                               u"失败"],
         'sText_successfulBoards':             ['Successful Boards:',                    u"下载成功板卡:"],

@@ -269,8 +269,12 @@ class flashUi(flashWin.flashWin):
                 self.isUsbhidConnected[deviceIndex] = True
                 if self.connectStatusColor == 'yellow':
                     self.updateConnectStatus('black')
-                usbVid[0] = self.usbhidToConnect[deviceIndex][0]
-                usbPid[0] = self.usbhidToConnect[deviceIndex][1]
+                if self.isDymaticUsbDetection:
+                    usbVid[0] = self.tgt.romUsbVid
+                    usbPid[0] = self.tgt.romUsbPid
+                else:
+                    usbVid[0] = self.usbhidToConnect[deviceIndex][0]
+                    usbPid[0] = self.usbhidToConnect[deviceIndex][1]
                 break
             retryCnt = retryCnt - 1
             if retryCnt != 0:
@@ -386,6 +390,38 @@ class flashUi(flashWin.flashWin):
         elif color == 'red':
             self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_red'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0xff, 0x80, 0x80 ) )
+        else:
+            pass
+
+    def updateSlotStatus( self, slotIdx, color='black' ):
+        if slotIdx == 0:
+            slotObj = self.m_button_slot0
+        elif slotIdx == 1:
+            slotObj = self.m_button_slot1
+        elif slotIdx == 2:
+            slotObj = self.m_button_slot2
+        elif slotIdx == 3:
+            slotObj = self.m_button_slot3
+        elif slotIdx == 4:
+            slotObj = self.m_button_slot4
+        elif slotIdx == 5:
+            slotObj = self.m_button_slot5
+        elif slotIdx == 6:
+            slotObj = self.m_button_slot6
+        elif slotIdx == 7:
+            slotObj = self.m_button_slot7
+        else:
+            pass
+        if color == 'black':
+            slotObj.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
+        elif color == 'yellow':
+            slotObj.SetBackgroundColour( wx.Colour( 0xff, 0xff, 0x80 ) )
+        elif color == 'green':
+            slotObj.SetBackgroundColour( wx.Colour( 0x80, 0xff, 0x80 ) )
+        elif color == 'blue':
+            slotObj.SetBackgroundColour( wx.Colour( 0x00, 0x80, 0xff ) )
+        elif color == 'red':
+            slotObj.SetBackgroundColour( wx.Colour( 0xff, 0x80, 0x80 ) )
         else:
             pass
 

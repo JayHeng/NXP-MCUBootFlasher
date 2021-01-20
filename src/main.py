@@ -229,6 +229,7 @@ class flashMain(runcore.flashRun):
             if self.isUsbAllInOneActionTaskPending[0]:
                 self._doUsbAutoAllInOneAction(0)
                 self.isUsbAllInOneActionTaskPending[0] = False
+                self.updateSlotStatus(0, 'yellow')
                 if not self.isDymaticUsbDetection:
                     self._stopGaugeTimer()
             else:
@@ -236,10 +237,28 @@ class flashMain(runcore.flashRun):
                     try:
                         if self.usbDevicePath[0]['rom'] != None:
                             self.isUsbAllInOneActionTaskPending[0] = True
+                            self.updateSlotStatus(0, 'green')
                         else:
                             pass
                     except:
                         pass
+            time.sleep(1)
+
+    def task_doUsb1AllInOneAction( self ):
+        while True:
+            if self.isUsbAllInOneActionTaskPending[1]:
+                self._doUsbAutoAllInOneAction(1)
+                self.isUsbAllInOneActionTaskPending[1] = False
+                self.updateSlotStatus(1, 'yellow')
+            else:
+                try:
+                    if self.usbDevicePath[1]['rom'] != None:
+                        self.isUsbAllInOneActionTaskPending[1] = True
+                        self.updateSlotStatus(1, 'green')
+                    else:
+                        pass
+                except:
+                    pass
             time.sleep(1)
 
     def _doUsbAutoAllInOneAction( self, deviceIndex=0 ):
@@ -368,6 +387,9 @@ if __name__ == '__main__':
     g_task_usbAllInOneAction[0] = threading.Thread(target=g_main_win.task_doUsb0AllInOneAction)
     g_task_usbAllInOneAction[0].setDaemon(True)
     g_task_usbAllInOneAction[0].start()
+    g_task_usbAllInOneAction[1] = threading.Thread(target=g_main_win.task_doUsb1AllInOneAction)
+    g_task_usbAllInOneAction[1].setDaemon(True)
+    g_task_usbAllInOneAction[1].start()
     g_task_increaseGauge = threading.Thread(target=g_main_win.task_doIncreaseGauge)
     g_task_increaseGauge.setDaemon(True)
     g_task_increaseGauge.start()
