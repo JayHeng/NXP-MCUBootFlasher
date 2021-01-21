@@ -77,7 +77,7 @@ class flashUi(flashWin.flashWin):
     def initUsbDevicePath( self ):
         self.usbDevicePath = []
         for i in range(uidef.kMaxMfgBoards):
-            self.usbDevicePath.append({'rom':None, 'flashloader':None})
+            self.usbDevicePath.append({'rom':None, 'flashloader':None, 'romShadow':None, 'flashloaderShadow':None})
 
     def writeDebugLog( self, logStr):
         if self.isDebugLogOn:
@@ -274,7 +274,7 @@ class flashUi(flashWin.flashWin):
                                 elif self.usbDevicePath[j]['rom'] == None:
                                     if self.usbDevicePath[j]['flashloader'] == None:
                                         nullDeviceIndex_1st = j
-                                    elif self.usbDeviceSlotId[j] == romUsbPath[26:26+len(self.usbDeviceSlotId[j])]:
+                                    elif self.usbDevicePath[j]['romShadow'] == romUsbPath:
                                         nullDeviceIndex_1st = j
                                         break
                                     else:
@@ -290,12 +290,11 @@ class flashUi(flashWin.flashWin):
                                 break
                             if flUsbPath == None:
                                 self.usbDevicePath[deviceIndex]['rom'] = romUsbPath[:]
+                                self.usbDevicePath[deviceIndex]['romShadow'] = romUsbPath[:]
                                 self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
                                 break
                             else:
-                                romUid0, romUid1 = self._getUidsFromUsbPath(romUsbPath)
-                                flUid0, flUid1 = self._getUidsFromUsbPath(flUsbPath)
-                                if romUid0 == flUid0:
+                                if self.usbDevicePath[deviceIndex]['romShadow'] == romUsbPath:
                                     self.usbDevicePath[deviceIndex]['rom'] = romUsbPath[:]
                                     self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
                                     break
@@ -310,15 +309,25 @@ class flashUi(flashWin.flashWin):
                         if self.usbDevicePath[deviceIndex]['flashloader'] == flUsbPath:
                             break
                         elif self.usbDevicePath[deviceIndex]['flashloader'] == None:
-                            if romUsbPath != None and romUsbPath[25] == "#":
-                                # max 256 usb instance
-                                romUid0, romUid1 = self._getUidsFromUsbPath(romUsbPath)
-                                flUid0, flUid1 = self._getUidsFromUsbPath(flUsbPath)
-                                if romUid0 == flUid0:
-                                    self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
-                                    self.usbDeviceSlotId[deviceIndex] = flUid0
-                                    self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
-                                    break
+                            if self.usbDevicePath[deviceIndex]['flashloaderShadow'] == flUsbPath:
+                                self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
+                                self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
+                                break
+                            elif self.usbDevicePath[deviceIndex]['flashloaderShadow'] == None:
+                                if romUsbPath != None and romUsbPath[25] == "#":
+                                    # max 256 usb instance
+                                    romUid0, romUid1 = self._getUidsFromUsbPath(romUsbPath)
+                                    flUid0, flUid1 = self._getUidsFromUsbPath(flUsbPath)
+                                    if romUid0 == flUid0:
+                                        self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
+                                        self.usbDevicePath[deviceIndex]['flashloaderShadow'] = flUsbPath[:]
+                                        self.usbDeviceSlotId[deviceIndex] = flUid0 + "-" + flUid1
+                                        self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
+                                        break
+                            else:
+                                pass
+                        else:
+                            pass
                 else:
                     pass
                 #----------------------------------------------------------------
@@ -473,8 +482,8 @@ class flashUi(flashWin.flashWin):
         usbDeviceSlotId = ''
         uidStrEnd = len(self.usbDeviceSlotId[slotIdx])
         if uidStrEnd > 0:
-            if uidStrEnd >= 6:
-                uidStrEnd = 6
+            if uidStrEnd >= 5:
+                uidStrEnd = 5
             usbDeviceSlotId = self.usbDeviceSlotId[slotIdx][0:uidStrEnd]
         slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + usbDeviceSlotId)
         if color == 'black':
@@ -489,6 +498,7 @@ class flashUi(flashWin.flashWin):
             slotObj.SetBackgroundColour( wx.Colour( 0xff, 0x80, 0x80 ) )
         else:
             pass
+        self.setInfoStatus(uilang.kMsgLanguageContentDict['usbDymaticModeInfo'][self.languageIndex])
 
     def task_doIncreaseGauge( self ):
         while True:

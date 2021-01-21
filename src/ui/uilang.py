@@ -150,4 +150,6 @@ kMsgLanguageContentDict = {
         'connectError_doubleCheckIspBoot':    ['Put MCU in ISP boot mode (ISP0 pin = LOW), Reset board and try again!',
                                               u"将ISP0引脚设为低，然后复位板子再试！"],
 
+        'usbDymaticModeInfo':                 ['Slot Green - \'Downloading...\';  Slot Blue - \'Success\';  Slot Red - \'Failure\';',
+                                              u"插槽显示绿色 - \'下载中...\';  插槽显示蓝色 - 成功;  插槽显示红色 - 失败；"],
 }
