@@ -224,42 +224,32 @@ class flashMain(runcore.flashRun):
             self.setDownloadOperationResults(operations, successes)
         self.updateConnectStatus('black')
 
-    def task_doUsb0AllInOneAction( self ):
+    def _doUsbxAllInOneAction( self, deviceIndex=0 ):
         while True:
-            if self.isUsbAllInOneActionTaskPending[0]:
-                self._doUsbAutoAllInOneAction(0)
-                self.isUsbAllInOneActionTaskPending[0] = False
-                if not self.isDymaticUsbDetection:
+            if self.isUsbAllInOneActionTaskPending[deviceIndex]:
+                self._doUsbAutoAllInOneAction(deviceIndex)
+                self.isUsbAllInOneActionTaskPending[deviceIndex] = False
+                if (deviceIndex == 0) and (not self.isDymaticUsbDetection):
                     self._stopGaugeTimer()
             else:
-                if self.isDymaticUsbDetection:
+                if ((deviceIndex == 0) and self.isDymaticUsbDetection) or \
+                   (deviceIndex != 0):
                     try:
-                        if self.usbDevicePath[0]['rom'] != None:
-                            self.writeDebugLog("Entering task_doUsb0AllInOneAction(), Set Pending flag 0, usb path is " + self.usbDevicePath[0]['rom'])
-                            self.isUsbAllInOneActionTaskPending[0] = True
-                            self.updateSlotStatus(0, 'green')
+                        if self.usbDevicePath[deviceIndex]['rom'] != None:
+                            self.writeDebugLog("Entering task_doUsbxAllInOneAction(), Set Pending flag " + str(deviceIndex) + ", usb path is " + self.usbDevicePath[deviceIndex]['rom'])
+                            self.isUsbAllInOneActionTaskPending[deviceIndex] = True
+                            self.updateSlotStatus(deviceIndex, 'green')
                         else:
                             pass
                     except:
                         pass
             time.sleep(1)
 
+    def task_doUsb0AllInOneAction( self ):
+        self._doUsbxAllInOneAction(0)
+
     def task_doUsb1AllInOneAction( self ):
-        while True:
-            if self.isUsbAllInOneActionTaskPending[1]:
-                self._doUsbAutoAllInOneAction(1)
-                self.isUsbAllInOneActionTaskPending[1] = False
-            else:
-                try:
-                    if self.usbDevicePath[1]['rom'] != None:
-                        self.writeDebugLog("Entering task_doUsb1AllInOneAction(), Set Pending flag 1, usb path is " + self.usbDevicePath[1]['rom'])
-                        self.isUsbAllInOneActionTaskPending[1] = True
-                        self.updateSlotStatus(1, 'green')
-                    else:
-                        pass
-                except:
-                    pass
-            time.sleep(1)
+        self._doUsbxAllInOneAction(1)
 
     def _doUsbAutoAllInOneAction( self, deviceIndex=0 ):
         if len(self.sbAppFiles) == 0:

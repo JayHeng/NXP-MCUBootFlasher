@@ -296,24 +296,27 @@ class flashUi(flashWin.flashWin):
                         self.writeDebugLog("Stage: FLD, Loop = " + str(i)+ ", Checking " + flHidDevice[i].device_path)
                         romUsbPath = self.usbDevicePath[deviceIndex]['rom']
                         flUsbPath = flHidDevice[i].device_path
-                        if romUsbPath != None and romUsbPath[25] == "#":
-                            # max 256 usb instance
-                            if (romUsbPath[26] == flUsbPath[26]) and \
-                               (romUsbPath[27] == flUsbPath[27]):
-                                if romUsbPath[27] == "&":
-                                    self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
-                                    self.usbDeviceSlotId[deviceIndex] = flUsbPath[26]
-                                    self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
-                                    break
-                                elif flUsbPath[27] == "&":
-                                    continue
-                                else:
-                                    if (romUsbPath[28] == flUsbPath[28]):
-                                        if romUsbPath[28] == "&":
-                                            self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
-                                            self.usbDeviceSlotId[deviceIndex] = flUsbPath[26:28]
-                                            self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
-                                            break
+                        if self.usbDevicePath[deviceIndex]['flashloader'] == flUsbPath:
+                            break
+                        elif self.usbDevicePath[deviceIndex]['flashloader'] == None:
+                            if romUsbPath != None and romUsbPath[25] == "#":
+                                # max 256 usb instance
+                                if (romUsbPath[26] == flUsbPath[26]) and \
+                                   (romUsbPath[27] == flUsbPath[27]):
+                                    if romUsbPath[27] == "&":
+                                        self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
+                                        self.usbDeviceSlotId[deviceIndex] = flUsbPath[26]
+                                        self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
+                                        break
+                                    elif flUsbPath[27] == "&":
+                                        continue
+                                    else:
+                                        if (romUsbPath[28] == flUsbPath[28]):
+                                            if romUsbPath[28] == "&":
+                                                self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
+                                                self.usbDeviceSlotId[deviceIndex] = flUsbPath[26:28]
+                                                self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
+                                                break
                 else:
                     pass
                 #----------------------------------------------------------------
