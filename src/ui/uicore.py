@@ -217,8 +217,10 @@ class flashUi(flashWin.flashWin):
             retryCnt = kRetryDetectTimes
         while retryCnt > 0:
             # Auto detect USB-HID device
-            hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[deviceIndex][0], 16), product_id = int(self.usbhidToConnect[deviceIndex][1], 16))
-            hidDevice = hidFilter.get_devices()
+            romHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.romUsbVid, 16), product_id = int(self.tgt.romUsbPid, 16))
+            romHidDevice = romHidFilter.get_devices()
+            flHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.flashloaderUsbVid, 16), product_id = int(self.tgt.flashloaderUsbPid, 16))
+            flHidDevice = flHidFilter.get_devices()
             #------------------------------------------------
             # Example RT1170
             # Port 1
@@ -232,11 +234,10 @@ class flashUi(flashWin.flashWin):
             # Port 2
             #rom: \\?\hid#vid_1fc9&pid_0130#9&2897791a&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
             #fl:  \\?\hid#vid_15a2&pid_0073#9&35766d2e&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
-            self._setUsbDetectedBoardNum(len(hidDevice))
-            if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
+            if (not self.isDymaticUsbDetection) or (len(romHidDevice) > 0) or (len(flHidDevice) > 0):
                 #----------------------------------------------------------------
                 if self.connectStage[deviceIndex] == uidef.kConnectStage_Rom:
-                    romHidDevice = hidDevice
+                    self._setUsbDetectedBoardNum(len(romHidDevice))
                     for i in range(len(romHidDevice)):
                         self.writeDebugLog("Stage: ROM, Loop = " + str(i)+ ", Checking " + romHidDevice[i].device_path)
                         romUsbPath = romHidDevice[i].device_path
@@ -290,7 +291,7 @@ class flashUi(flashWin.flashWin):
                         else:
                             pass
                 elif self.connectStage[deviceIndex] == uidef.kConnectStage_Flashloader:
-                    flHidDevice = hidDevice
+                    self._setUsbDetectedBoardNum(len(flHidDevice))
                     for i in range(len(flHidDevice)):
                         self.writeDebugLog("Stage: FLD, Loop = " + str(i)+ ", Checking " + flHidDevice[i].device_path)
                         romUsbPath = self.usbDevicePath[deviceIndex]['rom']
