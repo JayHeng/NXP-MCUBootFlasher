@@ -211,6 +211,33 @@ class flashUi(flashWin.flashWin):
                     self._retryToDetectUsbhidDevice(i, False)
             time.sleep(1)
 
+    def _getUidsFromUsbPath( self, usbPath ):
+        #------------------------------------------------
+        # Example RT1170
+        # Port 1
+        #rom: \\?\hid#vid_1fc9&pid_013d#a&2eb8245&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+        #fl:  \\?\hid#vid_15a2&pid_0073#a&20680ae4&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+        # Port 2
+        #rom: \\?\hid#vid_1fc9&pid_013d#9&17f9e48f&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+        #fl:  \\?\hid#vid_15a2&pid_0073#9&35766d2e&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+        #------------------------------------------------
+        # Example RT1050
+        # Port 2
+        #rom: \\?\hid#vid_1fc9&pid_0130#9&2897791a&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+        #fl:  \\?\hid#vid_15a2&pid_0073#9&35766d2e&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+        uid0 = ''
+        uid1 = ''
+        if usbPath != None and usbPath[25] == "#":
+            i = 26
+            while (usbPath[i] != "&"):
+                uid0 += usbPath[i]
+                i += 1
+            j = i + 1
+            while (usbPath[j] != "&"):
+                uid1 += usbPath[j]
+                j += 1
+        return uid0, uid1
+
     def _retryToDetectUsbhidDevice( self, deviceIndex=0, needToRetry = True ):
         self.writeDebugLog("Entering _retryToDetectUsbhidDevice(), deviceIndex =" + str(deviceIndex))
         usbVid = [None]
@@ -225,19 +252,7 @@ class flashUi(flashWin.flashWin):
             romHidDevice = romHidFilter.get_devices()
             flHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.flashloaderUsbVid, 16), product_id = int(self.tgt.flashloaderUsbPid, 16))
             flHidDevice = flHidFilter.get_devices()
-            #------------------------------------------------
-            # Example RT1170
-            # Port 1
-            #rom: \\?\hid#vid_1fc9&pid_013d#a&2eb8245&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
-            #fl:  \\?\hid#vid_15a2&pid_0073#a&20680ae4&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
-            # Port 2
-            #rom: \\?\hid#vid_1fc9&pid_013d#9&17f9e48f&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
-            #fl:  \\?\hid#vid_15a2&pid_0073#9&35766d2e&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
-            #------------------------------------------------
-            # Example RT1050
-            # Port 2
-            #rom: \\?\hid#vid_1fc9&pid_0130#9&2897791a&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
-            #fl:  \\?\hid#vid_15a2&pid_0073#9&35766d2e&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+
             if (not self.isDymaticUsbDetection) or (len(romHidDevice) > 0) or (len(flHidDevice) > 0):
                 #----------------------------------------------------------------
                 if self.connectStage[deviceIndex] == uidef.kConnectStage_Rom:
@@ -278,20 +293,12 @@ class flashUi(flashWin.flashWin):
                                 self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
                                 break
                             else:
-                                if (romUsbPath[26] == flUsbPath[26]) and \
-                                   (romUsbPath[27] == flUsbPath[27]):
-                                    if romUsbPath[27] == "&":
-                                        self.usbDevicePath[deviceIndex]['rom'] = romUsbPath[:]
-                                        self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
-                                        break
-                                    elif flUsbPath[27] == "&":
-                                        continue
-                                    else:
-                                        if (romUsbPath[28] == flUsbPath[28]):
-                                            if romUsbPath[28] == "&":
-                                                self.usbDevicePath[deviceIndex]['rom'] = romUsbPath[:]
-                                                self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
-                                                break
+                                romUid0, romUid1 = self._getUidsFromUsbPath(romUsbPath)
+                                flUid0, flUid1 = self._getUidsFromUsbPath(flUsbPath)
+                                if romUid0 == flUid0:
+                                    self.usbDevicePath[deviceIndex]['rom'] = romUsbPath[:]
+                                    self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
+                                    break
                         else:
                             pass
                 elif self.connectStage[deviceIndex] == uidef.kConnectStage_Flashloader:
@@ -305,22 +312,13 @@ class flashUi(flashWin.flashWin):
                         elif self.usbDevicePath[deviceIndex]['flashloader'] == None:
                             if romUsbPath != None and romUsbPath[25] == "#":
                                 # max 256 usb instance
-                                if (romUsbPath[26] == flUsbPath[26]) and \
-                                   (romUsbPath[27] == flUsbPath[27]):
-                                    if romUsbPath[27] == "&":
-                                        self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
-                                        self.usbDeviceSlotId[deviceIndex] = flUsbPath[26]
-                                        self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
-                                        break
-                                    elif flUsbPath[27] == "&":
-                                        continue
-                                    else:
-                                        if (romUsbPath[28] == flUsbPath[28]):
-                                            if romUsbPath[28] == "&":
-                                                self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
-                                                self.usbDeviceSlotId[deviceIndex] = flUsbPath[26:28]
-                                                self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
-                                                break
+                                romUid0, romUid1 = self._getUidsFromUsbPath(romUsbPath)
+                                flUid0, flUid1 = self._getUidsFromUsbPath(flUsbPath)
+                                if romUid0 == flUid0:
+                                    self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath[:]
+                                    self.usbDeviceSlotId[deviceIndex] = flUid0
+                                    self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
+                                    break
                 else:
                     pass
                 #----------------------------------------------------------------
@@ -433,6 +431,8 @@ class flashUi(flashWin.flashWin):
 
     def updateConnectStatus( self, color='black' ):
         self.connectStatusColor = color
+        if self.isUsbhidPortSelected and self.isDymaticUsbDetection:
+            return
         if color == 'black':
             self.m_button_allInOneAction.SetLabel(uilang.kMainLanguageContentDict['button_allInOneAction_black'][self.languageIndex])
             self.m_button_allInOneAction.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
@@ -470,7 +470,13 @@ class flashUi(flashWin.flashWin):
             slotObj = self.m_button_slot7
         else:
             pass
-        slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + self.usbDeviceSlotId[slotIdx])
+        usbDeviceSlotId = ''
+        uidStrEnd = len(self.usbDeviceSlotId[slotIdx])
+        if uidStrEnd > 0:
+            if uidStrEnd >= 6:
+                uidStrEnd = 6
+            usbDeviceSlotId = self.usbDeviceSlotId[slotIdx][0:uidStrEnd]
+        slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + usbDeviceSlotId)
         if color == 'black':
             slotObj.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
         elif color == 'yellow':

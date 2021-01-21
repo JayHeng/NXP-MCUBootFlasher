@@ -255,6 +255,24 @@ class flashMain(runcore.flashRun):
     def task_doUsb1AllInOneAction( self ):
         self._doUsbxAllInOneAction(1)
 
+    def task_doUsb2AllInOneAction( self ):
+        self._doUsbxAllInOneAction(2)
+
+    def task_doUsb3AllInOneAction( self ):
+        self._doUsbxAllInOneAction(3)
+
+    def task_doUsb4AllInOneAction( self ):
+        self._doUsbxAllInOneAction(4)
+
+    def task_doUsb5AllInOneAction( self ):
+        self._doUsbxAllInOneAction(5)
+
+    def task_doUsb6AllInOneAction( self ):
+        self._doUsbxAllInOneAction(6)
+
+    def task_doUsb7AllInOneAction( self ):
+        self._doUsbxAllInOneAction(7)
+
     def _doUsbAutoAllInOneAction( self, deviceIndex=0 ):
         if len(self.sbAppFiles) == 0:
             self.updateConnectStatus('red')
@@ -389,6 +407,24 @@ if __name__ == '__main__':
     g_task_usbAllInOneAction[1] = threading.Thread(target=g_main_win.task_doUsb1AllInOneAction)
     g_task_usbAllInOneAction[1].setDaemon(True)
     g_task_usbAllInOneAction[1].start()
+    g_task_usbAllInOneAction[2] = threading.Thread(target=g_main_win.task_doUsb2AllInOneAction)
+    g_task_usbAllInOneAction[2].setDaemon(True)
+    g_task_usbAllInOneAction[2].start()
+    g_task_usbAllInOneAction[3] = threading.Thread(target=g_main_win.task_doUsb3AllInOneAction)
+    g_task_usbAllInOneAction[3].setDaemon(True)
+    g_task_usbAllInOneAction[3].start()
+    g_task_usbAllInOneAction[4] = threading.Thread(target=g_main_win.task_doUsb4AllInOneAction)
+    g_task_usbAllInOneAction[4].setDaemon(True)
+    g_task_usbAllInOneAction[4].start()
+    g_task_usbAllInOneAction[5] = threading.Thread(target=g_main_win.task_doUsb5AllInOneAction)
+    g_task_usbAllInOneAction[5].setDaemon(True)
+    g_task_usbAllInOneAction[5].start()
+    g_task_usbAllInOneAction[6] = threading.Thread(target=g_main_win.task_doUsb6AllInOneAction)
+    g_task_usbAllInOneAction[6].setDaemon(True)
+    g_task_usbAllInOneAction[6].start()
+    g_task_usbAllInOneAction[7] = threading.Thread(target=g_main_win.task_doUsb7AllInOneAction)
+    g_task_usbAllInOneAction[7].setDaemon(True)
+    g_task_usbAllInOneAction[7].start()
     g_task_increaseGauge = threading.Thread(target=g_main_win.task_doIncreaseGauge)
     g_task_increaseGauge.setDaemon(True)
     g_task_increaseGauge.start()
