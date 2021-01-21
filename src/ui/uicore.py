@@ -34,7 +34,7 @@ class flashUi(flashWin.flashWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
-        self.isDebugLogOn = True
+        self.isDebugLogOn = False
         if self.isDebugLogOn:
             self.debugLogFile = os.path.join(self.exeTopRoot, 'bin', 'debug_log.txt')
             self.debugLogFileObj = open(self.debugLogFile, 'wb')

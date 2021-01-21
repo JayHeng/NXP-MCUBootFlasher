@@ -84,11 +84,15 @@ class flashMain(runcore.flashRun):
         pingCnt = kRetryPingTimes
         while (not pingStatus) and pingCnt > 0:
             if bootType == kBootloaderType_Rom:
+                self.writeDebugLog("Entering pingRom(), deviceIndex = " + str(deviceIndex) + ", usb path is " + self.usbDevicePath[deviceIndex]['rom'])
                 pingStatus = self.pingRom(deviceIndex)
             elif bootType == kBootloaderType_Flashloader:
                 # This is mainly for RT1170 flashloader, but it is also ok for other RT devices
                 if self.isUartPortSelected:
                     time.sleep(3)
+                if self.usbDevicePath[deviceIndex]['flashloader'] != None:
+                    self.connectToDevice(self.connectStage[deviceIndex], deviceIndex)
+                    self.writeDebugLog("Entering pingFlashloader(), deviceIndex = " + str(deviceIndex) + ", usb path is " + self.usbDevicePath[deviceIndex]['flashloader'])
                 pingStatus = self.pingFlashloader(deviceIndex)
             else:
                 pass
