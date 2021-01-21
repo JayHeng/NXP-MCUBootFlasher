@@ -239,27 +239,35 @@ class flashUi(flashWin.flashWin):
                     romHidDevice = hidDevice
                     for i in range(len(romHidDevice)):
                         self.writeDebugLog("Stage: ROM, Loop = " + str(i)+ ", Checking " + romHidDevice[i].device_path)
-                        if self.usbDevicePath[deviceIndex]['rom'] == romHidDevice[i].device_path:
+                        romUsbPath = romHidDevice[i].device_path
+                        flUsbPath = self.usbDevicePath[deviceIndex]['flashloader']
+                        if self.usbDevicePath[deviceIndex]['rom'] == romUsbPath:
                             break
                         elif self.usbDevicePath[deviceIndex]['rom'] == None:
                             hasThisPath = False
-                            nullDeviceIndex_1st = 0
+                            nullDeviceIndex_1st = uidef.kMaxMfgBoards
                             j = len(self.usbDevicePath) - 1
                             while (j >= 0):
-                                if self.usbDevicePath[j]['rom'] == None:
-                                    nullDeviceIndex_1st = j
-                                elif self.usbDevicePath[j]['rom'] == romHidDevice[i].device_path:
+                                if self.usbDevicePath[j]['rom'] == romUsbPath:
                                     hasThisPath = True
-                                    continue
+                                    break
+                                elif self.usbDevicePath[j]['rom'] == None:
+                                    if self.usbDevicePath[j]['flashloader'] == None:
+                                        nullDeviceIndex_1st = j
+                                    elif self.usbDeviceSlotId[j] == romUsbPath[26:26+len(self.usbDeviceSlotId[j])]:
+                                        nullDeviceIndex_1st = j
+                                        break
+                                    else:
+                                        pass
+                                else:
+                                    pass
                                 j -= 1
                             # If this path was in usbDevicePath, we don't need to save it here
                             if hasThisPath:
                                 break
                             # If deviceIndex is not the first null device in usbDevicePath, we don't need to savt it here
-                            elif nullDeviceIndex_1st != deviceIndex:
+                            if nullDeviceIndex_1st != deviceIndex:
                                 break
-                            romUsbPath = romHidDevice[i].device_path
-                            flUsbPath = self.usbDevicePath[deviceIndex]['flashloader']
                             if flUsbPath == None:
                                 self.usbDevicePath[deviceIndex]['rom'] = romUsbPath[:]
                                 self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")

@@ -235,6 +235,7 @@ class flashMain(runcore.flashRun):
                 if self.isDymaticUsbDetection:
                     try:
                         if self.usbDevicePath[0]['rom'] != None:
+                            self.writeDebugLog("Entering task_doUsb0AllInOneAction(), Set Pending flag 0, usb path is " + self.usbDevicePath[0]['rom'])
                             self.isUsbAllInOneActionTaskPending[0] = True
                             self.updateSlotStatus(0, 'green')
                         else:
@@ -251,6 +252,7 @@ class flashMain(runcore.flashRun):
             else:
                 try:
                     if self.usbDevicePath[1]['rom'] != None:
+                        self.writeDebugLog("Entering task_doUsb1AllInOneAction(), Set Pending flag 1, usb path is " + self.usbDevicePath[1]['rom'])
                         self.isUsbAllInOneActionTaskPending[1] = True
                         self.updateSlotStatus(1, 'green')
                     else:
