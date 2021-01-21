@@ -64,9 +64,8 @@ class flashUi(flashWin.flashWin):
         self.uartBaudrate = [None]
         self.isUsbhidConnected = [False] * uidef.kMaxMfgBoards
         self.usbhidToConnect = [[None] * 2] * uidef.kMaxMfgBoards
-        self.usbDevicePath = []
-        for i in range(uidef.kMaxMfgBoards):
-            self.usbDevicePath.append({'rom':None, 'flashloader':None})
+        self.usbDevicePath = None
+        self.initUsbDevicePath()
         self.usbDeviceSlotId = [''] * uidef.kMaxMfgBoards
         self._initPortSetupValue()
         self._initMcuBoards()
@@ -74,6 +73,11 @@ class flashUi(flashWin.flashWin):
         self.sbAppFilePath = None
         self.sbAppFolderPath = None
         self.sbAppFiles = []
+
+    def initUsbDevicePath( self ):
+        self.usbDevicePath = []
+        for i in range(uidef.kMaxMfgBoards):
+            self.usbDevicePath.append({'rom':None, 'flashloader':None})
 
     def writeDebugLog( self, logStr):
         if self.isDebugLogOn:

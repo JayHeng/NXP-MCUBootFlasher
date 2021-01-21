@@ -290,7 +290,7 @@ class flashMain(runcore.flashRun):
         else:
             self.updateConnectStatus('black')
             self.setDownloadOperationResults(1, successes)
-            self.usbDevicePath = []
+            self.initUsbDevicePath()
 
     def callbackAllInOneAction( self, event ):
         if self.isUartPortSelected:
