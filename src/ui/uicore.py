@@ -62,6 +62,7 @@ class flashUi(flashWin.flashWin):
         usbDevicePath = {'rom':None,
                          'flashloader':None}
         self.usbDevicePath = [usbDevicePath] * uidef.kMaxMfgBoards
+        self.usbDeviceSlotId = [''] * uidef.kMaxMfgBoards
         self._initPortSetupValue()
         self._initMcuBoards()
         self.setMcuBoards()
@@ -255,6 +256,7 @@ class flashUi(flashWin.flashWin):
                                (romUsbPath[27] == flUsbPath[27]):
                                 if romUsbPath[27] == "&":
                                     self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath
+                                    self.usbDeviceSlotId[deviceIndex] = flUsbPath[26]
                                     break
                                 elif flUsbPath[27] == "&":
                                     continue
@@ -262,6 +264,7 @@ class flashUi(flashWin.flashWin):
                                     if (romUsbPath[28] == flUsbPath[28]):
                                         if romUsbPath[28] == "&":
                                             self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath
+                                            self.usbDeviceSlotId[deviceIndex] = flUsbPath[26:28]
                                             break
                 else:
                     pass
@@ -412,6 +415,7 @@ class flashUi(flashWin.flashWin):
             slotObj = self.m_button_slot7
         else:
             pass
+        slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + self.usbDeviceSlotId[slotIdx])
         if color == 'black':
             slotObj.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
         elif color == 'yellow':
@@ -552,6 +556,14 @@ class flashUi(flashWin.flashWin):
         self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
         self.m_staticText_successfulBoards.SetLabel(uilang.kMainLanguageContentDict['sText_successfulBoards'][langIndex])
         self.m_staticText_failedBoards.SetLabel(uilang.kMainLanguageContentDict['sText_failedBoards'][langIndex])
+        self.m_button_slot0.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"0")
+        self.m_button_slot1.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"1")
+        self.m_button_slot2.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"2")
+        self.m_button_slot3.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"3")
+        self.m_button_slot4.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"4")
+        self.m_button_slot5.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"5")
+        self.m_button_slot6.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"6")
+        self.m_button_slot7.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"7")
         if self.connectStatusColor != None:
             self.updateConnectStatus(self.connectStatusColor)
 

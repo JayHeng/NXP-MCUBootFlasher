@@ -229,7 +229,6 @@ class flashMain(runcore.flashRun):
             if self.isUsbAllInOneActionTaskPending[0]:
                 self._doUsbAutoAllInOneAction(0)
                 self.isUsbAllInOneActionTaskPending[0] = False
-                self.updateSlotStatus(0, 'yellow')
                 if not self.isDymaticUsbDetection:
                     self._stopGaugeTimer()
             else:
@@ -249,7 +248,6 @@ class flashMain(runcore.flashRun):
             if self.isUsbAllInOneActionTaskPending[1]:
                 self._doUsbAutoAllInOneAction(1)
                 self.isUsbAllInOneActionTaskPending[1] = False
-                self.updateSlotStatus(1, 'yellow')
             else:
                 try:
                     if self.usbDevicePath[1]['rom'] != None:
@@ -273,15 +271,19 @@ class flashMain(runcore.flashRun):
                 if self.flashSbImage(self.sbAppFiles[i], deviceIndex):
                     if i == len(self.sbAppFiles) - 1:
                         successes = 1
+                        self.updateSlotStatus(deviceIndex, 'blue')
                     self.updateConnectStatus('blue')
                     if not self.isDymaticUsbDetection:
                         self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
                 else:
                     self.updateConnectStatus('red')
+                    self.updateSlotStatus(deviceIndex, 'red')
                     break
             if not self.isDymaticUsbDetection:
                 self.resetMcuDevice(deviceIndex)
                 time.sleep(2)
+        else:
+            self.updateSlotStatus(deviceIndex, 'red')
         self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
         self._setUartUsbPort(deviceIndex)
         self.isUsbhidConnected[deviceIndex] = False

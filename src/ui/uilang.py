@@ -52,6 +52,7 @@ kMainLanguageContentDict = {
         'button_allInOneAction_red':          ['Failure',                               u"失败"],
         'sText_successfulBoards':             ['Successful Boards:',                    u"下载成功板卡:"],
         'sText_failedBoards':                 ['Failed Boards:',                        u"下载失败板卡:"],
+        'button_slot':                        ['slot',                                  u"插槽"],
 
 }
 
