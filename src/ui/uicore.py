@@ -236,12 +236,29 @@ class flashUi(flashWin.flashWin):
             if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
                 #----------------------------------------------------------------
                 if self.connectStage[deviceIndex] == uidef.kConnectStage_Rom:
-                    for i in range(len(hidDevice)):
-                        self.writeDebugLog("Stage: ROM, Loop = " + str(i)+ ", Checking " + hidDevice[i].device_path)
-                        if self.usbDevicePath[deviceIndex]['rom'] == hidDevice[i].device_path:
+                    romHidDevice = hidDevice
+                    for i in range(len(romHidDevice)):
+                        self.writeDebugLog("Stage: ROM, Loop = " + str(i)+ ", Checking " + romHidDevice[i].device_path)
+                        if self.usbDevicePath[deviceIndex]['rom'] == romHidDevice[i].device_path:
                             break
                         elif self.usbDevicePath[deviceIndex]['rom'] == None:
-                            romUsbPath = hidDevice[i].device_path
+                            hasThisPath = False
+                            nullDeviceIndex_1st = 0
+                            j = len(self.usbDevicePath) - 1
+                            while (j >= 0):
+                                if self.usbDevicePath[j]['rom'] == None:
+                                    nullDeviceIndex_1st = j
+                                elif self.usbDevicePath[j]['rom'] == romHidDevice[i].device_path:
+                                    hasThisPath = True
+                                    continue
+                                j -= 1
+                            # If this path was in usbDevicePath, we don't need to save it here
+                            if hasThisPath:
+                                break
+                            # If deviceIndex is not the first null device in usbDevicePath, we don't need to savt it here
+                            elif nullDeviceIndex_1st != deviceIndex:
+                                break
+                            romUsbPath = romHidDevice[i].device_path
                             flUsbPath = self.usbDevicePath[deviceIndex]['flashloader']
                             if flUsbPath == None:
                                 self.usbDevicePath[deviceIndex]['rom'] = romUsbPath
@@ -265,10 +282,11 @@ class flashUi(flashWin.flashWin):
                         else:
                             pass
                 elif self.connectStage[deviceIndex] == uidef.kConnectStage_Flashloader:
-                    for i in range(len(hidDevice)):
-                        self.writeDebugLog("Stage: FLD, Loop = " + str(i)+ ", Checking " + hidDevice[i].device_path)
+                    flHidDevice = hidDevice
+                    for i in range(len(flHidDevice)):
+                        self.writeDebugLog("Stage: FLD, Loop = " + str(i)+ ", Checking " + flHidDevice[i].device_path)
                         romUsbPath = self.usbDevicePath[deviceIndex]['rom']
-                        flUsbPath = hidDevice[i].device_path
+                        flUsbPath = flHidDevice[i].device_path
                         if romUsbPath != None and romUsbPath[25] == "#":
                             # max 256 usb instance
                             if (romUsbPath[26] == flUsbPath[26]) and \
