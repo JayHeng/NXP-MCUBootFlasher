@@ -337,6 +337,7 @@ class flashMain(runcore.flashRun):
             self.Destroy()
         except:
             pass
+        self.closeDebugLog()
 
     def callbackExit( self, event ):
         self._deinitToolToExit()

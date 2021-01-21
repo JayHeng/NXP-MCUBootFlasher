@@ -34,6 +34,11 @@ class flashUi(flashWin.flashWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
+        self.isDebugLogOn = True
+        if self.isDebugLogOn:
+            self.debugLogFile = os.path.join(self.exeTopRoot, 'bin', 'debug_log.txt')
+            self.debugLogFileObj = open(self.debugLogFile, 'wb')
+
         self.connectStage = [uidef.kConnectStage_Rom] * uidef.kMaxMfgBoards
         self.connectStatusColor = None
 
@@ -69,6 +74,14 @@ class flashUi(flashWin.flashWin):
         self.sbAppFilePath = None
         self.sbAppFolderPath = None
         self.sbAppFiles = []
+
+    def writeDebugLog( self, logStr):
+        if self.isDebugLogOn:
+            self.debugLogFileObj.write(logStr + " \r\n")
+
+    def closeDebugLog( self ):
+        if self.isDebugLogOn:
+            self.debugLogFileObj.close()
 
     def _initStatusBar( self ):
         self.m_statusBar.SetFieldsCount(2)
@@ -195,6 +208,7 @@ class flashUi(flashWin.flashWin):
             time.sleep(1)
 
     def _retryToDetectUsbhidDevice( self, deviceIndex=0, needToRetry = True ):
+        self.writeDebugLog("Entering _retryToDetectUsbhidDevice(), deviceIndex =" + str(deviceIndex))
         usbVid = [None]
         usbPid = [None]
         self.isUsbhidConnected[deviceIndex] = False
@@ -223,6 +237,7 @@ class flashUi(flashWin.flashWin):
                 #----------------------------------------------------------------
                 if self.connectStage[deviceIndex] == uidef.kConnectStage_Rom:
                     for i in range(len(hidDevice)):
+                        self.writeDebugLog("Stage: ROM, Loop = " + str(i)+ ", Checking " + hidDevice[i].device_path)
                         if self.usbDevicePath[deviceIndex]['rom'] == hidDevice[i].device_path:
                             break
                         elif self.usbDevicePath[deviceIndex]['rom'] == None:
@@ -230,12 +245,14 @@ class flashUi(flashWin.flashWin):
                             flUsbPath = self.usbDevicePath[deviceIndex]['flashloader']
                             if flUsbPath == None:
                                 self.usbDevicePath[deviceIndex]['rom'] = romUsbPath
+                                self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
                                 break
                             else:
                                 if (romUsbPath[26] == flUsbPath[26]) and \
                                    (romUsbPath[27] == flUsbPath[27]):
                                     if romUsbPath[27] == "&":
                                         self.usbDevicePath[deviceIndex]['rom'] = romUsbPath
+                                        self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
                                         break
                                     elif flUsbPath[27] == "&":
                                         continue
@@ -243,11 +260,13 @@ class flashUi(flashWin.flashWin):
                                         if (romUsbPath[28] == flUsbPath[28]):
                                             if romUsbPath[28] == "&":
                                                 self.usbDevicePath[deviceIndex]['rom'] = romUsbPath
+                                                self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['rom']")
                                                 break
                         else:
                             pass
                 elif self.connectStage[deviceIndex] == uidef.kConnectStage_Flashloader:
                     for i in range(len(hidDevice)):
+                        self.writeDebugLog("Stage: FLD, Loop = " + str(i)+ ", Checking " + hidDevice[i].device_path)
                         romUsbPath = self.usbDevicePath[deviceIndex]['rom']
                         flUsbPath = hidDevice[i].device_path
                         if romUsbPath != None and romUsbPath[25] == "#":
@@ -257,6 +276,7 @@ class flashUi(flashWin.flashWin):
                                 if romUsbPath[27] == "&":
                                     self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath
                                     self.usbDeviceSlotId[deviceIndex] = flUsbPath[26]
+                                    self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
                                     break
                                 elif flUsbPath[27] == "&":
                                     continue
@@ -265,6 +285,7 @@ class flashUi(flashWin.flashWin):
                                         if romUsbPath[28] == "&":
                                             self.usbDevicePath[deviceIndex]['flashloader'] = flUsbPath
                                             self.usbDeviceSlotId[deviceIndex] = flUsbPath[26:28]
+                                            self.writeDebugLog("Set self.usbDevicePath[" + str(deviceIndex) + "]['flashloader']")
                                             break
                 else:
                     pass

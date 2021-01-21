@@ -85,19 +85,21 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
 kRevision_3_0_0_en =  "【v3.0.0】 \n" + \
                       "  Feature: \n" + \
                       "     1. Support i.MXRT1011, i.MXRT1024 SIP, i.MXRT117x \n" + \
-                      "     2. Can download image automatically via USB when new board is connected \n" + \
+                      "     2. Support i.MXRT5xx/6xx, Kinetis, LPC5500 Series \n" + \
+                      "     3. Can download image automatically via USB when new board is connected \n" + \
                       "  Improvement: \n" + \
-                      "     1.  \n" + \
+                      "     1. Can download image into 8 boards via USB at the same time \n" + \
                       "  Bug: \n" + \
                       "     1. Fix USB download issue when static detection mode is set \n\n"
 kRevision_3_0_0_zh = u"【v3.0.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 支持i.MXRT1011、i.MXRT1064 SIP、i.MXRT117x \n" + \
-                     u"     2. 动态检测模式下，板子连接上时自动下载.sb文件(仅适用USB口) \n" + \
+                     u"     2. 支持i.MXRT5xx/6xx，Kinetis, LPC5500系列 \n" + \
+                     u"     3. 动态检测模式下，板卡连接上时自动下载.sb文件(仅适用USB口) \n" + \
                      u"  改进: \n" + \
-                     u"     1. \n" + \
+                     u"     1. 动态检测模式下，支持最多8块板卡通过USB同时下载.sb文件（异步进行） \n" + \
                      u"  缺陷: \n" + \
-                     u"     1. 修复静态检测模式下USB无法正常下载的问题 \n\n"
+                     u"     1. 修复静态检测模式下板卡无法通过USB口正常下载的问题 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
