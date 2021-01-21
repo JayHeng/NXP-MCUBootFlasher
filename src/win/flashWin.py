@@ -17,7 +17,7 @@ import wx.xrc
 class flashWin ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"NXP MCU Boot Flasher", pos = wx.DefaultPosition, size = wx.Size( 576,420 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"NXP MCU Boot Flasher", pos = wx.DefaultPosition, size = wx.Size( 650,420 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
@@ -218,13 +218,13 @@ class flashWin ( wx.Frame ):
 
 		wSizer_download.Add( self.m_staticText_appPath, 0, wx.ALL, 5 )
 
-		self.m_filePicker_appFilePath = wx.FilePickerCtrl( self.m_panel_download, wx.ID_ANY, u"Select a file", u"Select a file", u"*.*", wx.DefaultPosition, wx.Size( 260,-1 ), wx.FLP_DEFAULT_STYLE )
+		self.m_filePicker_appFilePath = wx.FilePickerCtrl( self.m_panel_download, wx.ID_ANY, u"Select a file", u"Select a file", u"*.*", wx.DefaultPosition, wx.Size( 340,-1 ), wx.FLP_DEFAULT_STYLE )
 		wSizer_download.Add( self.m_filePicker_appFilePath, 0, wx.ALL, 5 )
 
-		self.m_dirPicker_appFolderPath = wx.DirPickerCtrl( self.m_panel_download, wx.ID_ANY, u"Select a folder", u"Select a folder", wx.DefaultPosition, wx.Size( 260,-1 ), wx.DIRP_DEFAULT_STYLE )
+		self.m_dirPicker_appFolderPath = wx.DirPickerCtrl( self.m_panel_download, wx.ID_ANY, u"Select a folder", u"Select a folder", wx.DefaultPosition, wx.Size( 340,-1 ), wx.DIRP_DEFAULT_STYLE )
 		wSizer_download.Add( self.m_dirPicker_appFolderPath, 0, wx.ALL, 5 )
 
-		self.m_staticText_null1Download = wx.StaticText( self.m_panel_download, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_staticText_null1Download = wx.StaticText( self.m_panel_download, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 105,-1 ), 0 )
 		self.m_staticText_null1Download.Wrap( -1 )
 
 		wSizer_download.Add( self.m_staticText_null1Download, 0, wx.ALL, 5 )
@@ -244,9 +244,14 @@ class flashWin ( wx.Frame ):
 
 		wSizer_download.Add( self.m_staticText_costTime, 0, wx.ALL, 5 )
 
-		self.m_gauge_action = wx.Gauge( self.m_panel_download, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size( 190,20 ), wx.GA_HORIZONTAL )
+		self.m_gauge_action = wx.Gauge( self.m_panel_download, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size( 270,20 ), wx.GA_HORIZONTAL )
 		self.m_gauge_action.SetValue( 100 )
 		wSizer_download.Add( self.m_gauge_action, 0, wx.ALL, 5 )
+
+		self.m_staticText_null3Download = wx.StaticText( self.m_panel_download, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 38,-1 ), 0 )
+		self.m_staticText_null3Download.Wrap( -1 )
+
+		wSizer_download.Add( self.m_staticText_null3Download, 0, wx.ALL, 5 )
 
 		self.m_staticText_successfulBoards = wx.StaticText( self.m_panel_download, wx.ID_ANY, u"Successful Boards:", wx.DefaultPosition, wx.Size( 100,-1 ), 0 )
 		self.m_staticText_successfulBoards.Wrap( -1 )
@@ -268,10 +273,10 @@ class flashWin ( wx.Frame ):
 
 		wSizer_download.Add( self.m_staticText_failedBoardNum, 0, wx.ALL, 5 )
 
-		self.m_staticText_null3Download = wx.StaticText( self.m_panel_download, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 260,2 ), 0 )
-		self.m_staticText_null3Download.Wrap( -1 )
+		self.m_staticText_null4Download = wx.StaticText( self.m_panel_download, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 260,2 ), 0 )
+		self.m_staticText_null4Download.Wrap( -1 )
 
-		wSizer_download.Add( self.m_staticText_null3Download, 0, wx.ALL, 5 )
+		wSizer_download.Add( self.m_staticText_null4Download, 0, wx.ALL, 5 )
 
 
 		self.m_panel_download.SetSizer( wSizer_download )
@@ -283,28 +288,28 @@ class flashWin ( wx.Frame ):
 
 		wSizer_logo = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
 
-		self.m_button_slot0 = wx.Button( self, wx.ID_ANY, u"slot0", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot0 = wx.Button( self, wx.ID_ANY, u"slot0", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot0, 0, wx.ALL, 5 )
 
-		self.m_button_slot1 = wx.Button( self, wx.ID_ANY, u"slot1", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot1 = wx.Button( self, wx.ID_ANY, u"slot1", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot1, 0, wx.ALL, 5 )
 
-		self.m_button_slot2 = wx.Button( self, wx.ID_ANY, u"slot2", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot2 = wx.Button( self, wx.ID_ANY, u"slot2", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot2, 0, wx.ALL, 5 )
 
-		self.m_button_slot3 = wx.Button( self, wx.ID_ANY, u"slot3", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot3 = wx.Button( self, wx.ID_ANY, u"slot3", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot3, 0, wx.ALL, 5 )
 
-		self.m_button_slot4 = wx.Button( self, wx.ID_ANY, u"slot4", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot4 = wx.Button( self, wx.ID_ANY, u"slot4", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot4, 0, wx.ALL, 5 )
 
-		self.m_button_slot5 = wx.Button( self, wx.ID_ANY, u"slot5", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot5 = wx.Button( self, wx.ID_ANY, u"slot5", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot5, 0, wx.ALL, 5 )
 
-		self.m_button_slot6 = wx.Button( self, wx.ID_ANY, u"slot6", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot6 = wx.Button( self, wx.ID_ANY, u"slot6", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot6, 0, wx.ALL, 5 )
 
-		self.m_button_slot7 = wx.Button( self, wx.ID_ANY, u"slot7", wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		self.m_button_slot7 = wx.Button( self, wx.ID_ANY, u"slot7", wx.DefaultPosition, wx.Size( 80,-1 ), 0 )
 		wSizer_logo.Add( self.m_button_slot7, 0, wx.ALL, 5 )
 
 
