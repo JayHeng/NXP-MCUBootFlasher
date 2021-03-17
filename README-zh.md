@@ -1,6 +1,6 @@
 # NXP MCU Boot Flasher
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootFlasher/v3.0.0.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/compare/v3.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootFlasher/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootFlasher/v3.1.0.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/compare/v3.1.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootFlasher/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/blob/master/LICENSE)
 
 [English](./README.md) | 中文
 
@@ -21,12 +21,13 @@
 
 　　借助于NXP-MCUBootFlasher，你可以轻松实现批量生产。NXP-MCUBootFlasher主要功能如下：  
 
-> * 支持i.MXRT全系列MCU，包含i.MXRT1011、i.MXRT1015、i.MXRT1021、i.MXRT1024 SIP、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP、i.MXRT117x  
+> * 支持i.MXRT全系列MCU，包含i.MXRT1011、i.MXRT1015、i.MXRT1021、i.MXRT1024 SIP、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP、i.MXRT116x、i.MXRT117x  
 > * 支持UART和USB-HID两种串行下载方式（COM端口/USB设备自动识别）  
 > * 支持下载.sb格式的image文件进启动设备  
 > * 支持批量下载多个.sb格式的image文件(同一文件夹下)  
 > * 动态检测模式下，板卡连接上时自动下载.sb文件(仅适用USB口)
 > * 动态检测模式下，支持最多8块板卡通过USB同时下载.sb文件（异步进行）
+> * 动态检测模式下，可以显示每路插槽的下载情况
 
 #### 1.2 下载
 　　NXP-MCUBootFlasher完全基于Python语言开发，并且源代码全部开源，其具体开发环境为Python 2.7.15 (32bit)、wxPython 4.0.3、pySerial 3.4、pywinusb 0.4.2、PyInstaller 3.3.1（或更高）。  

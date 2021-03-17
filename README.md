@@ -1,6 +1,6 @@
 # NXP MCU Boot Flasher
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootFlasher/v3.0.0.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/compare/v3.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootFlasher/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootFlasher/v3.1.0.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/compare/v3.1.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootFlasher/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/blob/master/LICENSE)
 
 English | [中文](./README-zh.md)
 
@@ -21,13 +21,14 @@ English | [中文](./README-zh.md)
 
 　　With NXP-MCUBootFlasher, you can easily get started with NXP MCU secure boot. The main features of NXP-MCUBootFlasher include：  
 
-> * Support i.MXRT1011, i.MXRT1015, i.MXRT1021, i.MXRT1024 SIP, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP, i.MXRT117x 
+> * Support i.MXRT1011, i.MXRT1015, i.MXRT1021, i.MXRT1024 SIP, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP, i.MXRT116x, i.MXRT117x 
 > * Support Kinetis, LPC5500 Series
 > * Support both UART and USB-HID serial downloader modes  
 > * Support for loading .sb image file into boot device  
 > * Support batch downloading for multiple image files in one folder
 > * Can download image automatically via USB when new board is connected
 > * Can download image into 8 boards via USB at the same time
+> * Can show pass/total info for each slot
 
 #### 1.2 Download
 　　NXP-MCUBootFlasher is developed in Python, and it is open source. The development environment is Python 2.7.15 (32bit), wxPython 4.0.3, pySerial 3.4, pywinusb 0.4.2, PyInstaller 3.3.1 (or higher).  
