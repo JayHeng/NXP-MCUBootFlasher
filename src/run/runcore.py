@@ -33,6 +33,8 @@ def createTarget(device, exeBinRoot):
         cpu = "MIMXRT1062"
     elif device == uidef.kMcuDevice_iMXRT1064:
         cpu = "MIMXRT1064"
+    elif device == uidef.kMcuDevice_iMXRT116x:
+        cpu = "MIMXRT1166"
     elif device == uidef.kMcuDevice_iMXRT117x:
         cpu = "MIMXRT1176"
     elif device in uidef.kMcuDevice_Niobe4minis:

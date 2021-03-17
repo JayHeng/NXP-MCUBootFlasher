@@ -385,7 +385,8 @@ class flashMain(runcore.flashRun):
     def callbackShowRevisionHistory( self, event ):
         msgText = ((uilang.kMsgLanguageContentDict['revisionHistory_v1_0_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v2_0_0'][self.languageIndex]) +
-                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_0_0'][self.languageIndex]))
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_0_0'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_1_0'][self.languageIndex]))
         wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['revisionHistory_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
 if __name__ == '__main__':

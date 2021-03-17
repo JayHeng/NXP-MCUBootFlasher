@@ -30,8 +30,9 @@ kMcuDevice_iMXRT106x = 'i.MXRT106x'
 kMcuDevice_iMXRT1064 = 'i.MXRT1064 SIP'
 kMcuDevice_iMXRT10yy = [kMcuDevice_iMXRT1011, kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT1024, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
 
+kMcuDevice_iMXRT116x = 'i.MXRT116x'
 kMcuDevice_iMXRT117x = 'i.MXRT117x'
-kMcuDevice_iMXRT11yy = [kMcuDevice_iMXRT117x]
+kMcuDevice_iMXRT11yy = [kMcuDevice_iMXRT116x, kMcuDevice_iMXRT117x]
 
 kMcuDevice_L0PB      = 'MKL03Z'
 kMcuDevice_L3KS_0    = 'MKL13Z'

@@ -93,13 +93,23 @@ kRevision_3_0_0_en =  "【v3.0.0】 \n" + \
                       "     1. Fix USB download issue when static detection mode is set \n\n"
 kRevision_3_0_0_zh = u"【v3.0.0】 \n" + \
                      u"  特性: \n" + \
-                     u"     1. 支持i.MXRT1011、i.MXRT1064 SIP、i.MXRT117x \n" + \
+                     u"     1. 支持i.MXRT1011、i.MXRT1024 SIP、i.MXRT117x \n" + \
                      u"     2. 支持i.MXRT5xx/6xx，Kinetis, LPC5500系列 \n" + \
                      u"     3. 动态检测模式下，板卡连接上时自动下载.sb文件(仅适用USB口) \n" + \
                      u"  改进: \n" + \
                      u"     1. 动态检测模式下，支持最多8块板卡通过USB同时下载.sb文件（异步进行） \n" + \
                      u"  缺陷: \n" + \
                      u"     1. 修复静态检测模式下板卡无法通过USB口正常下载的问题 \n\n"
+kRevision_3_1_0_en =  "【v3.1.0】 \n" + \
+                      "  Feature: \n" + \
+                      "     1. Support i.MXRT116x \n" + \
+                      "  Improvement: \n" + \
+                      "     1.  \n\n"
+kRevision_3_1_0_zh = u"【v3.1.0】 \n" + \
+                     u"  特性: \n" + \
+                     u"     1. 支持i.MXRT116x \n" + \
+                     u"  改进: \n" + \
+                     u"     1.  \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -113,6 +123,7 @@ kMsgLanguageContentDict = {
         'revisionHistory_v1_0_0':             [kRevision_1_0_0_en,                      kRevision_1_0_0_zh],
         'revisionHistory_v2_0_0':             [kRevision_2_0_0_en,                      kRevision_2_0_0_zh],
         'revisionHistory_v3_0_0':             [kRevision_3_0_0_en,                      kRevision_3_0_0_zh],
+        'revisionHistory_v3_1_0':             [kRevision_3_1_0_en,                      kRevision_3_1_0_zh],
 
         'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!',
                                               u"MCU已进入ROM SDP模式，但未能跳转Flashloader，请复位板子再试！"],
