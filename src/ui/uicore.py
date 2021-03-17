@@ -39,6 +39,10 @@ class flashUi(flashWin.flashWin):
             self.debugLogFile = os.path.join(self.exeTopRoot, 'bin', 'debug_log.txt')
             self.debugLogFileObj = open(self.debugLogFile, 'wb')
 
+        self.infoLogFile = os.path.join(self.exeTopRoot, 'bin', 'download_info_log.txt')
+        self.infoLogFileObj = open(self.infoLogFile, 'wb')
+        self.infoLogFileObj.write("Recording failure index for each slot: \r\n")
+
         self.connectStage = [uidef.kConnectStage_Rom] * uidef.kMaxMfgBoards
         self.connectStatusColor = None
 
@@ -86,6 +90,12 @@ class flashUi(flashWin.flashWin):
     def closeDebugLog( self ):
         if self.isDebugLogOn:
             self.debugLogFileObj.close()
+
+    def writeInfoLog( self, logStr):
+        self.infoLogFileObj.write(logStr + " \r\n")
+
+    def closeInfoLog( self ):
+        self.infoLogFileObj.close()
 
     def _initStatusBar( self ):
         self.m_statusBar.SetFieldsCount(2)

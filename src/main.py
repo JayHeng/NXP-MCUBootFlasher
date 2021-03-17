@@ -300,12 +300,14 @@ class flashMain(runcore.flashRun):
                         self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
                 else:
                     self.updateConnectStatus('red')
+                    self.writeInfoLog("Slot " + str(deviceIndex) + " failure:" + str(g_usbAutoDownloadResult_total[deviceIndex]))
                     self.updateSlotStatus(deviceIndex, 'red', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
                     break
             if not self.isDymaticUsbDetection:
                 self.resetMcuDevice(deviceIndex)
                 time.sleep(2)
         else:
+            self.writeInfoLog("Slot " + str(deviceIndex) + " failure: " + str(g_usbAutoDownloadResult_total[deviceIndex]))
             self.updateSlotStatus(deviceIndex, 'red', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
         self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
         self._setUartUsbPort(deviceIndex)
@@ -363,6 +365,7 @@ class flashMain(runcore.flashRun):
             self.Destroy()
         except:
             pass
+        self.closeInfoLog()
         self.closeDebugLog()
 
     def callbackExit( self, event ):

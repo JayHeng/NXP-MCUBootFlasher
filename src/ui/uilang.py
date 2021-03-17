@@ -104,12 +104,14 @@ kRevision_3_1_0_en =  "【v3.1.0】 \n" + \
                       "  Feature: \n" + \
                       "     1. Support i.MXRT116x \n" + \
                       "  Improvement: \n" + \
-                      "     1. Can show pass/total info in slot x button \n\n"
+                      "     1. Can show pass/total info for each slot \n" + \
+                      "     2. Can generate log file to record each slot programming status \n\n"
 kRevision_3_1_0_zh = u"【v3.1.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 支持i.MXRT116x \n" + \
                      u"  改进: \n" + \
-                     u"     1. 可以在插槽控件上显示下载统计信息 \n\n"
+                     u"     1. 可以在插槽控件上显示下载统计信息 \n" + \
+                     u"     2. 可以将插槽下载失败的情况记录下来 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
