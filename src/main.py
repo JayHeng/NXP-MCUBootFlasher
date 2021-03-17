@@ -318,6 +318,9 @@ class flashMain(runcore.flashRun):
             self.updateConnectStatus('black')
             self.setDownloadOperationResults(1, successes)
             self.initUsbDevicePath()
+        # Back to set gray color for slot button
+        time.sleep(0.5)
+        self.updateSlotStatus(deviceIndex, 'gray', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
 
     def callbackAllInOneAction( self, event ):
         if self.isUartPortSelected:

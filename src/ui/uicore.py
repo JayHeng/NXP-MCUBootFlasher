@@ -488,6 +488,8 @@ class flashUi(flashWin.flashWin):
         slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + usbDeviceSlotId + '\n' + str(successNum) + ' / ' + str(totalNum))
         if color == 'black':
             slotObj.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
+        elif color == 'gray':
+            slotObj.SetBackgroundColour( wx.Colour( 0x90, 0x90, 0x90 ) )
         elif color == 'yellow':
             slotObj.SetBackgroundColour( wx.Colour( 0xff, 0xff, 0x80 ) )
         elif color == 'green':
