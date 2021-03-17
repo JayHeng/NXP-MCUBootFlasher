@@ -19,6 +19,9 @@ g_task_uartAllInOneAction = None
 g_task_usbAllInOneAction = [None] * uidef.kMaxMfgBoards
 g_task_increaseGauge = None
 
+g_usbAutoDownloadResult_success = [0] * uidef.kMaxMfgBoards
+g_usbAutoDownloadResult_total   = [0] * uidef.kMaxMfgBoards
+
 kRetryPingTimes = 5
 
 kBootloaderType_Rom         = 0
@@ -242,7 +245,9 @@ class flashMain(runcore.flashRun):
                         if self.usbDevicePath[deviceIndex]['rom'] != None:
                             self.writeDebugLog("Entering task_doUsbxAllInOneAction(), Set Pending flag " + str(deviceIndex) + ", usb path is " + self.usbDevicePath[deviceIndex]['rom'])
                             self.isUsbAllInOneActionTaskPending[deviceIndex] = True
-                            self.updateSlotStatus(deviceIndex, 'green')
+                            global g_usbAutoDownloadResult_success
+                            global g_usbAutoDownloadResult_total
+                            self.updateSlotStatus(deviceIndex, 'green', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
                         else:
                             pass
                     except:
@@ -274,30 +279,34 @@ class flashMain(runcore.flashRun):
         self._doUsbxAllInOneAction(7)
 
     def _doUsbAutoAllInOneAction( self, deviceIndex=0 ):
+        global g_usbAutoDownloadResult_success
+        global g_usbAutoDownloadResult_total
         if len(self.sbAppFiles) == 0:
             self.updateConnectStatus('red')
             if not self.isDymaticUsbDetection:
                 self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][self.languageIndex])
             return
         successes = 0
+        g_usbAutoDownloadResult_total[deviceIndex] += 1
         if self._connectStateMachine(deviceIndex):
             for i in range(len(self.sbAppFiles)):
                 if self.flashSbImage(self.sbAppFiles[i], deviceIndex):
                     if i == len(self.sbAppFiles) - 1:
                         successes = 1
-                        self.updateSlotStatus(deviceIndex, 'blue')
+                        g_usbAutoDownloadResult_success[deviceIndex] += 1
+                        self.updateSlotStatus(deviceIndex, 'blue', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
                     self.updateConnectStatus('blue')
                     if not self.isDymaticUsbDetection:
                         self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
                 else:
                     self.updateConnectStatus('red')
-                    self.updateSlotStatus(deviceIndex, 'red')
+                    self.updateSlotStatus(deviceIndex, 'red', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
                     break
             if not self.isDymaticUsbDetection:
                 self.resetMcuDevice(deviceIndex)
                 time.sleep(2)
         else:
-            self.updateSlotStatus(deviceIndex, 'red')
+            self.updateSlotStatus(deviceIndex, 'red', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
         self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
         self._setUartUsbPort(deviceIndex)
         self.isUsbhidConnected[deviceIndex] = False

@@ -460,7 +460,7 @@ class flashUi(flashWin.flashWin):
         else:
             pass
 
-    def updateSlotStatus( self, slotIdx, color='black' ):
+    def updateSlotStatus( self, slotIdx, color='black', successNum=0, totalNum=0 ):
         if slotIdx == 0:
             slotObj = self.m_button_slot0
         elif slotIdx == 1:
@@ -485,7 +485,7 @@ class flashUi(flashWin.flashWin):
             if uidStrEnd >= 5:
                 uidStrEnd = 5
             usbDeviceSlotId = self.usbDeviceSlotId[slotIdx][0:uidStrEnd]
-        slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + usbDeviceSlotId)
+        slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + usbDeviceSlotId + '\n' + str(successNum) + ' / ' + str(totalNum))
         if color == 'black':
             slotObj.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
         elif color == 'yellow':
@@ -627,14 +627,14 @@ class flashUi(flashWin.flashWin):
         self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
         self.m_staticText_successfulBoards.SetLabel(uilang.kMainLanguageContentDict['sText_successfulBoards'][langIndex])
         self.m_staticText_failedBoards.SetLabel(uilang.kMainLanguageContentDict['sText_failedBoards'][langIndex])
-        self.m_button_slot0.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"0")
-        self.m_button_slot1.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"1")
-        self.m_button_slot2.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"2")
-        self.m_button_slot3.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"3")
-        self.m_button_slot4.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"4")
-        self.m_button_slot5.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"5")
-        self.m_button_slot6.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"6")
-        self.m_button_slot7.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"7")
+        self.m_button_slot0.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"0\npass/total")
+        self.m_button_slot1.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"1\npass/total")
+        self.m_button_slot2.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"2\npass/total")
+        self.m_button_slot3.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"3\npass/total")
+        self.m_button_slot4.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"4\npass/total")
+        self.m_button_slot5.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"5\npass/total")
+        self.m_button_slot6.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"6\npass/total")
+        self.m_button_slot7.SetLabel(uilang.kMainLanguageContentDict['button_slot'][langIndex] + u"7\npass/total")
         if self.connectStatusColor != None:
             self.updateConnectStatus(self.connectStatusColor)
 
