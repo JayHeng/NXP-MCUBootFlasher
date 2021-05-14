@@ -15,10 +15,12 @@ from ui import uilang
 
 g_main_win = None
 g_task_detectUsbhid = None
-g_task_uartAllInOneAction = None
+g_task_uartAllInOneAction = [None] * uidef.kMaxMfgBoards
 g_task_usbAllInOneAction = [None] * uidef.kMaxMfgBoards
 g_task_increaseGauge = None
 
+g_uartAutoDownloadResult_success = [0] * uidef.kMaxMfgBoards
+g_uartAutoDownloadResult_total   = [0] * uidef.kMaxMfgBoards
 g_usbAutoDownloadResult_success = [0] * uidef.kMaxMfgBoards
 g_usbAutoDownloadResult_total   = [0] * uidef.kMaxMfgBoards
 
@@ -43,7 +45,7 @@ class flashMain(runcore.flashRun):
     def __init__(self, parent):
         runcore.flashRun.__init__(self, parent)
         self.lastTime = None
-        self.isUartAllInOneActionTaskPending = False
+        self.isUartAllInOneActionTaskPending = [False] * uidef.kMaxMfgBoards
         self.isUsbAllInOneActionTaskPending = [False] * uidef.kMaxMfgBoards
 
     def _startGaugeTimer( self ):
@@ -87,7 +89,6 @@ class flashMain(runcore.flashRun):
         pingCnt = kRetryPingTimes
         while (not pingStatus) and pingCnt > 0:
             if bootType == kBootloaderType_Rom:
-                self.writeDebugLog("Entering pingRom(), deviceIndex = " + str(deviceIndex) + ", usb path is " + self.usbDevicePath[deviceIndex]['rom'])
                 pingStatus = self.pingRom(deviceIndex)
             elif bootType == kBootloaderType_Flashloader:
                 # This is mainly for RT1170 flashloader, but it is also ok for other RT devices
@@ -95,7 +96,6 @@ class flashMain(runcore.flashRun):
                     time.sleep(3)
                 if self.usbDevicePath[deviceIndex]['flashloader'] != None:
                     self.connectToDevice(self.connectStage[deviceIndex], deviceIndex)
-                    self.writeDebugLog("Entering pingFlashloader(), deviceIndex = " + str(deviceIndex) + ", usb path is " + self.usbDevicePath[deviceIndex]['flashloader'])
                 pingStatus = self.pingFlashloader(deviceIndex)
             else:
                 pass
@@ -195,41 +195,88 @@ class flashMain(runcore.flashRun):
                 pass
             connectSteps -= 1
 
-    def task_doUartAllInOneAction( self ):
+    def _doUartxAllInOneAction( self, deviceIndex=0 ):
         while True:
-            if self.isUartAllInOneActionTaskPending:
-                self._doUartAllInOneAction()
-                self.isUartAllInOneActionTaskPending = False
-                self._stopGaugeTimer()
+            if self.isUartAllInOneActionTaskPending[deviceIndex]:
+                self._doUartAllInOneAction(deviceIndex)
+                self.isUartAllInOneActionTaskPending[deviceIndex] = False
+                if (deviceIndex == 0):
+                    self._stopGaugeTimer()
+            else:
+                if (deviceIndex != 0):
+                    try:
+                        if self.uartComPort[deviceIndex] != None:
+                            self.writeDebugLog("Entering task_doUartxAllInOneAction(), Set Pending flag " + str(deviceIndex) + ", uart path is " + self.uartComPort[deviceIndex])
+                            self.isUartAllInOneActionTaskPending[deviceIndex] = True
+                            global g_uartAutoDownloadResult_success
+                            global g_uartAutoDownloadResult_total
+                            self.updateSlotStatus(deviceIndex, 'green', g_uartAutoDownloadResult_success[deviceIndex], g_uartAutoDownloadResult_total[deviceIndex])
+                        else:
+                            pass
+                    except:
+                        pass
             time.sleep(1)
 
-    def _doUartAllInOneAction( self ):
+
+    def task_doUart0AllInOneAction( self ):
+        self._doUartxAllInOneAction(0)
+
+    def task_doUart1AllInOneAction( self ):
+        self._doUartxAllInOneAction(1)
+
+    def task_doUart2AllInOneAction( self ):
+        self._doUartxAllInOneAction(2)
+
+    def task_doUart3AllInOneAction( self ):
+        self._doUartxAllInOneAction(3)
+
+    def task_doUart4AllInOneAction( self ):
+        self._doUartxAllInOneAction(4)
+
+    def task_doUart5AllInOneAction( self ):
+        self._doUartxAllInOneAction(5)
+
+    def task_doUart6AllInOneAction( self ):
+        self._doUartxAllInOneAction(6)
+
+    def task_doUart7AllInOneAction( self ):
+        self._doUartxAllInOneAction(7)
+
+    def _doUartAllInOneAction( self, deviceIndex=0 ):
+        global g_uartAutoDownloadResult_success
+        global g_uartAutoDownloadResult_total
         if len(self.sbAppFiles) == 0:
             self.updateConnectStatus('red')
             self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadError_notValidImage'][self.languageIndex])
             return
-        boards = len(self.uartComPort)
-        operations = 0
         successes = 0
-        for board in range(boards):
-            if self.uartComPort[board] == None:
-                continue
-            operations += 1
-            if self._connectStateMachine(board):
-                for i in range(len(self.sbAppFiles)):
-                    if self.flashSbImage(self.sbAppFiles[i], board):
-                        if i == len(self.sbAppFiles) - 1:
-                            successes += 1
-                        self.updateConnectStatus('blue')
-                        self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
-                    else:
-                        self.updateConnectStatus('red')
-                        break
-                self.resetMcuDevice(board)
-            self.connectStage[board] = uidef.kConnectStage_Rom
-            self._setUartUsbPort()
-            self.setDownloadOperationResults(operations, successes)
+        g_uartAutoDownloadResult_total[deviceIndex] += 1
+        if self._connectStateMachine(deviceIndex):
+            for i in range(len(self.sbAppFiles)):
+                if self.flashSbImage(self.sbAppFiles[i], deviceIndex):
+                    if i == len(self.sbAppFiles) - 1:
+                        successes = 1
+                        g_uartAutoDownloadResult_success[deviceIndex] += 1
+                        self.updateSlotStatus(deviceIndex, 'blue', g_uartAutoDownloadResult_success[deviceIndex], g_uartAutoDownloadResult_total[deviceIndex])
+                    self.updateConnectStatus('blue')
+                    self.setInfoStatus(uilang.kMsgLanguageContentDict['downloadInfo_success'][self.languageIndex])
+                else:
+                    self.updateConnectStatus('red')
+                    self.writeInfoLog("Slot " + str(deviceIndex) + " failure:" + str(g_uartAutoDownloadResult_total[deviceIndex]))
+                    self.updateSlotStatus(deviceIndex, 'red', g_uartAutoDownloadResult_success[deviceIndex], g_uartAutoDownloadResult_total[deviceIndex])
+                    break
+            self.resetMcuDevice(deviceIndex)
+            time.sleep(2)
+        else:
+            self.writeInfoLog("Slot " + str(deviceIndex) + " failure: " + str(g_uartAutoDownloadResult_total[deviceIndex]))
+            self.updateSlotStatus(deviceIndex, 'red', g_uartAutoDownloadResult_success[deviceIndex], g_uartAutoDownloadResult_total[deviceIndex])
+        self.connectStage[deviceIndex] = uidef.kConnectStage_Rom
+        self._setUartUsbPort(deviceIndex)
         self.updateConnectStatus('black')
+        self.setDownloadOperationResults(1, successes)
+        # Back to set gray color for slot button
+        time.sleep(0.5)
+        self.updateSlotStatus(deviceIndex, 'gray', g_uartAutoDownloadResult_success[deviceIndex], g_uartAutoDownloadResult_total[deviceIndex])
 
     def _doUsbxAllInOneAction( self, deviceIndex=0 ):
         while True:
@@ -326,7 +373,7 @@ class flashMain(runcore.flashRun):
 
     def callbackAllInOneAction( self, event ):
         if self.isUartPortSelected:
-            self.isUartAllInOneActionTaskPending = True
+            self.isUartAllInOneActionTaskPending[0] = True
             self._startGaugeTimer()
         elif self.isUsbhidPortSelected and (not self.isDymaticUsbDetection):
             self.isUsbAllInOneActionTaskPending[0] = True
@@ -414,9 +461,32 @@ if __name__ == '__main__':
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)
     g_task_detectUsbhid.setDaemon(True)
     g_task_detectUsbhid.start()
-    g_task_uartAllInOneAction = threading.Thread(target=g_main_win.task_doUartAllInOneAction)
-    g_task_uartAllInOneAction.setDaemon(True)
-    g_task_uartAllInOneAction.start()
+
+    g_task_uartAllInOneAction[0] = threading.Thread(target=g_main_win.task_doUart0AllInOneAction)
+    g_task_uartAllInOneAction[0].setDaemon(True)
+    g_task_uartAllInOneAction[0].start()
+    g_task_uartAllInOneAction[1] = threading.Thread(target=g_main_win.task_doUart1AllInOneAction)
+    g_task_uartAllInOneAction[1].setDaemon(True)
+    g_task_uartAllInOneAction[1].start()
+    g_task_uartAllInOneAction[2] = threading.Thread(target=g_main_win.task_doUart2AllInOneAction)
+    g_task_uartAllInOneAction[2].setDaemon(True)
+    g_task_uartAllInOneAction[2].start()
+    g_task_uartAllInOneAction[3] = threading.Thread(target=g_main_win.task_doUart3AllInOneAction)
+    g_task_uartAllInOneAction[3].setDaemon(True)
+    g_task_uartAllInOneAction[3].start()
+    g_task_uartAllInOneAction[4] = threading.Thread(target=g_main_win.task_doUart4AllInOneAction)
+    g_task_uartAllInOneAction[4].setDaemon(True)
+    g_task_uartAllInOneAction[4].start()
+    g_task_uartAllInOneAction[5] = threading.Thread(target=g_main_win.task_doUart5AllInOneAction)
+    g_task_uartAllInOneAction[5].setDaemon(True)
+    g_task_uartAllInOneAction[5].start()
+    g_task_uartAllInOneAction[6] = threading.Thread(target=g_main_win.task_doUart6AllInOneAction)
+    g_task_uartAllInOneAction[6].setDaemon(True)
+    g_task_uartAllInOneAction[6].start()
+    g_task_uartAllInOneAction[7] = threading.Thread(target=g_main_win.task_doUart7AllInOneAction)
+    g_task_uartAllInOneAction[7].setDaemon(True)
+    g_task_uartAllInOneAction[7].start()
+
     g_task_usbAllInOneAction[0] = threading.Thread(target=g_main_win.task_doUsb0AllInOneAction)
     g_task_usbAllInOneAction[0].setDaemon(True)
     g_task_usbAllInOneAction[0].start()
@@ -441,6 +511,7 @@ if __name__ == '__main__':
     g_task_usbAllInOneAction[7] = threading.Thread(target=g_main_win.task_doUsb7AllInOneAction)
     g_task_usbAllInOneAction[7].setDaemon(True)
     g_task_usbAllInOneAction[7].start()
+
     g_task_increaseGauge = threading.Thread(target=g_main_win.task_doIncreaseGauge)
     g_task_increaseGauge.setDaemon(True)
     g_task_increaseGauge.start()
