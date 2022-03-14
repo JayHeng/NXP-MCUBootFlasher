@@ -409,7 +409,7 @@ class flashMain(runcore.flashRun):
 
     def _deinitToolToExit( self ):
         self._stopTask(g_task_detectUsbhid)
-        self._stopTask(g_task_uartAllInOneAction)
+        self._stopTask(g_task_uartAllInOneAction[0])
         self._stopTask(g_task_usbAllInOneAction[0])
         self._stopTask(g_task_increaseGauge)
         global g_main_win
