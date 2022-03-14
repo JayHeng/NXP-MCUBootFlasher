@@ -16,7 +16,7 @@ build = 'Release'
 
 availablePeripherals = 0x17
 romUsbVid = '0x1FC9'
-romUsbPid = '0x0021'
+romUsbPid = '0x0022'
 hasSdpReadRegisterCmd = None
 flashloaderUsbVid = None
 flashloaderUsbPid = None
