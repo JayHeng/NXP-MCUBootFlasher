@@ -266,8 +266,11 @@ class flashUi(flashWin.flashWin):
             # Auto detect USB-HID device
             romHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.romUsbVid, 16), product_id = int(self.tgt.romUsbPid, 16))
             romHidDevice = romHidFilter.get_devices()
-            flHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.flashloaderUsbVid, 16), product_id = int(self.tgt.flashloaderUsbPid, 16))
-            flHidDevice = flHidFilter.get_devices()
+            if self.tgt.flashloaderUsbVid != None:
+                flHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.flashloaderUsbVid, 16), product_id = int(self.tgt.flashloaderUsbPid, 16))
+                flHidDevice = flHidFilter.get_devices()
+            else:
+                flHidDevice = []
 
             if (not self.isDymaticUsbDetection) or (len(romHidDevice) > 0) or (len(flHidDevice) > 0):
                 #----------------------------------------------------------------
