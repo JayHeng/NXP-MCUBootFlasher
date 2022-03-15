@@ -518,13 +518,21 @@ class flashUi(flashWin.flashWin):
             slotObj = self.m_button_slot7
         else:
             pass
-        usbDeviceSlotId = ''
-        uidStrEnd = len(self.usbDeviceSlotId[slotIdx])
-        if uidStrEnd > 0:
-            if uidStrEnd >= 5:
-                uidStrEnd = 5
-            usbDeviceSlotId = self.usbDeviceSlotId[slotIdx][0:uidStrEnd]
-        slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + usbDeviceSlotId + '\n' + str(successNum) + ' / ' + str(totalNum))
+        if (successNum != 0) or (totalNum != 0):
+            if self.isUsbhidPortSelected:
+                usbDeviceSlotId = ''
+                uidStrEnd = len(self.usbDeviceSlotId[slotIdx])
+                if uidStrEnd > 0:
+                    if uidStrEnd >= 5:
+                        uidStrEnd = 5
+                    usbDeviceSlotId = self.usbDeviceSlotId[slotIdx][0:uidStrEnd]
+                slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', #' + usbDeviceSlotId + '\n' + str(successNum) + ' / ' + str(totalNum))
+            elif self.isUartPortSelected:
+                slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + ', ' + self.uartComPort[slotIdx] + '\n' + str(successNum) + ' / ' + str(totalNum))
+            else:
+                pass
+        else:
+            slotObj.SetLabel(uilang.kMainLanguageContentDict['button_slot'][self.languageIndex] + str(slotIdx) + u"\npass/total")
         if color == 'black':
             slotObj.SetBackgroundColour( wx.Colour( 0x80, 0x80, 0x80 ) )
         elif color == 'gray':

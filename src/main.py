@@ -390,11 +390,24 @@ class flashMain(runcore.flashRun):
         else:
             pass
 
+    def _resetAllSlots( self ):
+        if self.isUartPortSelected:
+            autoDownloadResult_success = g_uartAutoDownloadResult_success
+            autoDownloadResult_total = g_uartAutoDownloadResult_total
+        else:
+            autoDownloadResult_success = g_usbAutoDownloadResult_success
+            autoDownloadResult_total = g_usbAutoDownloadResult_total
+        for i in range(uidef.kMaxMfgBoards):
+            autoDownloadResult_success[i] = 0
+            autoDownloadResult_total[i] = 0
+            self.updateSlotStatus(i, 'gray', autoDownloadResult_success[i], autoDownloadResult_total[i])
+
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
         self.setCostTime(0)
         self.setDownloadOperationResults(0)
         self.updateConnectStatus('black')
+        self._resetAllSlots()
 
     def callbackChangedAppFolder( self, event ):
         self.getUserAppFilePath()
@@ -406,6 +419,7 @@ class flashMain(runcore.flashRun):
             self.setCostTime(0)
             self.setDownloadOperationResults(0)
             self.updateConnectStatus('black')
+            self._resetAllSlots()
 
     def _stopTask( self, thread ):
         _async_raise(thread.ident, SystemExit)
