@@ -118,12 +118,16 @@ kRevision_3_1_0_zh = u"【v3.1.0】 \n" + \
                      u"  改进: \n" + \
                      u"     1. 可以在插槽控件上显示下载统计信息 \n" + \
                      u"     2. 可以将插槽下载失败的情况记录下来 \n\n"
-kRevision_3_1_1_en =  "【v3.1.1】 \n" + \
+kRevision_3_2_0_en =  "【v3.2.0】 \n" + \
+                      "  Improvement: \n" + \
+                      "     1. Can show pass/total info of all slots \n" + \
                       "  Bugfix: \n" + \
                       "     1. Fix UART batch downloading issue  \n" + \
                       "     2. Fix usage issue for RTxxx,LPC,Kinetis \n" + \
                       "     3. Correct USB PID for LPC55S16 \n\n"
-kRevision_3_1_1_zh = u"【v3.1.1】 \n" + \
+kRevision_3_2_0_zh = u"【v3.2.0】 \n" + \
+                     u"  改进: \n" + \
+                     u"     1. 可以显示8路总下载统计信息 \n" + \
                      u"  缺陷: \n" + \
                      u"     1. 修复UART方式下8路批量下载问题 \n" + \
                      u"     2. 修复RTxxx/LPC/Kinetis下(无需Flashloader)使用异常问题 \n" + \
@@ -142,7 +146,7 @@ kMsgLanguageContentDict = {
         'revisionHistory_v2_0_0':             [kRevision_2_0_0_en,                      kRevision_2_0_0_zh],
         'revisionHistory_v3_0_0':             [kRevision_3_0_0_en,                      kRevision_3_0_0_zh],
         'revisionHistory_v3_1_0':             [kRevision_3_1_0_en,                      kRevision_3_1_0_zh],
-        'revisionHistory_v3_1_1':             [kRevision_3_1_1_en,                      kRevision_3_1_1_zh],
+        'revisionHistory_v3_2_0':             [kRevision_3_2_0_en,                      kRevision_3_2_0_zh],
 
         'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!',
                                               u"MCU已进入ROM SDP模式，但未能跳转Flashloader，请复位板子再试！"],

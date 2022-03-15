@@ -380,14 +380,22 @@ class flashUi(flashWin.flashWin):
     def waitForUsbhidDeviceDisconnect( self, deviceIndex=0 ):
         while True:
             # Auto detect USB-HID device
-            romHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.romUsbVid, 16), product_id = int(self.tgt.romUsbPid, 16))
-            romHidDevice = romHidFilter.get_devices()
-            if len(romHidDevice) > 0:
-                #----------------------------------------------------------------
+            allHidDevices = None
+            thisDevicePath = None
+            if self.tgt.flashloaderUsbVid == None:
+                romHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.romUsbVid, 16), product_id = int(self.tgt.romUsbPid, 16))
+                romHidDevice = romHidFilter.get_devices()
+                allHidDevices = romHidDevice
+                thisDevicePath = self.usbDevicePath[deviceIndex]['rom']
+            else:
+                flHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.flashloaderUsbVid, 16), product_id = int(self.tgt.flashloaderUsbPid, 16))
+                flHidDevice = flHidFilter.get_devices()
+                allHidDevices = flHidDevice
+                thisDevicePath = self.usbDevicePath[deviceIndex]['flashloader']
+            if len(allHidDevices) > 0:
                 isThisUsbDeviceFound = False
-                for i in range(len(romHidDevice)):
-                    romUsbPath = romHidDevice[i].device_path
-                    if self.usbDevicePath[deviceIndex]['rom'] == romUsbPath:
+                for i in range(len(allHidDevices)):
+                    if thisDevicePath == allHidDevices[i].device_path:
                         isThisUsbDeviceFound = True
                         break
                 if isThisUsbDeviceFound:

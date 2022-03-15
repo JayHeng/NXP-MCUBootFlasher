@@ -360,8 +360,7 @@ class flashMain(runcore.flashRun):
                 self.resetMcuDevice(deviceIndex)
                 time.sleep(2)
             else:
-                if self.tgt.flashloaderUsbVid == None:
-                    self.waitForUsbhidDeviceDisconnect(deviceIndex)
+                self.waitForUsbhidDeviceDisconnect(deviceIndex)
         else:
             self.writeInfoLog("Slot " + str(deviceIndex) + " failure: " + str(g_usbAutoDownloadResult_total[deviceIndex]))
             self.updateSlotStatus(deviceIndex, 'red', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])
@@ -486,14 +485,14 @@ class flashMain(runcore.flashRun):
                    (uilang.kMsgLanguageContentDict['revisionHistory_v2_0_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v3_0_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v3_1_0'][self.languageIndex]) +
-                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_1_1'][self.languageIndex]))
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_2_0'][self.languageIndex]))
         wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['revisionHistory_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
 if __name__ == '__main__':
     app = wx.App()
 
     g_main_win = flashMain(None)
-    g_main_win.SetTitle(u"NXP MCU Boot Flasher v3.1.1")
+    g_main_win.SetTitle(u"NXP MCU Boot Flasher v3.2.0")
     g_main_win.Show()
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)
