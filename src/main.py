@@ -201,6 +201,24 @@ class flashMain(runcore.flashRun):
                 pass
             connectSteps -= 1
 
+    def _updateDownloadOperationResults( self ):
+        autoDownloadResult_success = None
+        success = 0
+        autoDownloadResult_total = None
+        total = 0
+        if self.isUartPortSelected:
+            autoDownloadResult_success = g_uartAutoDownloadResult_success
+            autoDownloadResult_total = g_uartAutoDownloadResult_total
+        elif self.isUsbhidPortSelected:
+            autoDownloadResult_success = g_usbAutoDownloadResult_success
+            autoDownloadResult_total = g_usbAutoDownloadResult_total
+        else:
+            pass
+        for i in range(uidef.kMaxMfgBoards):
+            success = success + autoDownloadResult_success[i]
+            total = total + autoDownloadResult_total[i]
+        self.setDownloadOperationResults(total, success)
+
     def _doUartxAllInOneAction( self, deviceIndex=0 ):
         while True:
             if self.isUartAllInOneActionTaskPending[deviceIndex]:
@@ -222,7 +240,6 @@ class flashMain(runcore.flashRun):
                     except:
                         pass
             time.sleep(1)
-
 
     def task_doUart0AllInOneAction( self ):
         self._doUartxAllInOneAction(0)
@@ -369,6 +386,7 @@ class flashMain(runcore.flashRun):
         self.isUsbhidConnected[deviceIndex] = False
         if self.isDymaticUsbDetection:
             self.usbDevicePath[deviceIndex]['rom'] = None
+            self._updateDownloadOperationResults()
             # Never clear 'flashloader' here, it will be used to help insert usb device
             #self.usbDevicePath[deviceIndex]['flashloader'] = None
         else:
