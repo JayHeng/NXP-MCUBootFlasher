@@ -359,6 +359,9 @@ class flashMain(runcore.flashRun):
             if not self.isDymaticUsbDetection:
                 self.resetMcuDevice(deviceIndex)
                 time.sleep(2)
+            else:
+                if self.tgt.flashloaderUsbVid == None:
+                    self.waitForUsbhidDeviceDisconnect(deviceIndex)
         else:
             self.writeInfoLog("Slot " + str(deviceIndex) + " failure: " + str(g_usbAutoDownloadResult_total[deviceIndex]))
             self.updateSlotStatus(deviceIndex, 'red', g_usbAutoDownloadResult_success[deviceIndex], g_usbAutoDownloadResult_total[deviceIndex])

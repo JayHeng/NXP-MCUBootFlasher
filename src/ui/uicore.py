@@ -377,6 +377,26 @@ class flashUi(flashWin.flashWin):
             self.m_choice_baudPid.SetItems(usbPid)
             self.m_choice_baudPid.SetSelection(0)
 
+    def waitForUsbhidDeviceDisconnect( self, deviceIndex=0 ):
+        while True:
+            # Auto detect USB-HID device
+            romHidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.tgt.romUsbVid, 16), product_id = int(self.tgt.romUsbPid, 16))
+            romHidDevice = romHidFilter.get_devices()
+            if len(romHidDevice) > 0:
+                #----------------------------------------------------------------
+                isThisUsbDeviceFound = False
+                for i in range(len(romHidDevice)):
+                    romUsbPath = romHidDevice[i].device_path
+                    if self.usbDevicePath[deviceIndex]['rom'] == romUsbPath:
+                        isThisUsbDeviceFound = True
+                        break
+                if isThisUsbDeviceFound:
+                    continue
+                else:
+                    break
+            else:
+                break
+
     def adjustPortSetupValue( self, deviceIndex=0, connectStage=uidef.kConnectStage_Rom, usbIdList=[] ):
         self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
         self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
