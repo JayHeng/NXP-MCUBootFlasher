@@ -121,6 +121,7 @@ kRevision_3_1_0_zh = u"【v3.1.0】 \n" + \
 kRevision_3_2_0_en =  "【v3.2.0】 \n" + \
                       "  Improvement: \n" + \
                       "     1. Can show pass/total info of all slots \n" + \
+                      "     2. Wait usb device to be disconnected after downloading \n" + \
                       "  Bugfix: \n" + \
                       "     1. Fix UART batch downloading issue  \n" + \
                       "     2. Fix usage issue for RTxxx,LPC,Kinetis \n" + \
@@ -128,6 +129,7 @@ kRevision_3_2_0_en =  "【v3.2.0】 \n" + \
 kRevision_3_2_0_zh = u"【v3.2.0】 \n" + \
                      u"  改进: \n" + \
                      u"     1. 可以显示8路总下载统计信息 \n" + \
+                     u"     2. 下载完成后等待插槽USB设备断开 \n" + \
                      u"  缺陷: \n" + \
                      u"     1. 修复UART方式下8路批量下载问题 \n" + \
                      u"     2. 修复RTxxx/LPC/Kinetis下(无需Flashloader)使用异常问题 \n" + \

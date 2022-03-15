@@ -1,6 +1,6 @@
 # NXP MCU Boot Flasher
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootFlasher/v3.1.1.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/compare/v3.1.1...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootFlasher/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootFlasher/v3.2.0.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/compare/v3.2.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootFlasher/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootFlasher.svg)](https://github.com/JayHeng/NXP-MCUBootFlasher/blob/master/LICENSE)
 
 English | [中文](./README-zh.md)
 
