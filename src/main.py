@@ -394,13 +394,25 @@ class flashMain(runcore.flashRun):
         if self.isUartPortSelected:
             autoDownloadResult_success = g_uartAutoDownloadResult_success
             autoDownloadResult_total = g_uartAutoDownloadResult_total
-        else:
+        elif self.isUsbhidPortSelected:
             autoDownloadResult_success = g_usbAutoDownloadResult_success
             autoDownloadResult_total = g_usbAutoDownloadResult_total
+        else:
+            pass
         for i in range(uidef.kMaxMfgBoards):
             autoDownloadResult_success[i] = 0
             autoDownloadResult_total[i] = 0
             self.updateSlotStatus(i, 'gray', autoDownloadResult_success[i], autoDownloadResult_total[i])
+
+    def _triggerAllUsbDevicesOnce( self ):
+        if self.isUsbhidPortSelected and self.isDymaticUsbDetection:
+            for i in range(uidef.kMaxMfgBoards):
+                if self.usbDevicePath[i]['rom'] != None:
+                    self.isUsbAllInOneActionTaskPending[i] = True
+                else:
+                    pass
+        else:
+            pass
 
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
@@ -408,6 +420,7 @@ class flashMain(runcore.flashRun):
         self.setDownloadOperationResults(0)
         self.updateConnectStatus('black')
         self._resetAllSlots()
+        #self._triggerAllUsbDevicesOnce()
 
     def callbackChangedAppFolder( self, event ):
         self.getUserAppFilePath()
@@ -420,6 +433,7 @@ class flashMain(runcore.flashRun):
             self.setDownloadOperationResults(0)
             self.updateConnectStatus('black')
             self._resetAllSlots()
+            #self._triggerAllUsbDevicesOnce()
 
     def _stopTask( self, thread ):
         _async_raise(thread.ident, SystemExit)
@@ -471,14 +485,15 @@ class flashMain(runcore.flashRun):
         msgText = ((uilang.kMsgLanguageContentDict['revisionHistory_v1_0_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v2_0_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v3_0_0'][self.languageIndex]) +
-                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_1_0'][self.languageIndex]))
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_1_0'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v3_1_1'][self.languageIndex]))
         wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['revisionHistory_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
 if __name__ == '__main__':
     app = wx.App()
 
     g_main_win = flashMain(None)
-    g_main_win.SetTitle(u"NXP MCU Boot Flasher v3.1.0")
+    g_main_win.SetTitle(u"NXP MCU Boot Flasher v3.1.1")
     g_main_win.Show()
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)

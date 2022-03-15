@@ -78,7 +78,7 @@ kRevision_2_0_0_en =  "【v2.0.0】 \n" + \
                       "     2. Support batch downloading for unlimited boards \n" + \
                       "  Improvement: \n" + \
                       "     1. The text of language option in menu bar should be static and easy understanding \n" + \
-                      "  Bug: \n" + \
+                      "  Bugfix: \n" + \
                       "     1. Cannot download large image file (eg 6.8MB) in some case \n\n"
 kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"  特性: \n" + \
@@ -95,7 +95,7 @@ kRevision_3_0_0_en =  "【v3.0.0】 \n" + \
                       "     3. Can download image automatically via USB when new board is connected \n" + \
                       "  Improvement: \n" + \
                       "     1. Can download image into 8 boards via USB at the same time \n" + \
-                      "  Bug: \n" + \
+                      "  Bugfix: \n" + \
                       "     1. Fix USB download issue when static detection mode is set \n\n"
 kRevision_3_0_0_zh = u"【v3.0.0】 \n" + \
                      u"  特性: \n" + \
@@ -118,6 +118,16 @@ kRevision_3_1_0_zh = u"【v3.1.0】 \n" + \
                      u"  改进: \n" + \
                      u"     1. 可以在插槽控件上显示下载统计信息 \n" + \
                      u"     2. 可以将插槽下载失败的情况记录下来 \n\n"
+kRevision_3_1_1_en =  "【v3.1.1】 \n" + \
+                      "  Bugfix: \n" + \
+                      "     1. Fix UART batch downloading issue  \n" + \
+                      "     2. Fix usage issue for RTxxx,LPC,Kinetis \n" + \
+                      "     3. Correct USB PID for LPC55S16 \n\n"
+kRevision_3_1_1_zh = u"【v3.1.1】 \n" + \
+                     u"  缺陷: \n" + \
+                     u"     1. 修复UART方式下8路批量下载问题 \n" + \
+                     u"     2. 修复RTxxx/LPC/Kinetis下(无需Flashloader)使用异常问题 \n" + \
+                     u"     3. 更正LPC55S16系列的USB PID值 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -132,6 +142,7 @@ kMsgLanguageContentDict = {
         'revisionHistory_v2_0_0':             [kRevision_2_0_0_en,                      kRevision_2_0_0_zh],
         'revisionHistory_v3_0_0':             [kRevision_3_0_0_en,                      kRevision_3_0_0_zh],
         'revisionHistory_v3_1_0':             [kRevision_3_1_0_en,                      kRevision_3_1_0_zh],
+        'revisionHistory_v3_1_1':             [kRevision_3_1_1_en,                      kRevision_3_1_1_zh],
 
         'connectError_failToJumpToFl':        ['Failed to jump to Flashloader, Reset board and try again!',
                                               u"MCU已进入ROM SDP模式，但未能跳转Flashloader，请复位板子再试！"],
