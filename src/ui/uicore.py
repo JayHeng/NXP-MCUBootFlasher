@@ -155,8 +155,13 @@ class flashUi(flashWin.flashWin):
         itemList = range(itemNum)
         for i in range(itemNum):
             itemList[i] = str(i)
-        self.m_choice_serialPortIndex.Clear()
-        self.m_choice_serialPortIndex.SetItems(itemList)
+        while True:
+            try:
+                self.m_choice_serialPortIndex.Clear()
+                self.m_choice_serialPortIndex.SetItems(itemList)
+                break
+            except:
+                pass
         if lastItem in itemList:
             self.m_choice_serialPortIndex.SetSelection(self.m_choice_serialPortIndex.FindString(lastItem))
         else:
@@ -370,12 +375,17 @@ class flashUi(flashWin.flashWin):
             self.updateConnectStatus('yellow')
         if self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection()) != usbVid[0] or \
            self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection()) != usbPid[0]:
-            self.m_choice_portVid.Clear()
-            self.m_choice_portVid.SetItems(usbVid)
-            self.m_choice_portVid.SetSelection(0)
-            self.m_choice_baudPid.Clear()
-            self.m_choice_baudPid.SetItems(usbPid)
-            self.m_choice_baudPid.SetSelection(0)
+            while True:
+                try:
+                    self.m_choice_portVid.Clear()
+                    self.m_choice_portVid.SetItems(usbVid)
+                    self.m_choice_portVid.SetSelection(0)
+                    self.m_choice_baudPid.Clear()
+                    self.m_choice_baudPid.SetItems(usbPid)
+                    self.m_choice_baudPid.SetSelection(0)
+                    break
+                except:
+                    pass
 
     def waitForUsbhidDeviceDisconnect( self, deviceIndex=0 ):
         while True:
@@ -419,8 +429,13 @@ class flashUi(flashWin.flashWin):
                 ports[i] = comport[0]
             lastPort = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
             lastBaud = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
-            self.m_choice_portVid.Clear()
-            self.m_choice_portVid.SetItems(ports)
+            while True:
+                try:
+                    self.m_choice_portVid.Clear()
+                    self.m_choice_portVid.SetItems(ports)
+                    break
+                except:
+                    pass
             if lastPort in ports:
                 self.m_choice_portVid.SetSelection(self.m_choice_portVid.FindString(lastPort))
             else:
@@ -432,8 +447,13 @@ class flashUi(flashWin.flashWin):
                 baudItems = rundef.kUartSpeed_Blhost
             else:
                 pass
-            self.m_choice_baudPid.Clear()
-            self.m_choice_baudPid.SetItems(baudItems)
+            while True:
+                try:
+                    self.m_choice_baudPid.Clear()
+                    self.m_choice_baudPid.SetItems(baudItems)
+                    break
+                except:
+                    pass
             if lastBaud in baudItems:
                 self.m_choice_baudPid.SetSelection(self.m_choice_baudPid.FindString(lastBaud))
             else:
