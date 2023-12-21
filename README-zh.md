@@ -8,7 +8,7 @@
 对于MCUBootUtility，MCUBootFlasher（NXP-MCUBootFlasher）工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
 ```
 
-<img src="http://henjay724.com/image/cnblogs/MCUBootUtility_qq.png" style="zoom:100%" />
+<img src="https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/github/MCUBootUtility_qq.png" style="zoom:100%" />
 
 ### 1 软件概览
 #### 1.1 介绍
@@ -65,7 +65,7 @@
 #### 1.5 界面
 　　下图为NXP-MCUBootFlasher工具的主界面，界面主要由四部分组成，各部分功能如下：  
 
-![NXP-MCUBootFlasher_mainWin](http://henjay724.com/image/cnblogs/NXP-MCUBootFlasher_v2.0.0.PNG)
+![NXP-MCUBootFlasher_mainWin](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/NXP-MCUBootFlasher_v2.0.0.PNG)
 
 > * 【Menu Bar】：功能菜单栏，提供软件通用设置。  
 > * 【Setup Window】：设置栏，提供MCU Device选项、串行接口选项。  
@@ -82,42 +82,42 @@
 #### 3.1 设置目标芯片
 　　在使用NXP-MCUBootFlasher时首先需要配置目标设备，目标设备即MCU Device。以NXP官方开发板EVK-MIMXRT1060为例，该开发板主芯片为i.MXRT1062DVL6A，所以【RT Device】应设为i.MXRT106x。  
 
-![NXP-MCUBootFlasher_setMcuDevice](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setMcuDevice_rt1060.PNG)
+![NXP-MCUBootFlasher_setMcuDevice](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_1_0_setMcuDevice_rt1060.PNG)
 
 #### 3.2 设置下载端口
 　　设置好目标设备之后，下一步便是连接目标设备，以USB-HID接口连接为例，给EVK-MIMXRT1060板子供电，并用USB Cable将PC与J9口连接起来，如果一切正常，应该可以在设备管理器找到vid,pid为0x1fc9,0x0135的HID-compliant vendor-defined device设备被枚举。如果没有发现该HID设备，请仔细检查板子SW7拨码开关是否将Boot Mode设为2'b01即Serial Downloader模式。  
 
-![NXP-MCUBootUtility_usbhidDetected_e](http://henjay724.com/image/cnblogs/nxpSecBoot_usbhidDetected_e.png)
+![NXP-MCUBootUtility_usbhidDetected_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/nxpSecBoot_usbhidDetected_e.png)
 
 　　确认HID设备存在之后，选中USB-HID即可。  
 
-![NXP-MCUBootFlasher_setPort_usb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setPort_usb_e.png)
+![NXP-MCUBootFlasher_setPort_usb_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_1_0_setPort_usb_e.png)
 
 #### 3.3 点击一键下载
 　　选中要下载的.sb文件，直接点击【Start】按钮便可将.sb文件下载进启动设备。如果成功下载，【Successful Boards】里数值会变成1，此外状态栏里会显示"Application image file (.sb) has been downloaded successfully!"。  
 
-![NXP-MCUBootFlasher_SingleBoardSingleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_SingleBoardSingleSb_downloadSuccess_e.png)
+![NXP-MCUBootFlasher_SingleBoardSingleSb_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_1_0_SingleBoardSingleSb_downloadSuccess_e.png)
 
 #### 3.4 批量下载
 ##### 3.4.1 批量多文件
 　　如果你想一次性下载多个.sb文件，你需要将这些文件放置于同一个文件夹，然后在工具里第二个【Browse】下选中这个文件夹（注意必须保证第一个【Browse】按钮里的路径是空），然后直接点击【Start】按钮便可。  
 
-![NXP-MCUBootFlasher_SingleBoardMultipleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_SingleBoardMultipleSb_downloadSuccess_e.png)
+![NXP-MCUBootFlasher_SingleBoardMultipleSb_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_1_0_SingleBoardMultipleSb_downloadSuccess_e.png)
 
 ##### 3.4.2 批量多板卡
 　　如果你想一次性下载程序进多个板卡，你需要在板卡设置栏【Connected】填入实际连接板卡数（填入数值后必须按键盘上的Enter键来确定），以USB接口为例，此时你会看到【Detected】里会显示实际识别板卡数，最终下载以实际识别板卡数为准。然后直接点击【Start】按钮便可。  
 
-![NXP-MCUBootFlasher_MultipleBoardSingleSb_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_MultipleBoardMultipleSb_downloadSuccess_e.png)
+![NXP-MCUBootFlasher_MultipleBoardSingleSb_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_1_0_MultipleBoardMultipleSb_downloadSuccess_e.png)
 
 　　如果选择的是UART接口，你必须在【RT Port Index】里逐一选中每个Port进行具体设置，并保证右侧状态均为"Already Set"。  
 
-![NXP-MCUBootFlasher_setPort_multipleUart_e](http://henjay724.com/image/cnblogs/rtFlash_v1_1_0_setPort_multipleUart_e.png)
+![NXP-MCUBootFlasher_setPort_multipleUart_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_1_0_setPort_multipleUart_e.png)
 
 #### 3.5 在HAB Closed情况下
 　　当芯片HAB状态处于Closed的情况下，此时需要将你生成的含签名的flashloader文件放置于NXP-MCUBootFlasher指定目录下（此处以RT106x为例），并且文件必须命名为ivt_flashloader_signed.bin。  
 
-![NXP-MCUBootFlasher_signedFlashloader_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_signedFlashloader.PNG)
+![NXP-MCUBootFlasher_signedFlashloader_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_0_0_signedFlashloader.PNG)
 
 　　除此以外，还需确保bltargetconfig.py文件里的两个变量与你的含签名flashloader文件相匹配。  
 
-![NXP-MCUBootFlasher_signedFlashloader_address_e](http://henjay724.com/image/cnblogs/rtFlash_v1_0_0_signedFlashloader_address_e.png)
+![NXP-MCUBootFlasher_signedFlashloader_address_e](https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/cnblogs/rtFlash_v1_0_0_signedFlashloader_address_e.png)
