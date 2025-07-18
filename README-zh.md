@@ -8,7 +8,7 @@
 对于MCUBootUtility，MCUBootFlasher（NXP-MCUBootFlasher）工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
 ```
 
-<img src="https://raw.githubusercontent.com/JayHeng/pzhmcu-picture/master/github/MCUBootUtility_qq.png" style="zoom:100%" />
+![](pic/RT-Flash_v3.2.0.PNG)
 
 ### 1 软件概览
 #### 1.1 介绍
